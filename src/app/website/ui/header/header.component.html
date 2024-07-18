@@ -7,13 +7,14 @@
             </a>
 
             <div class="flex lg:order-2 items-center h-10">
-                <input type="text" class="rounded-l-lg h-10 " placeholder="Buscar" [(ngModel)]="buscado" (keydown.enter)="buscar()">
+                <input type="text" 
+                class="rounded-l-lg " 
+                placeholder="Buscar" [(ngModel)]="buscado" (keydown.enter)="buscar()">
                 
                 <button 
-                type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-r-lg px-5 h-10 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                (click)="buscar()"
-                >
-                
+                type="button" 
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-r-lg px-3 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"  
+                (click)="buscar()">
                 
                 <svg class="fill-gray-50" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     width="20px" height="20px" viewBox="0 0 612.08 612.08" style="enable-background:new 0 0 612.08 612.08;"
@@ -22,17 +23,19 @@
                        c50.518,0,97.368-15.757,135.879-42.597l0.028-0.028l176.432,176.433c3.274,3.274,8.48,3.358,11.839,0l47.551-47.551
                        c3.274-3.274,3.106-8.703-0.028-11.838L433.223,373.8c26.84-38.539,42.597-85.39,42.597-135.907C475.82,106.52,369.3,0,237.927,0z
                         M237.927,419.811c-100.475,0-181.918-81.443-181.918-181.918S137.453,55.975,237.927,55.975s181.918,81.443,181.918,181.918
-                       S338.402,419.811,237.927,419.811z"/></g></svg></button>
+                       S338.402,419.811,237.927,419.811z"/></g></svg>
+                </button>
             </div>
 
-            <div class="flex items-center lg:order-3">
+            <div class="flex items-center lg:order-2">
                 <button 
                     routerLink="/sesion/sign-in"
                     type="button" 
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 h-10 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                     >Iniciar Sesion (Admin)
                 </button>
             </div>
+
             
             <!-- Cart -->
             <div class="flex items-center lg:order-4">
@@ -56,7 +59,6 @@
   
             </div>
             
-
             <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     <li>
@@ -73,7 +75,7 @@
                     </li>
                 </ul>
             </div>
-            
+
         </div>
     </nav>
 </header>
