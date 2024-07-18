@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
+import { ProductoRequest } from '../../models/producto-request';
 
 @Component({
   selector: 'app-inventario',
@@ -121,33 +122,48 @@ export class InventarioComponent {
     });
   }
 
-  editNombre: string= '';
-  editPn: string= '';
-  editDescripcion: string= '';
-  editStock: number= 0;
-  editPrecio: number= 0;
-  editCategoriaMarca: number= 0;
-  editSubCategoria:   number= 0;
-  editGarantiaCliente: number= 0;
-  editGarantiaTotal: number= 0;
-  editArchivo: string[] = [];
+  nuevoActua: ProductoRequest = { 
+    nombre: '' ,
+    pn :'',
+    descripcion:'',
+    stock: 1,
+    precio: 1,
+    id_categoriamarca: 1,
+    id_subcategoria: 1,
+    garantia_cliente: 0,
+    garantia_total: 0,
+    imageurl: []
+  };
+
+  imagencarga: string[] = [];
 
   editarProducto(content: any, id: string) {
     this.productoService.getProductoById(id).subscribe(producto => {
-      this.editNombre = producto.nombre;
-      this.editPn = producto.pn;
-      this.editDescripcion = producto.descripcion;
-      this.editStock = producto.stock;
-      this.editPrecio = producto.precio;
-      this.editCategoriaMarca = producto.id_categoriamarca;
-      this.editSubCategoria = producto.id_subcategoria;
-      this.editGarantiaCliente = producto.garantia_cliente;
-      this.editGarantiaTotal  =producto.garantia_total;
-      this.editArchivo = producto.imageurl;
-
+      this.nuevoActua = producto;
+      this.imagencarga = producto.imageurl;
       this.abrirModal(content);
     }, error => {
       console.error('Error al obtener el producto:', error);
+    });
+  }
+
+  guardarCambios() {
+
+    const formData = new FormData();
+    formData.append('producto', new Blob([JSON.stringify(this.nuevoActua)], { type: 'application/json' }));
+    this.selectedFiles.forEach((file) => {
+      formData.append('files', file);
+    });
+
+    this.productoService.postNuevoProducto(formData).subscribe({
+      next: () => {
+        //actualizar productos
+        this.cargarProductosActualizado();
+        console.log("producto agregado");
+      },
+      error:(error)  => {
+        console.log("producto no agregado");
+      }
     });
   }
 
@@ -157,22 +173,23 @@ export class InventarioComponent {
     if (event.target.files.length > 0) {
       this.selectedFiles = Array.from(event.target.files);
 
-      // Convertir las imágenes seleccionadas a URLs y añadir al array imagenUrl
+      //cargar imagencarga []
       this.selectedFiles.forEach((file: File) => {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          this.editArchivo.push(e.target.result);
+          this.imagencarga.push(e.target.result);
         };
         reader.readAsDataURL(file);
       });
 
-      console.log(this.editArchivo);
+
+      console.log(this.nuevoActua.imageurl);
     }
   }
 
   eliminarImagen(index: number) {
-    this.editArchivo.splice(index, 1);
-    console.log('Lista imagenes: ',this.editArchivo);
+    this.nuevoActua.imageurl.splice(index, 1);
+    console.log('Lista imagenes: ',this.nuevoActua.imageurl);
   }
 
   abrirModalPedido(content: any, id: string, nombre: string){
@@ -183,10 +200,6 @@ export class InventarioComponent {
 
   getCurrentDateTime(): string {
     return new Date().toISOString();
-  }
-
-  guardarCambios() {
-    console.log("servicio para actualizar información")
   }
   
   abrirModal(content: any) {

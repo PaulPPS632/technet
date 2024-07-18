@@ -34,54 +34,54 @@ class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-mediu
     <form>
       <div class="mb-6">
         <label for="editNombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre Producto</label>
-        <input type="text" id="editNombre" name="editNombre" [(ngModel)]="editNombre" placeholder="Ingrese nombre del producto..."
+        <input type="text" id="editNombre" name="editNombre" [(ngModel)]="nuevoActua.nombre" placeholder="Ingrese nombre del producto..."
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
       </div>
 
       <div class="mb-6">
         <label for="editPn" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PN Producto</label>
-        <input type="text" id="editPn" name="editPn" [(ngModel)]="editPn" placeholder="Ingrese nombre del PN del producto..."
+        <input type="text" id="editPn" name="editPn" [(ngModel)]="nuevoActua.pn" placeholder="Ingrese nombre del PN del producto..."
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
       </div>
 
       <div class="mb-6">
         <label for="editDescripcion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción</label>
-        <textarea id="editDescripcion" name="editDescripcion" [(ngModel)]="editDescripcion" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+        <textarea id="editDescripcion" name="editDescripcion" [(ngModel)]="nuevoActua.descripcion" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
       </div>
 
       <div class="mb-6">
         <label for="editStock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock</label>
-        <input type="number" id="editStock" name="editStock" [(ngModel)]="editStock" placeholder="Ingrese stock del producto..."
+        <input type="number" id="editStock" name="editStock" [(ngModel)]="nuevoActua.stock" placeholder="Ingrese stock del producto..."
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
       </div>
 
       <div class="mb-6">
         <label for="editPrecio" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio</label>
-        <input type="number" id="editPrecio" name="editPrecio" [(ngModel)]="editPrecio" placeholder="Ingrese el precio del producto..."
+        <input type="number" id="editPrecio" name="editPrecio" [(ngModel)]="nuevoActua.precio" placeholder="Ingrese el precio del producto..."
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
       </div>
 
       <div class="mb-6">
         <label for="editCatMarca" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Id Categoria Marca</label>
-        <input type="text" id="editCatMarca" name="editCatMarca" [(ngModel)]="editCategoriaMarca" placeholder="Ingrese la marca del producto..."
+        <input type="text" id="editCatMarca" name="editCatMarca" [(ngModel)]="nuevoActua.id_categoriamarca" placeholder="Ingrese la marca del producto..."
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
       </div>
 
       <div class="mb-6">
         <label for="editSubCategoria" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Id Sub Categoria</label>
-        <input type="text" id="editSubCategoria" name="editSubCategoria" [(ngModel)]="editSubCategoria" placeholder="Ingrese id categoriamarca del producto..."
+        <input type="text" id="editSubCategoria" name="editSubCategoria" [(ngModel)]="nuevoActua.id_subcategoria" placeholder="Ingrese id categoriamarca del producto..."
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
       </div>
 
       <div class="mb-6">
         <label for="editGarantiaCliente" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Garantia Cliente</label>
-        <input type="number" id="editGarantiaCliente" name="editGarantiaCliente" [(ngModel)]="editGarantiaCliente" placeholder="Ingrese la garantía cliente..."
+        <input type="number" id="editGarantiaCliente" name="editGarantiaCliente" [(ngModel)]="nuevoActua.garantia_cliente" placeholder="Ingrese la garantía cliente..."
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
       </div>
 
       <div class="mb-6">
         <label for="editGarantiaTotal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Garantia Total</label>
-        <input type="number" id="editGarantiaTotal" name="editGarantiaTotal" [(ngModel)]="editGarantiaTotal" placeholder="Ingrese la garantía total..."
+        <input type="number" id="editGarantiaTotal" name="editGarantiaTotal" [(ngModel)]="nuevoActua.garantia_total" placeholder="Ingrese la garantía total..."
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
       </div>
 
@@ -93,10 +93,12 @@ class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-mediu
       </div>
       
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div *ngFor="let imagen of editArchivo; let i = index" class="relative">
-          <img class="h-auto max-w-full rounded-lg" [src]="imagen" alt="">
+        <div *ngFor="let imagen of imagencarga; let i = index" class="relative">
+          <div class="w-full items-center py-2.5 px-5 text-gray-900 focus:outline-none bg-white rounded-t-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+            <img class="h-auto max-w-full rounded-lg" [src]="imagen" alt="">
+          </div>
           <button type="button" 
-            class="w-full items-center rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" 
+            class="w-full items-center rounded-b-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" 
             (click)="eliminarImagen(i)"
           >Eliminar</button>
         </div>
@@ -191,7 +193,7 @@ class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-mediu
             <td class="px-6 py-4">{{p.garantia_cliente}}</td>
             <td class="px-6 py-4">{{p.garantia_total}}</td>
             <td class="px-6 py-4">
-                <img [src]="url + '/images/' + p.imageurl[0]" >
+                <img [src]="p.imageurl[0]" >
             </td>
 
             <td class="px-6 py-4">

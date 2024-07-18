@@ -59,12 +59,14 @@
   </div>
 
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <div *ngFor="let imagen of nuevoProducto.imageUrl; let i = index" class="relative">
-      <img class="h-auto max-w-full rounded-lg" [src]="imagen" alt="">
+    <div class="relative">
+      @for (imagen of nuevoProducto.imageurl; track imagen) {
+        <img class="h-auto max-w-full rounded-lg" [src]="imagen" alt="">
       <button type="button" 
         class="w-full items-center rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" 
-        (click)="eliminarImagen(i)"
+        (click)="eliminarImagen(nuevoProducto.imageurl.indexOf(imagen))"
       >Eliminar</button>
+      }
     </div>
   </div>
 

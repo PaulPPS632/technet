@@ -10,11 +10,12 @@ import { SubCategoriaResponse } from '../../../models/subcategoria-response';
 import { CategoriaResponse } from '../../../models/categoria-response';
 import { CategoriaMarcaResponse } from '../../../models/categoriamarca-response';
 import { MarcaResponse } from '../../../models/marca-response';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-crear-producto',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './crear-producto.component.html',
   styles: ``
 })
@@ -133,15 +134,6 @@ export class CrearProductoComponent implements OnInit {
   onFileChange(event: any) {
     if (event.target.files.length > 0) {
       this.selectedFiles = Array.from(event.target.files);
-
-      // Convertir las imágenes seleccionadas a URLs y añadir al array imagenUrl
-      this.selectedFiles.forEach((file: File) => {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.nuevoProducto.imageurl.push(e.target.result);
-        };
-        reader.readAsDataURL(file);
-      });
 
       console.log(this.nuevoProducto.imageurl); // Mostrar el array actualizado en la consola
     }
