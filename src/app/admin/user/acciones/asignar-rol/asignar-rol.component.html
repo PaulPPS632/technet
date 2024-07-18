@@ -1,0 +1,7 @@
+<div class="input-group">
+    <select id="marca" class="form-control" [(ngModel)]="RolSelect" name="marca" >
+      <option *ngFor="let rol of roles" [value]="rol.id"> {{rol.nombre}} | {{rol.descripcion}} </option>
+    </select>
+</div>
+
+<button type="submit" class="btn btn-primary full" (click)="asignarRol()">Asignar</button>

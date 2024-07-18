@@ -1,0 +1,140 @@
+import { Component, OnInit } from '@angular/core';
+import { ProductoRequest } from '../../../models/producto-request';
+import { ProductoResponse } from '../../../models/producto-response';
+import { ProductoService } from '../../../services/producto.service';
+import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { MarcaService } from '../../../services/marca.service';
+import { CategoriaService } from '../../../services/categoria.service';
+import { SubCategoriaResponse } from '../../../models/subcategoria-response';
+import { CategoriaResponse } from '../../../models/categoria-response';
+import { CategoriaMarcaResponse } from '../../../models/categoriamarca-response';
+import { MarcaResponse } from '../../../models/marca-response';
+
+@Component({
+  selector: 'app-crear-producto',
+  standalone: true,
+  imports: [FormsModule],
+  templateUrl: './crear-producto.component.html',
+  styles: ``
+})
+
+export class CrearProductoComponent implements OnInit {
+
+  /* parte 1 */
+  MarcaSelect : number = 0;
+  Marcas : MarcaResponse [] = [];
+  CategoriaMarca: CategoriaMarcaResponse[] = [];
+
+  /* parte 2 */
+  CategoriaSelect: number = 0;
+  Categoria : CategoriaResponse [] = [];
+  Subcategoria: SubCategoriaResponse [] = [];
+
+  nuevoProducto: ProductoRequest = { 
+    nombre: '' ,
+    pn :'',
+    descripcion:'',
+    stock: 1,
+    precio: 1,
+    id_categoriamarca: 1,
+    id_subcategoria: 1,
+    garantia_cliente: 0,
+    garantia_total: 0
+  };
+
+  productos: ProductoResponse[] = [];
+
+  constructor(
+    private productoService: ProductoService, 
+    private marcaService: MarcaService,
+    private categoriaService: CategoriaService) {}
+
+  ngOnInit(): void {
+    this.cargarSelect();
+  }
+
+  buscarSubM(){
+    this.marcaService.getSubs(this.MarcaSelect).subscribe(
+      (data: CategoriaMarcaResponse[]) => {
+        this.CategoriaMarca = data;
+        this.nuevoProducto.id_categoriamarca = this.CategoriaMarca[0].id; //predeterminado index 1
+        console.log('Data Marca:', data.length);
+      },
+      error => {
+        console.error('Error: ', error);
+      }
+    );
+  }
+
+  buscarSubC(){
+    this.categoriaService.getSubs(this.CategoriaSelect).subscribe(
+      (data: SubCategoriaResponse[]) => {
+        this.Subcategoria = data;
+        this.nuevoProducto.id_subcategoria = this.Subcategoria[0].id; //predeterminado index 1
+        console.log('Data Categoria:', data.length);
+      },
+      error => {
+        console.error('Error: ', error);
+      }
+    );
+  }
+
+  cargarSelect(){
+
+    this.marcaService.getAll().subscribe(
+      data => {this.Marcas = data;
+    });
+    
+    this.categoriaService.getAll().subscribe(
+      data => {this.Categoria = data}
+    );
+  }
+
+  cargarProductos() {
+    this.productoService.getListaProductos().subscribe(response => {
+      this.productos = response;
+    }, error => {
+      console.error('Error al obtener las categorías:', error);
+    });
+  }
+
+  selectedFiles: File[] = [];
+  
+  guardarProductos() {
+
+    const formData = new FormData();
+    formData.append('producto', new Blob([JSON.stringify(this.nuevoProducto)], { type: 'application/json' }));
+    this.selectedFiles.forEach((file) => {
+      formData.append('files', file);
+    });
+
+    this.productoService.postNuevoProducto(formData).subscribe({
+      next: () => {
+        //actualizar productos
+        this.cargarProductos();
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto agregado',
+          text: 'El producto ha sido agregado al inventario.',
+        });
+        
+      },
+      error:(error)  => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Producto no agregado',
+          text: error,
+        });
+      }
+    });
+  }
+
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      console.log(event.target.files);
+      this.selectedFiles = Array.from(event.target.files);
+    }
+  }
+
+}
