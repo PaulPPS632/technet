@@ -58,6 +58,18 @@
     <input type="file" id="archivo" name="archivo" (change)="onFileChange($event)" multiple required class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
   </div>
 
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div *ngFor="let imagen of nuevoProducto.imageUrl; let i = index" class="relative">
+      <img class="h-auto max-w-full rounded-lg" [src]="imagen" alt="">
+      <button type="button" 
+        class="w-full items-center rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" 
+        (click)="eliminarImagen(i)"
+      >Eliminar</button>
+    </div>
+  </div>
+
+  <br>
+
   <button type="submit" 
   class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
   type="submit" (click)="guardarProductos()" >Ingresar Nuevo Producto</button>

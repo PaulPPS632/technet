@@ -44,7 +44,7 @@ export class InventarioComponent {
   cargarProductosActualizado() {
     this.productoService.getListaProductos().subscribe(response => {
       this.productos = response;
-      this.filtroProducto = response;
+      //this.filtroProducto = response;
     }, error => {
       console.error('Error al obtener los productos:', error);
     });
@@ -126,8 +126,8 @@ export class InventarioComponent {
   editDescripcion: string= '';
   editStock: number= 0;
   editPrecio: number= 0;
-  editCategoriaMarca: string= '';
-  editSubCategoria: string= '';
+  editCategoriaMarca: number= 0;
+  editSubCategoria:   number= 0;
   editGarantiaCliente: number= 0;
   editGarantiaTotal: number= 0;
   editArchivo: string[] = [];
@@ -139,16 +139,40 @@ export class InventarioComponent {
       this.editDescripcion = producto.descripcion;
       this.editStock = producto.stock;
       this.editPrecio = producto.precio;
-      this.editCategoriaMarca = producto.categoriamarca;
-      this.editSubCategoria = producto.subcategoria;
+      this.editCategoriaMarca = producto.id_categoriamarca;
+      this.editSubCategoria = producto.id_subcategoria;
       this.editGarantiaCliente = producto.garantia_cliente;
       this.editGarantiaTotal  =producto.garantia_total;
-      //this.editArchivo = producto.imageurl;
+      this.editArchivo = producto.imageurl;
 
       this.abrirModal(content);
     }, error => {
       console.error('Error al obtener el producto:', error);
     });
+  }
+
+  selectedFiles: File[] = [];
+
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedFiles = Array.from(event.target.files);
+
+      // Convertir las imágenes seleccionadas a URLs y añadir al array imagenUrl
+      this.selectedFiles.forEach((file: File) => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.editArchivo.push(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
+
+      console.log(this.editArchivo);
+    }
+  }
+
+  eliminarImagen(index: number) {
+    this.editArchivo.splice(index, 1);
+    console.log('Lista imagenes: ',this.editArchivo);
   }
 
   abrirModalPedido(content: any, id: string, nombre: string){
@@ -159,14 +183,6 @@ export class InventarioComponent {
 
   getCurrentDateTime(): string {
     return new Date().toISOString();
-  }
-
-  onFileChange(event: any) {
-    const files = event.target.files;
-    this.editArchivo = [];
-    for (let i = 0; i < files.length; i++) {
-      this.editArchivo.push(files[i]);
-    }
   }
 
   guardarCambios() {
@@ -191,5 +207,6 @@ export class InventarioComponent {
       return `with: ${reason}`;
     }
   }
+  
 
 }

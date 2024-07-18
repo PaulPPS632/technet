@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ProductoResponse } from '../models/producto-response';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { ProductoRequest, ProductoRequestEdit } from '../models/producto-request';
+import { ProductoRequest } from '../models/producto-request';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +22,8 @@ export class ProductoService {
     return this.http.post<any>(`${this.apiUrl}`,productoNuevo);
   }
 
-  getProductoById(id: string): Observable<ProductoRequestEdit> {
-    return this.http.get<ProductoRequestEdit>(`${this.apiUrl}/${id}`);
+  getProductoById(id: string): Observable<ProductoRequest> {
+    return this.http.get<ProductoRequest>(`${this.apiUrl}/${id}`);
   }
 
   deleteProducto(id: string): Observable<void> {

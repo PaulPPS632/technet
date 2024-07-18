@@ -40,7 +40,8 @@ export class CrearProductoComponent implements OnInit {
     id_categoriamarca: 1,
     id_subcategoria: 1,
     garantia_cliente: 0,
-    garantia_total: 0
+    garantia_total: 0,
+    imageurl: []
   };
 
   productos: ProductoResponse[] = [];
@@ -81,7 +82,6 @@ export class CrearProductoComponent implements OnInit {
   }
 
   cargarSelect(){
-
     this.marcaService.getAll().subscribe(
       data => {this.Marcas = data;
     });
@@ -98,9 +98,7 @@ export class CrearProductoComponent implements OnInit {
       console.error('Error al obtener las categorías:', error);
     });
   }
-
-  selectedFiles: File[] = [];
-  
+ 
   guardarProductos() {
 
     const formData = new FormData();
@@ -130,11 +128,28 @@ export class CrearProductoComponent implements OnInit {
     });
   }
 
+  selectedFiles: File[] = [];
+
   onFileChange(event: any) {
     if (event.target.files.length > 0) {
-      console.log(event.target.files);
       this.selectedFiles = Array.from(event.target.files);
+
+      // Convertir las imágenes seleccionadas a URLs y añadir al array imagenUrl
+      this.selectedFiles.forEach((file: File) => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.nuevoProducto.imageurl.push(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
+
+      console.log(this.nuevoProducto.imageurl); // Mostrar el array actualizado en la consola
     }
+  }
+
+  eliminarImagen(index: number) {
+    this.nuevoProducto.imageurl.splice(index, 1);
+    console.log('Lista imagenes: ',this.nuevoProducto.imageurl);
   }
 
 }
