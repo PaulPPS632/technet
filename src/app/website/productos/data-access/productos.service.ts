@@ -19,11 +19,12 @@ export class ProductsService extends BaseHttpService {
   }
   */
 
-  getProducts(page: number, size: number, sort: string, marcas: string, categorias: string, subcategoria: string): Observable<ProductoResponse[]> {
+  getProducts(page: number, search: string ,size: number, sort: string, marcas: string, categorias: string, subcategoria: string): Observable<ProductoResponse[]> {
     //return this.http.get<any[]>(`${this.apiUrl}/inventory/producto`);
     return this.http.get<any[]>(`${this.apiUrl}/inventory/producto/paged`, {
       params: {
         page: page,
+        search: search,
         size: size,
         marca: marcas,
         categoria: categorias,

@@ -20,12 +20,13 @@ export default class ProductoListaComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.productsState.loadProducts(0, 5, '', '', '', '');
+    this.productsState.loadProducts(0, '', 5, '', '', '', '');
   }
   changePage() {
     const page = this.productsState.state().page + 1;
     this.productsState.changePage$.next({
       page: page,
+      search: '',
       size: 10,
       sort: '',
       marca: '', // Puedes ajustar esto según tus necesidades

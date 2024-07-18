@@ -8,6 +8,7 @@ interface State {
   products: ProductoResponse[];
   status: 'loading' | 'success' | 'error';
   page: number;
+  search: string;
   marca: string;
   categoria: string;
   subcategoria: string;
@@ -22,6 +23,7 @@ export class ProductsSateService {
     products: [],
     status: 'loading' as const,
     page: 0,
+    search: '',
     marca: '',
     categoria: '',
     subcategoria: '',
@@ -30,6 +32,7 @@ export class ProductsSateService {
 
   changePage$ = new Subject<{
     page: number;
+    search: string;
     size: number;
     sort: string;
     marca: string;
@@ -40,7 +43,7 @@ export class ProductsSateService {
 
   // Modificar loadProducts$ para usar el observable combinado de filtros
   loadProducts$ = this.changePage$.pipe(
-    switchMap(params => this.productoService.getProducts(params.page, params.size, params.sort, params.marca, params.categoria, params.subcategoria)),
+    switchMap(params => this.productoService.getProducts(params.page, params.search ,params.size, params.sort, params.marca, params.categoria, params.subcategoria)),
     map(products => ({ products, status: 'success' as const })),
     catchError(() => {
       return of({
@@ -56,6 +59,7 @@ export class ProductsSateService {
       this.changePage$.pipe(
         map(params => ({
           page: params.page,
+          search: params.search,
           size: params.size,
           sort: params.sort,
           marca: params.marca,
@@ -67,7 +71,7 @@ export class ProductsSateService {
       this.loadProducts$,
     ],
   });
-  loadProducts(page: number, size: number, sort: string, marca: string, categoria: string, subcategoria: string): void {
-    this.changePage$.next({ page, size, sort, marca, categoria, subcategoria });
+  loadProducts(page: number, search: string,size: number, sort: string, marca: string, categoria: string, subcategoria: string): void {
+    this.changePage$.next({ page, search, size, sort, marca, categoria, subcategoria });
   }
 }

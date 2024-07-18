@@ -29,6 +29,7 @@ export default class CatalogoComponent {
   categorias: CategoriaResponse[] = []; // Lista de categorías
   marcas: MarcaResponse[]=[]; // Lista de marcas
 
+  search: string ='';
   sort: string = '';
   selectedCategorias: string[] = [];
   selectedSubcategorias: string[] = [];
@@ -52,19 +53,21 @@ export default class CatalogoComponent {
     )
     this.route.queryParams.subscribe(params => {
       const page = params['page'] || 0;
+      const search = params['search'] || '';
       const size = params['size'] || 10;
       const sort = params['sort'] || '';
       const marca = params['marca'] || '';
       const categoria = params['categoria'] || '';
       const subcategoria = params['subcategoria'] || '';
 
-      this.productsState.loadProducts(page, size, sort, marca, categoria, subcategoria);
+      this.productsState.loadProducts(page, search, size, sort, marca, categoria, subcategoria);
     });
   }
   changePage() {
     const page = this.productsState.state().page + 1;
     this.productsState.changePage$.next({
       page: page,
+      search: this.search,
       size: 10,
       sort: this.sort,
       marca: this.selectedMarcas.join(','), // Puedes ajustar esto según tus necesidades
@@ -76,16 +79,19 @@ export default class CatalogoComponent {
     const queryParams: any = {
       page: 0
     };
-    if(this.sort != ''){
-      queryParams.sort = this.sort;
-    }else{
-      queryParams.sort = '';
-    }
-    if(this.selectedMarcas.length > 0){
+    queryParams.search = this.search ?? '';
+    queryParams.sort = this.sort ?? '';
+    queryParams.marca = this.selectedMarcas.join(',') ?? '';
+    queryParams.categoria = this.selectedCategorias.join(',') ?? '';
+    queryParams.subcategoria = this.selectedSubcategorias.join(',') ?? '';
+    queryParams.marca = this.selectedMarcas.join(',') ?? '';
+    /**
+     * if(this.selectedMarcas.length > 0){
       queryParams.marca = this.selectedMarcas.join(',');
     }else{
       queryParams.marca = '';
     }
+
     // Agregar marca si tiene contenido
     if (this.selectedCategorias.length > 0) {
       queryParams.categoria = this.selectedCategorias.join(',');
@@ -99,6 +105,8 @@ export default class CatalogoComponent {
     }else{
       queryParams.subcategoria = '';
     }
+     */
+    
     // Actualiza la URL con los nuevos parámetros
     this.router.navigate([], {
       relativeTo: this.route,
@@ -107,6 +115,7 @@ export default class CatalogoComponent {
     });
     this.productsState.loadProducts(
       queryParams.page,
+      queryParams.search,
       queryParams.size,
       queryParams.sort,
       queryParams.marca,
