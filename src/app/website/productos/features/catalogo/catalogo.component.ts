@@ -59,9 +59,10 @@ export default class CatalogoComponent {
       const marca = params['marca'] || '';
       const categoria = params['categoria'] || '';
       const subcategoria = params['subcategoria'] || '';
-
+      this.search = this.productsState.state().search;
       this.productsState.loadProducts(page, search, size, sort, marca, categoria, subcategoria);
     });
+    console.log('ejecuta oninit')
   }
   changePage() {
     const page = this.productsState.state().page + 1;
@@ -79,40 +80,44 @@ export default class CatalogoComponent {
     const queryParams: any = {
       page: 0
     };
-    queryParams.search = this.search ?? '';
+    queryParams.search = this.productsState.state().search ?? '';
     queryParams.sort = this.sort ?? '';
     queryParams.marca = this.selectedMarcas.join(',') ?? '';
     queryParams.categoria = this.selectedCategorias.join(',') ?? '';
-    queryParams.subcategoria = this.selectedSubcategorias.join(',') ?? '';
-    queryParams.marca = this.selectedMarcas.join(',') ?? '';
     /**
-     * if(this.selectedMarcas.length > 0){
-      queryParams.marca = this.selectedMarcas.join(',');
-    }else{
-      queryParams.marca = '';
-    }
-
-    // Agregar marca si tiene contenido
-    if (this.selectedCategorias.length > 0) {
-      queryParams.categoria = this.selectedCategorias.join(',');
-    }else{
-      queryParams.categoria = '';
-    }
-  
-    // Agregar subcategoria si tiene contenido
-    if (this.selectedSubcategorias.length > 0) {
-      queryParams.subcategoria = this.selectedSubcategorias.join(',');
-    }else{
-      queryParams.subcategoria = '';
-    }
+     * const subs = this.selectedCategorias.forEach(cat => {
+      return this.selectedSubcategorias.filter(sub => this.categorias.find(cate => cate.nombre == cat)?.subcategorias.includes(sub))
+    })
      */
-    
+    const filteredSubcategorias = this.selectedSubcategorias.filter(sub => {
+      // Encuentra la categoría que contiene esta subcategoría
+      const parentCategory = this.categorias.find(categoria => 
+        categoria.subcategorias.some(subCategoria => subCategoria.nombre === sub)
+      );
+      // Verifica si la categoría padre no está en la lista de categorías seleccionadas
+      return parentCategory ? !this.selectedCategorias.includes(parentCategory.nombre) : true;
+    });
+    queryParams.subcategoria = filteredSubcategorias.join(',');
+    queryParams.marca = this.selectedMarcas.join(',') ?? '';
     // Actualiza la URL con los nuevos parámetros
-    this.router.navigate([], {
-      relativeTo: this.route,
+    
+    
+    this.router.navigate(['catalogo'], {
+      //relativeTo: this.route,
       queryParams,
       queryParamsHandling: 'merge' // O 'preserve' si quieres mantener los parámetros existentes
     });
+    
+    this.productsState.changePage$.next({
+      page: 0,
+      search: this.search,
+      size: 10,
+      sort: this.sort,
+      marca: this.selectedMarcas.join(','), // Puedes ajustar esto según tus necesidades
+      categoria: this.selectedCategorias.join(','),
+      subcategoria: filteredSubcategorias.join(',')
+    });
+    /*
     this.productsState.loadProducts(
       queryParams.page,
       queryParams.search,
@@ -122,6 +127,8 @@ export default class CatalogoComponent {
       queryParams.categoria,
       queryParams.subcategoria
     );
+    */
+    
   }
   addToCart(product: ProductoResponse) {
     this.cartState.add({
@@ -147,7 +154,6 @@ export default class CatalogoComponent {
         this.selectedSubcategorias = this.selectedSubcategorias.filter(s => s !== subcategoria.nombre);
       });
     }
-    console.log(this.selectedSubcategorias);
     this.updateProducts();
     this.toggleCollapse(categoria.nombre)
   }

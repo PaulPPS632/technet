@@ -10,11 +10,13 @@ import { ProductsSateService } from '../../productos/data-access/productos-state
   standalone: true,
   imports: [RouterLink, RouterLinkActive, FormsModule],
   templateUrl: './header.component.html',
-  styles: ``
+  styles: ``,
+  providers:[ProductsSateService]
 })
 export class HeaderComponent {
   cartState = inject(CartStateService).state;
   buscado : string = '';
+  productsState = inject(ProductsSateService);
 
   queryParams: any = {
     page: 0,
@@ -27,20 +29,19 @@ export class HeaderComponent {
   constructor(private route: ActivatedRoute,private router: Router){}
 
   buscar(){
-    console.log(this.buscado)
-
     const queryParams: any = {
       page: 0,
+      search: this.buscado,
       size: 10,
-      sort: '',
-      marca: '', // Puedes ajustar esto según tus necesidades
-      categoria: '',
-      subcategoria: ''
+      sort: this.productsState.state().sort,
+      marca: this.productsState.state().marca, // Puedes ajustar esto según tus necesidades
+      categoria: this.productsState.state().categoria,
+      subcategoria: this.productsState.state().subcategoria
     };
     
     this.router.navigate(['catalogo'], {
       //relativeTo: this.route,
-      queryParams,
+      queryParams: queryParams,
       queryParamsHandling: 'merge' // O 'preserve' si quieres mantener los parámetros existentes
     });
   }
