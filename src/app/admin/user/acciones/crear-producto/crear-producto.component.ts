@@ -29,7 +29,7 @@ export class CrearProductoComponent implements OnInit {
 
   /* parte 2 */
   CategoriaSelect: number = 0;
-  Categoria : CategoriaResponse [] = [];
+  Categorias : CategoriaResponse [] = [];
   Subcategoria: SubCategoriaResponse [] = [];
 
   nuevoProducto: ProductoRequest = { 
@@ -61,7 +61,6 @@ export class CrearProductoComponent implements OnInit {
       (data: CategoriaMarcaResponse[]) => {
         this.CategoriaMarca = data;
         this.nuevoProducto.id_categoriamarca = this.CategoriaMarca[0].id; //predeterminado index 1
-        console.log('Data Marca:', data.length);
       },
       error => {
         console.error('Error: ', error);
@@ -74,7 +73,6 @@ export class CrearProductoComponent implements OnInit {
       (data: SubCategoriaResponse[]) => {
         this.Subcategoria = data;
         this.nuevoProducto.id_subcategoria = this.Subcategoria[0].id; //predeterminado index 1
-        console.log('Data Categoria:', data.length);
       },
       error => {
         console.error('Error: ', error);
@@ -82,13 +80,14 @@ export class CrearProductoComponent implements OnInit {
     );
   }
 
+
   cargarSelect(){
     this.marcaService.getAll().subscribe(
       data => {this.Marcas = data;
     });
     
     this.categoriaService.getAll().subscribe(
-      data => {this.Categoria = data}
+      data => {this.Categorias = data}
     );
   }
 
