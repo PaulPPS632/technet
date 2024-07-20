@@ -45,25 +45,22 @@ export class InventarioComponent {
   cargarProductosActualizado() {
     this.productoService.getListaProductos().subscribe(response => {
       this.productos = response;
-      //this.filtroProducto = response;
     }, error => {
       console.error('Error al obtener los productos:', error);
     });
   }
 
-  filtroProducto: ProductoResponse[] = [];
-
   buscarProducto(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    const searchText = inputElement.value.toLowerCase();
+    const searchText = inputElement.value.toUpperCase();
 
     if (searchText) {
-      this.filtroProducto = this.productos.filter(pro =>
+      this.productos = this.productos.filter(pro =>
         //cambiar la categoria (id/nombre/marca) para buscar
-        pro.nombre.toLowerCase().includes(searchText)
+        pro.nombre.toUpperCase().includes(searchText)
       );
     } else {
-      this.filtroProducto = this.productos;
+      this.cargarProductosActualizado();
     }
   }
 
@@ -244,5 +241,4 @@ export class InventarioComponent {
     }
   }
   
-
 }
