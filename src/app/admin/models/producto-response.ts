@@ -10,6 +10,7 @@ export interface ProductoResponse {
     garantia_cliente: number;
     garantia_total: number;
     cantidad: number;
+    imagen_principal: string;
     imageurl: string[];
 }
   

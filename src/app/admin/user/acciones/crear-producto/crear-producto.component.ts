@@ -32,7 +32,8 @@ export class CrearProductoComponent implements OnInit {
   Categoria : CategoriaResponse [] = [];
   Subcategoria: SubCategoriaResponse [] = [];
 
-  nuevoProducto: ProductoRequest = { 
+  nuevoProducto: ProductoRequest = {
+    id: '', 
     nombre: '' ,
     pn :'',
     descripcion:'',
@@ -42,6 +43,7 @@ export class CrearProductoComponent implements OnInit {
     id_subcategoria: 1,
     garantia_cliente: 0,
     garantia_total: 0,
+    imagen_principal: '',
     imageurl: []
   };
 

@@ -21,7 +21,9 @@ export class ProductoService {
   postNuevoProducto(productoNuevo: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`,productoNuevo);
   }
-
+  putProducto(productoNuevo: FormData): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}`,productoNuevo);
+  }
   getProductoById(id: string): Observable<ProductoRequest> {
     return this.http.get<ProductoRequest>(`${this.apiUrl}/${id}`);
   }

@@ -123,6 +123,7 @@ export class InventarioComponent {
   }
 
   nuevoActua: ProductoRequest = { 
+    id: '',
     nombre: '' ,
     pn :'',
     descripcion:'',
@@ -132,9 +133,11 @@ export class InventarioComponent {
     id_subcategoria: 1,
     garantia_cliente: 0,
     garantia_total: 0,
+    imagen_principal: '',
     imageurl: []
   };
 
+  imagencargadaPrincipal: string = '';
   imagencarga: string[] = [];
 
   editarProducto(content: any, id: string) {
@@ -145,30 +148,40 @@ export class InventarioComponent {
     }, error => {
       console.error('Error al obtener el producto:', error);
     });
+    this.imagencarga = [];
+    this.imagencargadaPrincipal ='';
   }
 
-  guardarCambios() {
+  guardarCambios(content: any) {
 
     const formData = new FormData();
     formData.append('producto', new Blob([JSON.stringify(this.nuevoActua)], { type: 'application/json' }));
     this.selectedFiles.forEach((file) => {
       formData.append('files', file);
     });
-
-    this.productoService.postNuevoProducto(formData).subscribe({
+    if(this.selectedFilePrincipal){
+      formData.append('fileprincipal', this.selectedFilePrincipal);
+    }
+    this.productoService.putProducto(formData).subscribe({
       next: () => {
         //actualizar productos
         this.cargarProductosActualizado();
+        this.imagencargadaPrincipal = '';
+        this.imagencarga =[];
+        this.selectedFilePrincipal = null;
+        this.selectedFiles =[];
+    content.dismiss('cancel')
         console.log("producto agregado");
       },
       error:(error)  => {
         console.log("producto no agregado");
       }
     });
+    
   }
 
   selectedFiles: File[] = [];
-
+  selectedFilePrincipal: File | null = null;
   onFileChange(event: any) {
     if (event.target.files.length > 0) {
       this.selectedFiles = Array.from(event.target.files);
@@ -182,11 +195,21 @@ export class InventarioComponent {
         reader.readAsDataURL(file);
       });
 
-
-      console.log(this.nuevoActua.imageurl);
     }
   }
-
+  onFileChangePrincipal(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedFilePrincipal =  event.target.files[0];
+      //cargar imagencarga []
+      if(this.selectedFilePrincipal){
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.imagencarga.push(e.target.result);
+        };
+        reader.readAsDataURL(this.selectedFilePrincipal);
+      }
+    }
+  }
   eliminarImagen(index: number) {
     this.nuevoActua.imageurl.splice(index, 1);
     console.log('Lista imagenes: ',this.nuevoActua.imageurl);

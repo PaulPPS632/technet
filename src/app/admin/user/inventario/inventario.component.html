@@ -86,13 +86,26 @@ class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-mediu
       </div>
 
       <!-- imagenes -->
-
+      <div class="mb-6">
+        <label for="archivo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Archivo Principal</label>
+        <input type="file" id="archivo" name="archivo" (change)="onFileChangePrincipal($event)" multiple required class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+      </div>
       <div class="mb-6">
         <label for="archivo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Archivo</label>
         <input type="file" id="archivo" name="archivo" (change)="onFileChange($event)" multiple required class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
       </div>
       
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="relative">
+          <div class="w-full items-center py-2 px-2 rounded-t-lg text-gray-900 bg-white border-3 border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+            <img class="w-auto max-w-full rounded-lg" [src]="nuevoActua.imagen_principal" alt="">
+          </div>
+          <button type="button" 
+            class="w-full items-center rounded-b-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" 
+            (click)="this.imagencargadaPrincipal = ''"
+          >Eliminar</button>
+        </div>
+        
         <div *ngFor="let imagen of imagencarga; let i = index" class="relative">
           <div class="w-full items-center py-2 px-2 rounded-t-lg text-gray-900 bg-white border-3 border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
             <img class="w-auto max-w-full rounded-lg" [src]="imagen" alt="">
@@ -108,7 +121,7 @@ class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-mediu
 
       <button type="button" 
       class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" 
-      (click)="guardarCambios()">Guardar Cambios</button>
+      (click)="guardarCambios(modal)">Guardar Cambios</button>
     </form>
   </div>
 
@@ -162,7 +175,7 @@ class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-mediu
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
   @for (p of productos; track p.id) {
     <div class="relative w-full items-center py-2 px-2 rounded text-gray-900 bg-white border-3 border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-        <img class="h-auto max-w-full rounded-lg" [src]="p.imageurl[0]" alt="">
+        <img class="h-auto max-w-full rounded-lg" [src]="p.imagen_principal" alt="">
         <div class="p-2 text-center">
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ p.nombre }}</h5>
         </div>
