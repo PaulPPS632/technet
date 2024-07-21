@@ -6,14 +6,15 @@ import { CategoriaMarcaResponse } from '../models/categoriamarca-response';
 import { MarcaRequest } from '../models/marca-request';
 import { CategoriaMarcaRequest } from '../models/categoriamarca-request';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MarcaService {
 
-  apiUrl: string = "http://localhost:8080/inventory/marca";
-  Url: string = "http://localhost:8080/inventory/categoriamarca";
+  apiUrl: string = environment.API_URL+"/inventory/marca";
+  Url: string = environment.API_URL+"/inventory/categoriamarca";
 
   constructor(private http: HttpClient, private cookiesService: CookieService) {}
 

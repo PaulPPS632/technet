@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Entidad } from '../models/entidad-response';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 export class EntidadService {
 
-  apiUrl: string = "http://localhost:8080/inventory/entidad";
+  apiUrl: string = environment.API_URL+"/inventory/entidad";
 
   constructor(private http: HttpClient, private cookiesService: CookieService) { }
 

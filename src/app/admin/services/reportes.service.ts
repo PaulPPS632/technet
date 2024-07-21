@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { VentaReporteDto } from '../models/venta-reporte';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReportesService {
 
-  apiUrl: string = "http://localhost:8080/inventory";
+  apiUrl: string = environment.API_URL+"/inventory";
 
   constructor(private http: HttpClient, private cookiesService: CookieService) {}
 

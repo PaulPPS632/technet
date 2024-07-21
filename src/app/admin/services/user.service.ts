@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
 import { UserInfo } from '../models/user-info';
 import { RolResponse } from '../models/rol-response';
 import { Logica } from '../models/logica';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  apiUrl: string = "http://localhost:8080/user";
+  apiUrl: string = environment.API_URL+"user";
 
   constructor(private http: HttpClient, private cookiesService: CookieService) {}
   user: UserInfo = {

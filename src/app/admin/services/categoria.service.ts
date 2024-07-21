@@ -8,14 +8,15 @@ import { SubCategoriaResponse } from '../models/subcategoria-response';
 import { SubCategoriaRequest } from '../models/subcategoria-request';
 import { CategoriaMarcaRequest } from '../models/categoriamarca-request';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoriaService {
 
-  apiUrl: string = "http://localhost:8080/inventory/categoria";
-  Url: string = "http://localhost:8080/inventory/subcategoria";
+  apiUrl: string = environment.API_URL+"/inventory/categoria";
+  Url: string = environment.API_URL+"/inventory/subcategoria";
 
   constructor(private http:HttpClient, private cookiesService: CookieService) {}
 

@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SubCategoriaResponse } from '../models/subcategoria-response';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubcategoriaService {
 
-  apiUrl: string = "http://localhost:8080/inventory/subcategoria";
+  apiUrl: string = environment.API_URL+"/inventory/subcategoria";
 
   constructor(private http: HttpClient, private cookiesService: CookieService) { }
 

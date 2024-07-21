@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { TipadoDocumentos } from '../models/tipado-documentos';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TipadoService {
 
-  private Url = 'http://localhost:8080/inventory/tipado'; 
+  private Url = environment.API_URL+'/inventory/tipado'; 
 
   constructor(private http: HttpClient, private cookiesService: CookieService) { }
 

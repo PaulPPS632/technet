@@ -4,13 +4,14 @@ import { ProductoSerieResponse } from '../models/producto-serie-response';
 import { Observable } from 'rxjs';
 import { ProductoResponse } from '../models/producto-response';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductoSerieService {
 
-  apiUrl: string = "http://localhost:8080/inventory/productoserie";
+  apiUrl: string = environment.API_URL+"/inventory/productoserie";
 
   constructor(private http: HttpClient, private cookiesService: CookieService) {}
 

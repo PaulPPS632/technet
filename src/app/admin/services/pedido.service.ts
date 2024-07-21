@@ -4,13 +4,14 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserInfo } from '../models/user-info';
 import { PedidoRequest, PedidoResponse } from '../models/pedido';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidoService {
 
-  private readonly Url = 'http://localhost:8080/inventory/pedidos';
+  private readonly Url = environment.API_URL+'/inventory/pedidos';
 
   constructor(private http: HttpClient, private cookiesService: CookieService) { }
   user: UserInfo = {

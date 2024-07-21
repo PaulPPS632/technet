@@ -4,12 +4,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { CompraResponse, RegistrarCompraRequest } from '../models/compra-request';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegistroCompraService {
-  private readonly Url = 'http://localhost:8080/inventory/registrocompra';
+  private readonly Url = environment.API_URL+'/inventory/registrocompra';
 
   constructor(private http: HttpClient, private cookiesService: CookieService) { }
   user: UserInfo = {

@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CategoriaMarcaRequest } from '../models/categoriamarca-request';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoriamarcaService {
 
-  apiUrl: string = "http://localhost:8080/inventory/categoriamarca";
+  apiUrl: string = environment.API_URL+"/inventory/categoriamarca";
 
   constructor(private http: HttpClient) { }
 

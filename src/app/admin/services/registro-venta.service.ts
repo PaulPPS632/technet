@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { RegistrarVentaRequest, VentaResponse } from '../models/venta-request';
 import { CookieService } from 'ngx-cookie-service';
 import { UserInfo } from '../models/user-info';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegistroVentaService {
 
-  private readonly Url = 'http://localhost:8080/inventory/registroventa';
+  private readonly Url = environment.API_URL + '/inventory/registroventa';
 
   constructor(private http: HttpClient, private cookiesService: CookieService) { }
   user: UserInfo = {
