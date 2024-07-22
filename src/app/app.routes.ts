@@ -9,6 +9,7 @@ import { PedidosComponent } from './admin/user/pedidos/pedidos.component';
 import { InventarioComponent } from './admin/user/inventario/inventario.component';
 import { FacIngresoComponent } from './admin/user/gestion/fac-ingreso/fac-ingreso.component';
 import FacSalidaComponent from './admin/user/gestion/fac-salida/fac-salida.component';
+import { CrearEntidadComponent } from './admin/user/acciones/crear-entidad/crear-entidad.component';
 export const routes: Routes = [
 
     { path: '', loadChildren: () => import('./website/productos/features/producto-shell/producto.routes'),},
@@ -29,7 +30,8 @@ export const routes: Routes = [
             { path: 'pedidos', component: PedidosComponent},
             { path: 'inventario', component: InventarioComponent},
             { path: 'ingreso', component: FacIngresoComponent},
-            { path: 'salida', component: FacSalidaComponent}
+            { path: 'salida', component: FacSalidaComponent},
+            { path: 'cliente', component: CrearEntidadComponent}
 
         ]
      },

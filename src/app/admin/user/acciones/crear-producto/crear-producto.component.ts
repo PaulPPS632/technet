@@ -52,7 +52,8 @@ export class CrearProductoComponent implements OnInit {
   constructor(
     private productoService: ProductoService, 
     private marcaService: MarcaService,
-    private categoriaService: CategoriaService) {}
+    private categoriaService: CategoriaService) 
+  {}
 
   ngOnInit(): void {
     this.cargarSelect();
