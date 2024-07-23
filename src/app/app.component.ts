@@ -6,7 +6,6 @@ import { FooterComponent } from "./website/ui/footer/footer.component";
 import { RouteService } from './admin/services/router.service';
 import { CommonModule } from '@angular/common';
 import { filter, Subscription } from 'rxjs';
-import { ArchivosService } from './admin/services/archivos.service';
 
 @Component({
   selector: 'app-root',
@@ -21,10 +20,9 @@ export class AppComponent implements OnInit {
 
   showHeaderFooter: boolean = true;
   showCarousel: boolean = true;
-  imagenespublicitarias: { [key: string]: string[] } = {};
   private routeSubscription!: Subscription; 
   
-  constructor(private router: Router,private archivosService: ArchivosService) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     initFlowbite();
@@ -39,16 +37,8 @@ export class AppComponent implements OnInit {
       this.showHeaderFooter = !headerFooterExcludedRoutes.some(route => currentRoute.startsWith(route));
       this.showCarousel = !carouselExcludedRoutes.some(route => currentRoute.startsWith(route));
     });
-    this.archivosService.getImagenesPublicitarias().subscribe(
-      data =>{
-        this.imagenespublicitarias =data;
-        console.log(data);
-      }
-    )
+
 
   }
-  ObjectKeys(obj: any): string[] {
-    //retorna un formato iterable
-    return Object.keys(obj);
-  }
+  
 }

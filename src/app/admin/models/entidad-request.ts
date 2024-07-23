@@ -4,5 +4,5 @@ export interface EntidadRequest {
     direccion: string;
     telefono: string;
     email: string;
-    tipoEntidad: number;
+    id_tipoEntidad: number;
 }

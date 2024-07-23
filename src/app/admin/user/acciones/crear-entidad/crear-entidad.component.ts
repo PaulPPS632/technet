@@ -20,7 +20,7 @@ export class CrearEntidadComponent implements OnInit {
     direccion: '',
     telefono: '',
     email: '',
-    tipoEntidad: 0
+    id_tipoEntidad: 1
   }
 
   entidades : Entidad[] = [];

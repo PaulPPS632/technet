@@ -4,7 +4,6 @@ import ProductoItemComponent from '../../ui/producto-item/producto-item.componen
 import { CartStateService } from '../../../data-access/cart-state.service';
 import { Product } from '../../../interfaces/product.interface';
 import { ProductoResponse } from '../../../../admin/models/producto-response';
-import { ArchivosService } from '../../../../admin/services/archivos.service';
 
 @Component({
   selector: 'app-producto-lista',
@@ -18,15 +17,10 @@ export default class ProductoListaComponent implements OnInit{
 
   productsState = inject(ProductsSateService);
   cartState = inject(CartStateService).state;
-  imagenespublicitarias: { [key: string]: string[] } = {};
-  constructor(private archivosService: ArchivosService){}
+
+
   ngOnInit(): void {
     this.productsState.loadProducts(0, '', 5, '', '', '', '');
-    this.archivosService.getImagenesPublicitarias().subscribe(
-      data => {
-        this.imagenespublicitarias =data;
-      }
-    )
   }
   changePage() {
     const page = this.productsState.state().page + 1;
@@ -46,9 +40,5 @@ export default class ProductoListaComponent implements OnInit{
       product,
       quantity: 1,
     });
-  }
-  ObjectKeys(obj: any): string[] {
-    //retorna un formato iterable
-    return Object.keys(obj);
   }
 }
