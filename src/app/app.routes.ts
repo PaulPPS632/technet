@@ -19,10 +19,10 @@ export const routes: Routes = [
     { path: 'carrito', loadChildren: () => import('./website/cart/cart.routes') },
 
     { path: 'sesion', loadChildren: () => import('./website/ui/auth/auth.routes') },
-    
+
     { path: 'item', component: ProductoItemComponent},
 
-    { path: 'dashboard', component: LayoutComponent, 
+    { path: 'dashboard', component: LayoutComponent,
         children: [
             { path:'', component: DashboardComponent },
             { path: 'comprobantes', component: ComprobantesComponent},
@@ -31,7 +31,7 @@ export const routes: Routes = [
             { path: 'inventario', component: InventarioComponent},
             { path: 'ingreso', component: FacIngresoComponent},
             { path: 'salida', component: FacSalidaComponent},
-            { path: 'entidad', component: CrearEntidadComponent}
+            { path: 'entidades', component: CrearEntidadComponent}
 
         ]
      },

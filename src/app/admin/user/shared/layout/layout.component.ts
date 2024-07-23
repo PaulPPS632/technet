@@ -1,21 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import DashboardComponent from "../dashboard/dashboard.component";
-import { SidebarComponent } from '../sidebar/sidebar.component';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { initFlowbite } from 'flowbite'
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule,DashboardComponent, SidebarComponent, RouterOutlet, RouterLink],
+  imports: [CommonModule,DashboardComponent, RouterOutlet, RouterLink],
   templateUrl: './layout.component.html',
 })
-export default class LayoutComponent {
+export default class LayoutComponent implements OnInit{
 
-  isSidebarOpen = false;
+  constructor(private router : Router){}
 
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
+  ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        initFlowbite();
+      }
+    });
   }
-
 }

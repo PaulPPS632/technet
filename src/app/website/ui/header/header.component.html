@@ -2,20 +2,20 @@
     <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <a href="" class="flex items-center">
-                <img src="https://seeklogo.com/images/S/shopify-logo-1C711BCDE4-seeklogo.com.png" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
+                <img src="https://seeklogo.com/images/S/shopify-logo-1C711BCDE4-seeklogo.com.png" class="mr-3 h-6 sm:h-9" alt="TechNet Logo" />
                 <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">TechNet</span>
             </a>
 
             <div class="flex lg:order-2 items-center h-10">
-                <input type="text" 
-                class="rounded-l-lg " 
+                <input type="text"
+                class="rounded-l-lg "
                 placeholder="Buscar" [(ngModel)]="buscado" (keydown.enter)="buscar()">
-                
-                <button 
-                type="button" 
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-r-lg px-3 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"  
+
+                <button
+                type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-r-lg px-3 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 (click)="buscar()">
-                
+
                 <svg class="fill-gray-50" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     width="20px" height="20px" viewBox="0 0 612.08 612.08" style="enable-background:new 0 0 612.08 612.08;"
                     xml:space="preserve">
@@ -28,37 +28,37 @@
             </div>
 
             <div class="flex items-center lg:order-2">
-                <button 
+                <button
                     routerLink="/sesion/sign-in"
-                    type="button" 
+                    type="button"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                     >Iniciar Sesion
                 </button>
             </div>
 
-            
+
             <!-- Cart -->
             <div class="flex items-center lg:order-4">
                 <a
-                
+
                 routerLink="/carrito"
                 routerLinkActive="!text-blue-500"
                 [routerLinkActiveOptions]="{ exact: true }"
-  
-                
+
+
                 class="group -m-2 flex items-center p-2">
                   <svg class="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                   </svg>
-  
+
                   @if (cartState.count() > 0) {
                     <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{{ cartState.count() }}</span>
                   }
 
                 </a>
-  
+
             </div>
-            
+
             <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     <li>
