@@ -3,7 +3,6 @@ import { CompraResponse } from '../../../models/compra-request';
 import { RegistroCompraService } from '../../../services/registro-compra.service';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-lista-ingreso',

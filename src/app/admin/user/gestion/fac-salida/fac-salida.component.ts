@@ -38,7 +38,7 @@ export default class UsuarioVentaComponent implements OnInit {
   preciounitproductoSeleccionado: number = 0;
 
   modalRef: NgbModalRef | null = null;
-  
+
   //fin nuevos paul
   tipadoDocumentos: TipadoDocumentos | undefined;
   tipoComprobante: TipoComprobante[] = [];
@@ -75,14 +75,14 @@ export default class UsuarioVentaComponent implements OnInit {
   productoSerie: ProductoResponse [] = [];
 
   constructor(
-    private productoService: ProductoService, 
+    private productoService: ProductoService,
     private productoSerieService: ProductoSerieService,
     private tipadoService: TipadoService,
     private entidadService: EntidadService,
     private correlativoService: CorrelativoService,
     private registroVentaService: RegistroVentaService,
-    private modalService: NgbModal) 
-    
+    private modalService: NgbModal)
+
   { }
 
   toggleDatePicker(fieldId: string) {
@@ -140,41 +140,41 @@ export default class UsuarioVentaComponent implements OnInit {
     if (this.fechaPago) {
       this.ventaData.fechapago = `${this.fechaPago}T00:00:00.00`;
     }
-    
+
   }
 
   guardarProductos() {
-    
+
     this.guardarDatos();
     this.registroVentaService.registrar(this.ventaData).subscribe({
       next: () => {
         this.ventaData.detalles = []
       },
-      error: (error) => {
+      error: (_error) => {
         console.log("error");
       }
     });
-    
+
   }
 
   //arreglar
   removerProducto(producto: ProductoResponse): void {
     const index = this.productoSerie.findIndex(p => p.id === producto.id);
-    
+
     if (index !== -1) {
       if (this.productoSerie[index].cantidad > 1) {
         this.productoSerie[index].cantidad--;
       } else {
         this.productoSerie.splice(index, 1);
       }
-      
+
       console.log("El producto ha sido eliminado de la lista.");
 
       // Eliminar la entrada correspondiente en detalleVenta
       this.detalleVenta = this.detalleVenta.filter(detalle => detalle.id_producto !== producto.id);
     }
   }
-  
+
 
   cargarProductos() {
     this.productoService.getListaProductos().subscribe((response: ProductoResponse[] )=> {
@@ -220,32 +220,6 @@ export default class UsuarioVentaComponent implements OnInit {
     });
   }
 
-  agregarProductoDetalle(productoId: string, precioId: number): void {
-
-    const index = this.detalleVenta.findIndex(p => p.id_producto === productoId);
-
-    console.log('Index:', index);
-
-    if (index !== -1) {
-      this.detalleVenta[index].series.push(this.serie);
-      this.detalleVenta[index].cantidad++;
-
-    } else {
-
-      const producto = {
-        id_producto: productoId,
-        nombre: this.nombreproductoSeleccionado,
-        cantidad: 1, //1 porque asi empieza
-        series: [this.serie],
-        precio_unitario: precioId
-      };
-
-      //this.detalleVenta.push(producto);
-    }
-  
-    console.log('Detalle de venta:', this.detalleVenta);
-  }
-
   //buscar producto: serie pertenece
   buscarProducto(): void {
     this.productoSerieService.getProductoSerie(this.serie).subscribe(
@@ -271,9 +245,9 @@ export default class UsuarioVentaComponent implements OnInit {
               };
               this.ventaData.detalles.push(detalleProducto);
             }
-        
+
             const serieIndex = detalleProducto.series.indexOf(this.serie);
-              
+
             if (serieIndex < 0)  {
               // Si la serie no está en el array, agrégala
               detalleProducto.series.push(this.serie);
@@ -287,10 +261,10 @@ export default class UsuarioVentaComponent implements OnInit {
       }
     );
   }
-  
+
   entidades: Entidad [] = [];
   filtroEntidad: Entidad[] = [];
-  
+
   ngOnInit(): void {
     console.log(new Date().toISOString());
     this.setFechaEmision();
@@ -363,7 +337,7 @@ export default class UsuarioVentaComponent implements OnInit {
     }
 
     const serieIndex = detalleProducto.series.indexOf(sn);
-      
+
     if (serieIndex > -1) {
       // Si la serie ya está en el array, elimínala
       detalleProducto.series.splice(serieIndex, 1);
@@ -372,7 +346,7 @@ export default class UsuarioVentaComponent implements OnInit {
       if (detalleProducto.cantidad === 0) {
         this.ventaData.detalles = this.ventaData.detalles.filter(detalle => detalle !== detalleProducto);
       }
-      
+
     } else {
       // Si la serie no está en el array, agrégala
       detalleProducto.series.push(sn);

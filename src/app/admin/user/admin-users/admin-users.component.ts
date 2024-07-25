@@ -26,12 +26,12 @@ export interface Role {
   standalone: true,
   imports: [AsignarRolComponent, FormsModule, CommonModule],
   templateUrl: './admin-users.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush 
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 
 export class AdminUsersComponent implements OnInit {
-  
+
   constructor(private usuarioService: UserService,
     private cdr: ChangeDetectorRef,
     private cookiesService: CookieService )
@@ -75,7 +75,7 @@ export class AdminUsersComponent implements OnInit {
     if (userString) {
       try {
         this.UsuarioDueno = JSON.parse(userString);
-        
+
       } catch (e) {
         console.error('Error parsing user cookie:', e);
       }
@@ -85,10 +85,10 @@ export class AdminUsersComponent implements OnInit {
   eliminar(user: UserInfo){
     this.usuarioSelect = user;
     this.usuarioService.deleteUser(this.usuarioSelect).subscribe(
-      response => {
+      _response => {
         console.log("eliminado");
       },
-      error => {
+      _error => {
         console.log("error");
       }
     )

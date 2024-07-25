@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import { Product } from '../../interfaces/product.interface';
 import { signalSlice } from 'ngxtension/signal-slice';
 import { ProductsService } from './productos.service';
 import { Observable, map, switchMap } from 'rxjs';

@@ -11,7 +11,6 @@ import { initFlowbite } from 'flowbite'
 })
 export default class DashboardComponent implements OnInit{
 
-
   constructor(private router : Router){}
 
   ngOnInit() {

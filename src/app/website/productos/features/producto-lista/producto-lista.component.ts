@@ -2,7 +2,6 @@ import { Component, inject, OnInit  } from '@angular/core';
 import { ProductsSateService } from '../../data-access/productos-state.service';
 import ProductoItemComponent from '../../ui/producto-item/producto-item.component';
 import { CartStateService } from '../../../data-access/cart-state.service';
-import { Product } from '../../../interfaces/product.interface';
 import { ProductoResponse } from '../../../../admin/models/producto-response';
 import { ArchivosService } from '../../../../admin/services/archivos.service';
 
@@ -14,7 +13,7 @@ import { ArchivosService } from '../../../../admin/services/archivos.service';
   providers: [ProductsSateService],
 })
 export default class ProductoListaComponent implements OnInit{
- 
+
 
   productsState = inject(ProductsSateService);
   cartState = inject(CartStateService).state;

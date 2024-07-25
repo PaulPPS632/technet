@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EntidadService } from '../../../services/entidad.service';
 import { ProductoService } from '../../../services/producto.service';
@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './fac-ingreso.component.html',
   styles: ``
 })
-export class FacIngresoComponent {
+export class FacIngresoComponent implements OnInit {
 
   fechaEmision?: string;
   fechaVencimiento?: string;
@@ -67,7 +67,7 @@ export class FacIngresoComponent {
   productoSerie: ProductoResponse [] = [];
 
   constructor(
-    private productoService: ProductoService, 
+    private productoService: ProductoService,
     private tipadoService: TipadoService,
     private entidadService: EntidadService,
     private registroCompraService: RegistroCompraService,
@@ -128,14 +128,14 @@ export class FacIngresoComponent {
   }
 
   guardarProductos() {
-    
+
     this.guardarDatos();
     console.log(this.ventaData);
     this.registroCompraService.registrar(this.ventaData).subscribe({
       next: () => {
         console.log("Registro de la Compra realizada correctamente.");
         this.ventaData.detalles = []
-        
+
       },
       error: (error) => {
 
@@ -143,13 +143,13 @@ export class FacIngresoComponent {
         console.error('Error al realizar la venta:', error);
       }
     });
-    
+
   }
 
   //arreglar
   removerProducto(producto: ProductoResponse): void {
     const index = this.productoSerie.findIndex(p => p.id === producto.id);
-    
+
     if (index !== -1) {
       if (this.productoSerie[index].cantidad > 1) {
         this.productoSerie[index].cantidad--;
@@ -158,12 +158,12 @@ export class FacIngresoComponent {
       }
 
       console.log("El producto ha sido eliminado de la lista.");
-  
+
       // Eliminar la entrada correspondiente en detalleVenta
       this.detalleCompra = this.detalleCompra.filter(detalle => detalle.id_producto !== producto.id);
     }
   }
-  
+
 
   cargarProductos() {
     this.productoService.getListaProductos().subscribe((response: ProductoResponse[] )=> {
@@ -234,7 +234,7 @@ export class FacIngresoComponent {
       this.ventaData.detalles.push(producto);
       this.SeriesProducto = [this.serie];
     }
-  
+
     console.log('Detalle de venta:', this.ventaData.detalles);
   }
 
@@ -252,10 +252,10 @@ export class FacIngresoComponent {
       this.listaProductos = this.filtrolistaProductos;
     }
   }
-  
+
   entidades: Entidad [] = [];
   filtroEntidad: Entidad[] = [];
-  
+
   ngOnInit(): void {
     this.setFechaEmision();
     this.cargarProductos();
@@ -289,18 +289,19 @@ export class FacIngresoComponent {
     this.fechaPago = `${year}-${month}-${day}`;
   }
 
-  ElegirSeries(idProducto: string | null, content: any){
-   
-    if(idProducto){
+  ElegirSeries(idProducto: string | null, content: any) {
+    if (idProducto) {
       this.idproductoSeleccionado = idProducto;
-      let detalle = this.ventaData.detalles.find(detalle => {detalle.id_producto ==idProducto});
-      if(detalle){
-        this.SeriesProducto = detalle?.series;
-      }else{
-        this.SeriesProducto =[];
+
+      const detalle = this.ventaData.detalles.find(detalle => detalle.id_producto === idProducto);
+      if (detalle) {
+        this.SeriesProducto = detalle.series;
+      } else {
+        this.SeriesProducto = [];
       }
-      let producto = this.listaProductos.find(product => product.id == idProducto);
-      if(producto){
+
+      const producto = this.listaProductos.find(producto => producto.id === idProducto);
+      if (producto) {
         this.nombreproductoSeleccionado = producto.nombre;
         this.preciounitproductoSeleccionado = producto.precio;
         this.abrirModal(content);
@@ -308,22 +309,24 @@ export class FacIngresoComponent {
     }
   }
 
-  SeleccionarSeriesProducto(sn: string){
-    let detalleProducto = this.ventaData.detalles.find(detalle => detalle.id_producto == this.idproductoSeleccionado);
+
+  SeleccionarSeriesProducto(sn: string) {
+    const detalleProducto = this.ventaData.detalles.find(detalle => detalle.id_producto == this.idproductoSeleccionado);
 
     if (detalleProducto) {
-      if(detalleProducto.cantidad == 1){
-        this.ventaData.detalles = this.ventaData.detalles.filter(detalle=>detalle!=detalleProducto);
+      if (detalleProducto.cantidad == 1) {
+        this.ventaData.detalles = this.ventaData.detalles.filter(detalle => detalle != detalleProducto);
         this.SeriesProducto = [];
-      }else{
-        detalleProducto.series = detalleProducto.series.filter(serie => serie!=sn);
-        const cant = detalleProducto.cantidad-1;
+      } else {
+        detalleProducto.series = detalleProducto.series.filter(serie => serie != sn);
+        const cant = detalleProducto.cantidad - 1;
         detalleProducto.cantidad = cant;
         detalleProducto.precio_total = detalleProducto.precio_unitario * cant;
         this.SeriesProducto = detalleProducto.series;
       }
     }
   }
+
 
   //clientes
   ElegirEntidad(){

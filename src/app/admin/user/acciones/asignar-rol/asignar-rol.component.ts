@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { UserInfo } from '../../../models/user-info';
@@ -12,16 +12,17 @@ import { RolResponse } from '../../../models/rol-response';
   templateUrl: './asignar-rol.component.html',
   styles: ``
 })
-export class AsignarRolComponent {
+export class AsignarRolComponent implements OnInit {
 
   constructor (
     private usuarioService: UserService
   ){
   }
-  
+
   @Input() usuario: UserInfo | null = null;
   roles: RolResponse[]=[];
   RolSelect: string = '';
+
   ngOnInit(): void {
     this.usuarioService.getRoles().subscribe(
       (data: RolResponse[]) => {
@@ -37,14 +38,14 @@ export class AsignarRolComponent {
       this.usuario.rol = selectedRole;
 
       this.usuarioService.putUsuario(this.usuario).subscribe(
-        response => {
+        _response => {
           console.log("rol asignado");
         },
-        error => {
+        _error => {
           console.log("rol no asignado");
         }
       );
     }
-    
+
   }
 }

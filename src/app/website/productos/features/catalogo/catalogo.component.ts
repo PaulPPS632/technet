@@ -17,7 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './catalogo.component.css',
   providers:[ProductsSateService]
 })
-export default class CatalogoComponent {
+export default class CatalogoComponent implements OnInit {
 
 
   productsState = inject(ProductsSateService);
@@ -36,10 +36,10 @@ export default class CatalogoComponent {
   selectedMarcas: string[] = [];
 
   collapsedCategorias: string[] = [];
-  
+
 
   constructor(private route: ActivatedRoute,private router: Router){
-    
+
   }
 
   ngOnInit() {
@@ -91,7 +91,7 @@ export default class CatalogoComponent {
      */
     const filteredSubcategorias = this.selectedSubcategorias.filter(sub => {
       // Encuentra la categoría que contiene esta subcategoría
-      const parentCategory = this.categorias.find(categoria => 
+      const parentCategory = this.categorias.find(categoria =>
         categoria.subcategorias.some(subCategoria => subCategoria.nombre === sub)
       );
       // Verifica si la categoría padre no está en la lista de categorías seleccionadas
@@ -100,14 +100,14 @@ export default class CatalogoComponent {
     queryParams.subcategoria = filteredSubcategorias.join(',');
     queryParams.marca = this.selectedMarcas.join(',') ?? '';
     // Actualiza la URL con los nuevos parámetros
-    
-    
+
+
     this.router.navigate(['catalogo'], {
       //relativeTo: this.route,
       queryParams,
       queryParamsHandling: 'merge' // O 'preserve' si quieres mantener los parámetros existentes
     });
-    
+
     this.productsState.changePage$.next({
       page: 0,
       search: this.search,
@@ -128,7 +128,7 @@ export default class CatalogoComponent {
       queryParams.subcategoria
     );
     */
-    
+
   }
   addToCart(product: ProductoResponse) {
     this.cartState.add({

@@ -14,6 +14,11 @@ module.exports = tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
+      "prefer-const": "error",
+      "@typescript-eslint/no-unused-expressions": "error",
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+      "@typescript-eslint/no-inferrable-types": "off",
+      "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/consistent-indexed-object-style": ["off"],
       "@angular-eslint/directive-selector": [
         "error",

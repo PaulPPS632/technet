@@ -14,15 +14,16 @@ export class ImagenesUblicitariasComponent implements OnInit{
   constructor(
     private archivosService: ArchivosService,
     private modalService: NgbModal){}
-  
+
   closeResult = '';
-  selectedTipo :string = "";
+  selectedTipo = "";
   imagenescargadas : string[] = [];
   selectedFiles : File[]=[];
-  archivosAgrupados: { [key: string]: string[] } = {};
+  archivosAgrupados: Record<string, string[]> = {};
   ngOnInit(): void {
     this.cargarimagenes();
   }
+
   cargarimagenes(){
     this.archivosService.getImagenesPublicitarias().subscribe(
       data => {
@@ -30,6 +31,7 @@ export class ImagenesUblicitariasComponent implements OnInit{
       }
     );
   }
+
   guardarimagenes(content: any) {
 
     const formData = new FormData();
@@ -37,6 +39,7 @@ export class ImagenesUblicitariasComponent implements OnInit{
     this.selectedFiles.forEach((file) => {
       formData.append('files', file);
     });
+
     this.archivosService.postarchivo(formData).subscribe({
       next: () => {
         //actualizar productos
@@ -46,19 +49,22 @@ export class ImagenesUblicitariasComponent implements OnInit{
         content.dismiss('cancel');
         console.log("imagenes agregadas");
       },
-      error:(error)  => {
+      error:(_error)  => {
         console.log("imagenes no agregadas");
       }
     });
-    
+
   }
+
   onSelectTipo(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     this.selectedTipo = selectElement.value;
   }
+
   eliminarImagen(index: number) {
     this.imagenescargadas.splice(index, 1);
   }
+
   onFileChange(event: any) {
     if (event.target.files.length > 0) {
       this.selectedFiles = Array.from(event.target.files);
@@ -74,10 +80,12 @@ export class ImagenesUblicitariasComponent implements OnInit{
 
     }
   }
+
   ObjectKeys(obj: any): string[] {
     //retorna un formato iterable
     return Object.keys(obj);
   }
+
   abrirModal(content: any) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-header modal-title', size: 'lg' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -85,7 +93,7 @@ export class ImagenesUblicitariasComponent implements OnInit{
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';

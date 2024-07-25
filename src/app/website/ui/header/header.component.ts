@@ -1,9 +1,9 @@
-import { Component , inject} from '@angular/core';
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Component , inject, OnInit} from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CartStateService } from '../../data-access/cart-state.service';
 import { FormsModule } from '@angular/forms';
 import { ProductsSateService } from '../../productos/data-access/productos-state.service';
-
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +13,7 @@ import { ProductsSateService } from '../../productos/data-access/productos-state
   styles: ``,
   providers:[ProductsSateService]
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   cartState = inject(CartStateService).state;
   buscado : string = '';
   productsState = inject(ProductsSateService);
@@ -28,6 +28,15 @@ export class HeaderComponent {
   };
   constructor(private route: ActivatedRoute,private router: Router){}
 
+
+  ngOnInit(): void {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        initFlowbite();
+      }
+    });
+  }
+
   buscar(){
     const queryParams: any = {
       page: 0,
@@ -38,7 +47,7 @@ export class HeaderComponent {
       categoria: this.productsState.state().categoria,
       subcategoria: this.productsState.state().subcategoria
     };
-    
+
     this.router.navigate(['catalogo'], {
       //relativeTo: this.route,
       queryParams: queryParams,

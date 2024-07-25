@@ -3,7 +3,6 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { HeaderComponent } from './website/ui/header/header.component';
 import { FooterComponent } from "./website/ui/footer/footer.component";
-import { RouteService } from './admin/services/router.service';
 import { CommonModule } from '@angular/common';
 import { filter, Subscription } from 'rxjs';
 import { ArchivosService } from './admin/services/archivos.service';
@@ -22,13 +21,18 @@ export class AppComponent implements OnInit {
   showHeaderFooter: boolean = true;
   showCarousel: boolean = true;
   imagenespublicitarias: { [key: string]: string[] } = {};
-  private routeSubscription!: Subscription; 
-  
+  private routeSubscription!: Subscription;
+
   constructor(private router: Router,private archivosService: ArchivosService) {}
 
   ngOnInit() {
-    initFlowbite();
-    
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        initFlowbite();
+      }
+    });
+
     this.routeSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
@@ -39,6 +43,7 @@ export class AppComponent implements OnInit {
       this.showHeaderFooter = !headerFooterExcludedRoutes.some(route => currentRoute.startsWith(route));
       this.showCarousel = !carouselExcludedRoutes.some(route => currentRoute.startsWith(route));
     });
+
     this.archivosService.getImagenesPublicitarias().subscribe(
       data =>{
         this.imagenespublicitarias =data;
@@ -47,6 +52,7 @@ export class AppComponent implements OnInit {
     )
 
   }
+
   ObjectKeys(obj: any): string[] {
     //retorna un formato iterable
     return Object.keys(obj);

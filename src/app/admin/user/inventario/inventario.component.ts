@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CrearProductoComponent } from "../acciones/crear-producto/crear-producto.component";
 import { ProductoResponse } from '../../models/producto-response';
 import { PedidoRequest } from '../../models/pedido';
@@ -9,16 +9,20 @@ import { environment } from '../../../../environments/environment';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { ProductoRequest } from '../../models/producto-request';
+import { NavigationEnd, Router } from '@angular/router';
+
+declare const initFlowbite: any;
 
 @Component({
   selector: 'app-inventario',
   standalone: true,
-  imports: [CrearProductoComponent, FormsModule, CommonModule ],
+  imports: [ CommonModule, FormsModule,CrearProductoComponent],
   templateUrl: './inventario.component.html',
   styles: ``
 })
 
-export class InventarioComponent {
+export class InventarioComponent implements OnInit {
+
   url = environment.API_URL;
   closeResult = '';
   productos: ProductoResponse[] = [];
@@ -34,11 +38,33 @@ export class InventarioComponent {
   accionActual: 'crear' | 'actualizar' = 'crear';
 
   constructor(
-    private productoService: ProductoService, 
+    private router: Router,
+    private productoService: ProductoService,
     private modalService: NgbModal,
-    private pedidoService: PedidoService) { }
+    private pedidoService: PedidoService)
+  { }
+
+
+  EditOpen = false;
+  CreateOpen = false;
+
+  openEModal() {
+    this.EditOpen = true;
+  }
+
+  openCModal() {
+    this.CreateOpen = true;
+  }
 
   ngOnInit() {
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        //Flowbite se inicia después de que se haya cargado la pagina
+        setTimeout(() => initFlowbite(), 0);
+      }
+    });
+
     this.cargarProductosActualizado();
   }
 
@@ -64,7 +90,18 @@ export class InventarioComponent {
     }
   }
 
+
   eliminarProducto(id: string): void {
+
+    this.productoService.deleteProducto(id).subscribe(() => {
+      this.productoEliminar = this.productoEliminar.filter(p => p.id !== id);
+      console.log("producto eliminado.");
+      this.cargarProductosActualizado();
+
+    }, _error => {
+      console.log("producto no eliminado.");
+    });
+
     /*
     Swal.fire({
       title: '¿Estás seguro?',
@@ -80,22 +117,15 @@ export class InventarioComponent {
       if (result.isConfirmed) {
         this.productoService.deleteProducto(id).subscribe(() => {
           this.productoEliminar = this.productoEliminar.filter(p => p.id !== id);
-          Swal.fire(
-            'Eliminado',
-            'El producto ha sido eliminado.',
-            'success'
-          );
+          console.log("producto eliminado.");
           this.cargarProductosActualizado();
 
-        }, error => {
-          Swal.fire(
-            'Error',
-            'Hubo un problema al eliminar el producto.',
-            'error'
-          );
+        }, _error => {
+          console.log("producto no eliminado.");
         });
       }
-    });*/
+    });
+    */
   }
 
   RegistrarPedido(){
@@ -113,13 +143,13 @@ export class InventarioComponent {
       next: () => {
         console.log("El pedido ha sido registrado.");
       },
-      error:(error)  => {
+      error:(_error)  => {
         console.log("El pedido no registrado");
       }
     });
   }
 
-  nuevoActua: ProductoRequest = { 
+  nuevoActua: ProductoRequest = {
     id: '',
     nombre: '' ,
     pn :'',
@@ -137,11 +167,14 @@ export class InventarioComponent {
   imagencargadaPrincipal: string = '';
   imagencarga: string[] = [];
 
-  editarProducto(content: any, id: string) {
+  editarProducto(id: string) {
+
+    //abrir modal
+    this.openEModal();
+
     this.productoService.getProductoById(id).subscribe(producto => {
       this.nuevoActua = producto;
       this.imagencarga = producto.imageurl;
-      this.abrirModal(content);
     }, error => {
       console.error('Error al obtener el producto:', error);
     });
@@ -149,8 +182,7 @@ export class InventarioComponent {
     this.imagencargadaPrincipal ='';
   }
 
-  guardarCambios(content: any) {
-
+  guardarCambios() {
     const formData = new FormData();
     formData.append('producto', new Blob([JSON.stringify(this.nuevoActua)], { type: 'application/json' }));
     this.selectedFiles.forEach((file) => {
@@ -167,14 +199,8 @@ export class InventarioComponent {
         this.imagencarga =[];
         this.selectedFilePrincipal = null;
         this.selectedFiles =[];
-    content.dismiss('cancel')
-        console.log("producto agregado");
-      },
-      error:(error)  => {
-        console.log("producto no agregado");
       }
     });
-    
   }
 
   selectedFiles: File[] = [];
@@ -221,7 +247,7 @@ export class InventarioComponent {
   getCurrentDateTime(): string {
     return new Date().toISOString();
   }
-  
+
   abrirModal(content: any) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-header modal-title', size: 'lg' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -229,7 +255,7 @@ export class InventarioComponent {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  
+
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -240,5 +266,5 @@ export class InventarioComponent {
       return `with: ${reason}`;
     }
   }
-  
+
 }

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { signalSlice } from 'ngxtension/signal-slice';
 import { ProductsService } from './productos.service';
-import { Subject, catchError, map, of, startWith, switchMap } from 'rxjs';
+import { Subject, catchError, map, of, switchMap } from 'rxjs';
 import { ProductoResponse } from '../../../admin/models/producto-response';
 
 interface State {

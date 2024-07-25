@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BaseHttpService } from '../../data-access/base-http.service';
 import { Observable } from 'rxjs';
-import { Product } from '../../interfaces/product.interface';
 import { ProductoResponse } from '../../../admin/models/producto-response';
 
-const LIMIT = 5;
+//const LIMIT = 5;
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService extends BaseHttpService {
