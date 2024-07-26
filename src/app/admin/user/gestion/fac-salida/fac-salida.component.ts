@@ -300,7 +300,7 @@ export default class UsuarioVentaComponent implements OnInit {
   }
 
 
-  ElegirSeries(idProducto: string | null, content: any){
+  ElegirSeries(idProducto: string | null){
     if(idProducto){
       this.productoSerieService.getSeriesByProductoId(idProducto).subscribe(
         (res: ProductoSerieResponse[]) =>{
@@ -312,7 +312,7 @@ export default class UsuarioVentaComponent implements OnInit {
               this.preciounitproductoSeleccionado = productoSeleccionado.precio;
             }
 
-          this.abrirModal(content);
+          this.openIModal();
         },
         (error) => {
           console.error('Error al obtener las series del producto:', error);
@@ -421,6 +421,17 @@ export default class UsuarioVentaComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  EditOpen = false;
+  InsertOpen = false
+
+  openEModal() {
+    this.EditOpen = true;
+  }
+
+  openIModal() {
+    this.InsertOpen = true;
   }
 
 }

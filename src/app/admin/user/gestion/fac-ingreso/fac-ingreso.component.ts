@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EntidadService } from '../../../services/entidad.service';
 import { ProductoService } from '../../../services/producto.service';
 import { RegistroCompraService } from '../../../services/registro-compra.service';
@@ -289,7 +289,7 @@ export class FacIngresoComponent implements OnInit {
     this.fechaPago = `${year}-${month}-${day}`;
   }
 
-  ElegirSeries(idProducto: string | null, content: any) {
+  ElegirSeries(idProducto: string | null) {
     if (idProducto) {
       this.idproductoSeleccionado = idProducto;
 
@@ -304,7 +304,7 @@ export class FacIngresoComponent implements OnInit {
       if (producto) {
         this.nombreproductoSeleccionado = producto.nombre;
         this.preciounitproductoSeleccionado = producto.precio;
-        this.abrirModal(content);
+        this.openIModal();
       }
     }
   }
@@ -351,31 +351,15 @@ export class FacIngresoComponent implements OnInit {
     return this.detalleCompra.reduce((total, producto) => total + (producto.precio_total), 0);
   }
 
-  //pop up
-  closeResult='';
+  EditOpen = false;
+  InsertOpen = false
 
-  abrirModal(content: any) {
-    if (this.modalRef) {
-      this.modalRef.close();
-    }
-    this.modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-header modal-title' });
-    this.modalRef.result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-      this.modalRef = null;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      this.modalRef = null;
-    });
+  openEModal() {
+    this.EditOpen = true;
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
+  openIModal() {
+    this.InsertOpen = true;
   }
 
 }

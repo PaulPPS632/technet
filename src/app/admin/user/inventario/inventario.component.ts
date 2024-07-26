@@ -6,7 +6,7 @@ import { ProductoService } from '../../services/producto.service';
 import { PedidoService } from '../../services/pedido.service';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { ProductoRequest } from '../../models/producto-request';
 import { NavigationEnd, Router } from '@angular/router';
@@ -24,7 +24,6 @@ declare const initFlowbite: any;
 export class InventarioComponent implements OnInit {
 
   url = environment.API_URL;
-  closeResult = '';
   productos: ProductoResponse[] = [];
 
   productoEliminar: ProductoResponse[] = [];
@@ -241,30 +240,11 @@ export class InventarioComponent implements OnInit {
   abrirModalPedido(content: any, id: string, nombre: string){
     this.ProductoIdPedidoSelect = id;
     this.ProductoNombrePedidoSelect = nombre;
-    this.abrirModal(content);
+    //this.abrirModal(content);
   }
 
   getCurrentDateTime(): string {
     return new Date().toISOString();
-  }
-
-  abrirModal(content: any) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-header modal-title', size: 'lg' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
   }
 
 }

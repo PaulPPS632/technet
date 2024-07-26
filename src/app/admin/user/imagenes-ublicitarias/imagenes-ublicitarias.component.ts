@@ -1,26 +1,47 @@
 import { Component, OnInit } from '@angular/core';
 import { ArchivosService } from '../../services/archivos.service';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NavigationEnd, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+declare const initFlowbite: any;
 
 @Component({
   selector: 'app-imagenes-ublicitarias',
   standalone: true,
-  imports: [],
-  templateUrl: './imagenes-ublicitarias.component.html',
-  styleUrl: './imagenes-ublicitarias.component.css'
+  imports: [CommonModule],
+  templateUrl: './imagenes-ublicitarias.component.html'
 })
 export class ImagenesUblicitariasComponent implements OnInit{
 
   constructor(
+    private router: Router,
     private archivosService: ArchivosService,
-    private modalService: NgbModal){}
+    private modalService: NgbModal)
+  {}
 
-  closeResult = '';
+
   selectedTipo = "";
   imagenescargadas : string[] = [];
   selectedFiles : File[]=[];
   archivosAgrupados: Record<string, string[]> = {};
+
+  CreateOpen = false;
+
+  openCModal() {
+    this.CreateOpen = true;
+  }
+
   ngOnInit(): void {
+
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        //Flowbite se inicia después de que se haya cargado la pagina
+        setTimeout(() => initFlowbite(), 0);
+      }
+    });
+
     this.cargarimagenes();
   }
 
@@ -32,7 +53,7 @@ export class ImagenesUblicitariasComponent implements OnInit{
     );
   }
 
-  guardarimagenes(content: any) {
+  guardarimagenes() {
 
     const formData = new FormData();
     formData.append('tipo', this.selectedTipo);
@@ -46,7 +67,6 @@ export class ImagenesUblicitariasComponent implements OnInit{
         this.cargarimagenes();
         this.imagenescargadas =[];
         this.selectedFiles =[];
-        content.dismiss('cancel');
         console.log("imagenes agregadas");
       },
       error:(_error)  => {
@@ -86,21 +106,4 @@ export class ImagenesUblicitariasComponent implements OnInit{
     return Object.keys(obj);
   }
 
-  abrirModal(content: any) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-header modal-title', size: 'lg' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 }

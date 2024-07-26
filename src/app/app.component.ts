@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { filter, Subscription } from 'rxjs';
 import { ArchivosService } from './admin/services/archivos.service';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
