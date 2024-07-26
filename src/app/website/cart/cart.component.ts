@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, Renderer2 } from '@angular/core';
 
 import { CurrencyPipe } from '@angular/common';
 import { CartItemComponent } from './ui/cart-item/cart-item.component';
@@ -12,9 +12,20 @@ import { ProductItemCart } from '../interfaces/product.interface';
   templateUrl: './cart.component.html',
   styles: ``,
 })
-export default class CartComponent {
+export default class CartComponent implements OnInit{
+  
   state = inject(CartStateService).state;
+  private renderer: Renderer2;
 
+  constructor(renderer: Renderer2) {
+    this.renderer = renderer;
+  }
+  ngOnInit(): void {
+    const script = this.renderer.createElement('script');
+    script.src = 'https://js.culqi.com/checkout-js';
+    script.async = true;
+    this.renderer.appendChild(document.body, script);
+  }
   onRemove(id: string) {
     this.state.remove(id);
   }
