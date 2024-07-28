@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { ProductoRequest } from '../models/producto-request';
 import { environment } from '../../../environments/environment.development';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,14 @@ export class ProductoService {
 
   apiUrl: string = environment.API_URL+"/inventory/producto";
 
-  constructor(private http: HttpClient, private cookiesService: CookieService) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getListaProductos(): Observable<ProductoResponse[]> {
-    return this.http.get<ProductoResponse[]>(this.apiUrl);
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<ProductoResponse[]>(this.apiUrl, {headers});
   }
 
   postNuevoProducto(productoNuevo: FormData): Observable<any> {

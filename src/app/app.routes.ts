@@ -11,6 +11,7 @@ import { FacIngresoComponent } from './admin/user/gestion/fac-ingreso/fac-ingres
 import FacSalidaComponent from './admin/user/gestion/fac-salida/fac-salida.component';
 import { CrearEntidadComponent } from './admin/user/acciones/crear-entidad/crear-entidad.component';
 import { ImagenesUblicitariasComponent } from './admin/user/imagenes-ublicitarias/imagenes-ublicitarias.component';
+import { authGuard } from './auth.guard';
 export const routes: Routes = [
 
     { path: '', loadChildren: () => import('./website/productos/features/producto-shell/producto.routes'),},
@@ -23,7 +24,9 @@ export const routes: Routes = [
     
     { path: 'item', component: ProductoItemComponent},
 
-    { path: 'dashboard', component: LayoutComponent, 
+    { path: 'dashboard', 
+        component: LayoutComponent, 
+        canActivate: [authGuard],
         children: [
             { path:'', component: DashboardComponent },
             { path: 'comprobantes', component: ComprobantesComponent},

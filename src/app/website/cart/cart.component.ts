@@ -16,16 +16,48 @@ export default class CartComponent implements OnInit{
   
   state = inject(CartStateService).state;
   private renderer: Renderer2;
-
+  
   constructor(renderer: Renderer2) {
     this.renderer = renderer;
   }
   ngOnInit(): void {
     const script = this.renderer.createElement('script');
-    script.src = 'https://js.culqi.com/checkout-js';
+    script.src = 'https://sandbox-checkout.izipay.pe/payments/v1/js/index.js';
     script.async = true;
     this.renderer.appendChild(document.body, script);
   }
+  pagar(){
+    const iziConfig = {
+      config: {
+        transactionId: '{TRANSACTION_ID}',
+        action: 'pay',
+        merchantCode: '{MERCHANT_CODE}',
+        order: {
+          orderNumber: '{ORDER_NUMBER}',
+          currency: 'PEN',
+          amount: '1.50',
+          processType: 'AT',
+          merchantBuyerId: '{MERCHANT_CODE}',
+          dateTimeTransaction: '1670258741603000',
+        },
+        billing: {
+          firstName: 'Juan',
+          lastName: 'Wick Quispe',
+          email: 'jwickq@izi.com',
+          phoneNumber: '958745896',
+          street: 'Av. Jorge Chávez 275',
+          city: 'Lima',
+          state: 'Lima',
+          country: 'PE',
+          postalCode: '15038',
+          documentType: 'DNI',
+          document: '21458796',
+        }
+      },
+    };
+
+  }
+
   onRemove(id: string) {
     this.state.remove(id);
   }
