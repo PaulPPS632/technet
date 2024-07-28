@@ -4,29 +4,45 @@ import ProductoItemComponent from '../../ui/producto-item/producto-item.componen
 import { CartStateService } from '../../../data-access/cart-state.service';
 import { ProductoResponse } from '../../../../admin/models/producto-response';
 import { ArchivosService } from '../../../../admin/services/archivos.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-producto-lista',
   standalone: true,
-  imports: [ProductoItemComponent],
+  imports: [CommonModule ,ProductoItemComponent],
   templateUrl: './producto-lista.component.html',
   providers: [ProductsSateService],
 })
-export default class ProductoListaComponent implements OnInit{
 
+export default class ProductoListaComponent implements OnInit{
 
   productsState = inject(ProductsSateService);
   cartState = inject(CartStateService).state;
   imagenespublicitarias: { [key: string]: string[] } = {};
-  constructor(private archivosService: ArchivosService){}
+
+  constructor(
+    private router: Router,
+    private archivosService: ArchivosService
+  ) {}
+
   ngOnInit(): void {
-    this.productsState.loadProducts(0, '', 5, '', '', '', '');
-    this.archivosService.getImagenesPublicitarias().subscribe(
-      data => {
-        this.imagenespublicitarias =data;
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        setTimeout(() => {  initFlowbite();})
       }
-    )
+    });
+
+    this.archivosService.getImagenesPublicitarias().subscribe((data) => {
+      this.imagenespublicitarias = data;
+      console.log(data);
+    });
+
+    this.productsState.loadProducts(0, '', 5, '', '', '', '');
   }
+
   changePage() {
     const page = this.productsState.state().page + 1;
     this.productsState.changePage$.next({
@@ -46,8 +62,9 @@ export default class ProductoListaComponent implements OnInit{
       quantity: 1,
     });
   }
+
   ObjectKeys(obj: any): string[] {
-    //retorna un formato iterable
     return Object.keys(obj);
   }
+
 }

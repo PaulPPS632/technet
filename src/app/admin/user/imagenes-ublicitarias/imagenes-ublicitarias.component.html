@@ -1,61 +1,75 @@
+<!-- Editar modal -->
+<div *ngIf="CreateOpen" tabindex="-1" aria-hidden="true" class="fixed inset-0 z-50 overflow-y-auto">
+  <!-- Overlay -->
+  <div class="fixed inset-0 bg-black bg-opacity-50"></div>
 
-<ng-template #modalContent let-modal>
-    <div class="modal-header d-flex justify-content-center align-items-center">
-      <h2 class="modal-title"><b>Añadir Imagen</b></h2>
-    </div>
-    
-    <div class="modal-body">
-
+  <!-- Modal -->
+  <div class="relative flex items-center justify-center min-h-screen p-4">
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-2xl w-full">
+      <!-- Modal header -->
+      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+          Añadir Producto
+        </h3>
+        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" (click)="CreateOpen = false">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="p-4 md:p-5 space-y-4">
         <form>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div class="mb-6">
-                <label for="editSubCategoria" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de publicitaria</label>
-                <select name="tipos" id="" (change)="onSelectTipo($event)" >
-                    <option value="flyer principal" selected>flyer principal</option>
-                    <option value="flyer lateral">flyer lateral</option>
-                    <option value="flyer barra">flyer barra</option>
-                </select>
-              </div>
-            </div>
-            <!-- imagenes -->
-            <div class="mb-6">
-              <label for="archivo1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Archivo</label>
-              <input type="file" id="archivo1" name="archivo1" (change)="onFileChange($event)" multiple required class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-              @for (imagen of imagenescargadas; track $index) {
-                <div class="w-full items-center py-2 px-2 rounded-t-lg text-gray-900 bg-white border-3 border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                    <img class="w-auto max-w-full rounded-lg" [src]="imagen" alt="">
-                  </div>
-                  <button type="button" 
-                    class="w-full items-center rounded-b-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" 
-                    (click)="eliminarImagen(imagenescargadas.indexOf(imagen))"
-                  >Eliminar</button>
-              }
-            </div>
-            <br>
-            <button type="button" 
-            class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" 
-            (click)="guardarimagenes(modal)">Guardar Cambios</button>
+          <div class="mb-6">
+            <label for="ImgP" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Forma de Pago</label>
+            <select id="ImgP" name="ImgP" (change)="onSelectTipo($event)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option value="" disabled selected>Elegir...</option>
+              <option value="flyer principal">flyer principal</option>
+              <option value="flyer lateral">flyer lateral</option>
+              <option value="flyer barra">flyer barra</option>
+            </select>
+          </div>
+          <!-- imagenes -->
+          <div class="mb-6">
+            <label for="archivo1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Archivo</label>
+            <input type="file" id="archivo1" name="archivo1" (change)="onFileChange($event)" multiple required class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            @for (imagen of imagenescargadas; track $index) {
+              <div class="w-full items-center py-2 px-2 rounded-t-lg text-gray-900 bg-white border-3 border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                  <img class="w-auto max-w-full rounded-lg" [src]="imagen" alt="">
+                </div>
+                <button type="button"
+                  class="w-full items-center rounded-b-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                  (click)="eliminarImagen(imagenescargadas.indexOf(imagen))"
+                >Eliminar</button>
+            }
+          </div>
+          <br>
+          <button type="button"
+          class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          (click)="guardarimagenes()">Guardar Cambios</button>
         </form>
-      
-        <div class="modal-footer">
-          <button type="button" 
-          class="btn btn-secondary" 
-          (click)="modal.dismiss('cancel')">Cancelar</button>
-        </div>
+      </div>
     </div>
-</ng-template>
+  </div>
+</div>
 
 
-<h1 class="text-center">IMAGENES PUBLICITARIAS</h1>
+<p class="text-2xl text-center font-extrabold text-gray-800 dark:text-white">Imagenes Publicitarias</p>
 
-<button 
-class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-  type="submit" (click)="abrirModal(modalContent)" >Crear Nuevo Producto</button>
+<br>
+
+<button
+  class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+  type="submit" (click)="openCModal()" >Crear Nuevo Producto
+</button>
+
 @for (archivo of ObjectKeys(archivosAgrupados); track $index) {
     <div>{{archivo}}</div>
+
     @for (url of archivosAgrupados[archivo]; track $index) {
         <div class="relative w-full items-center py-2 px-2 rounded text-gray-900 bg-white border-3 border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
             <img class="h-auto max-w-full rounded-lg" [src]="url" alt="">

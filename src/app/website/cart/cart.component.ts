@@ -4,6 +4,9 @@ import { CurrencyPipe } from '@angular/common';
 import { CartItemComponent } from './ui/cart-item/cart-item.component';
 import { CartStateService } from '../data-access/cart-state.service';
 import { ProductItemCart } from '../interfaces/product.interface';
+import { NavigationEnd, Router } from '@angular/router';
+
+declare const initFlowbite: any;
 
 @Component({
   selector: 'app-cart',
@@ -13,14 +16,22 @@ import { ProductItemCart } from '../interfaces/product.interface';
   styles: ``,
 })
 export default class CartComponent implements OnInit{
-  
+
   state = inject(CartStateService).state;
   private renderer: Renderer2;
-  
-  constructor(renderer: Renderer2) {
+
+  constructor(private router: Router,renderer: Renderer2) {
     this.renderer = renderer;
   }
   ngOnInit(): void {
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        //Flowbite se inicia después de que se haya cargado la pagina
+        setTimeout(() => initFlowbite(), 0);
+      }
+    });
+
     const script = this.renderer.createElement('script');
     script.src = 'https://sandbox-checkout.izipay.pe/payments/v1/js/index.js';
     script.async = true;
