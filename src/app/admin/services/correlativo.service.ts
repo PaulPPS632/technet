@@ -12,12 +12,11 @@ export class CorrelativoService {
   private apiUrl = environment.API_URL+'/inventory/correlativo/siguiente'; 
 
   constructor(private http: HttpClient, private cookiesService: CookieService) { }
-
+  headers = new HttpHeaders({
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  });
   getCorrelativoSiguiente(prefijo: string, numeracion: number): Observable<number> {
-    const headers = new HttpHeaders({
-      'tenantId': this.cookiesService.get('tenantId') // Reemplaza con el valor adecuado
-    });
     let params = new HttpParams().set('prefijo', prefijo).set('numeracion', numeracion.toString());
-    return this.http.get<number>(this.apiUrl, { params, headers });
+    return this.http.get<number>(this.apiUrl, { params, headers: this.headers });
   }
 }
