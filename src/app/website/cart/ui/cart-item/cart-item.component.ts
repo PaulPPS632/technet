@@ -1,5 +1,5 @@
 import { Component, input, OnInit, output } from '@angular/core';
-import { ProductItemCart } from '../../../interfaces/product.interface';
+import { ProductItemCart } from '../../../../admin/models/product.interface';
 import { CurrencyPipe } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
 import { NavigationEnd, Router } from '@angular/router';
@@ -26,7 +26,7 @@ export class CartItemComponent implements OnInit {
   url= environment.API_URL;
 
   productCartItem = input.required<ProductItemCart>();
-
+  
   onRemove = output<string>();
 
   onIncrease = output<ProductItemCart>();

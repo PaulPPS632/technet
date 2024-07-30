@@ -30,10 +30,10 @@ export class RegistroCompraService {
     tiponegocio: '',
     rol: null,
   };
+  headers = new HttpHeaders({
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  });
   registrar(compraRequest: RegistrarCompraRequest): Observable<void> {
-    const headers = new HttpHeaders({
-      'tenantId': this.cookiesService.get('tenantId') // Reemplaza con el valor adecuado
-    });
     const userString = this.cookiesService.get('user');
     if (userString) {
       try {
@@ -45,12 +45,9 @@ export class RegistroCompraService {
     }
     compraRequest.usuario_id = this.user.id;
     console.log(compraRequest);
-    return this.http.post<void>(this.Url, compraRequest, {headers});
+    return this.http.post<void>(this.Url, compraRequest, {headers: this.headers});
   }
   Listar(): Observable<CompraResponse[]> {
-    const headers = new HttpHeaders({
-      'tenantId': this.cookiesService.get('tenantId') // Reemplaza con el valor adecuado
-    });
-    return this.http.get<CompraResponse[]>(this.Url,{headers});
+    return this.http.get<CompraResponse[]>(this.Url, {headers: this.headers});
   }
 }

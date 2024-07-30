@@ -15,26 +15,24 @@ export class ProductoService {
   apiUrl: string = environment.API_URL+"/inventory/producto";
 
   constructor(private http: HttpClient, private authService: AuthService) {}
-
+  headers = new HttpHeaders({
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  });
   getListaProductos(): Observable<ProductoResponse[]> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.get<ProductoResponse[]>(this.apiUrl, {headers});
+    return this.http.get<ProductoResponse[]>(this.apiUrl, {headers: this.headers});
   }
 
   postNuevoProducto(productoNuevo: FormData): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}`,productoNuevo);
+    return this.http.post<any>(`${this.apiUrl}`,productoNuevo, {headers: this.headers});
   }
   putProducto(productoNuevo: FormData): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}`,productoNuevo);
+    return this.http.put<any>(`${this.apiUrl}`,productoNuevo, {headers: this.headers});
   }
   getProductoById(id: string): Observable<ProductoRequest> {
-    return this.http.get<ProductoRequest>(`${this.apiUrl}/${id}`);
+    return this.http.get<ProductoRequest>(`${this.apiUrl}/${id}`, {headers: this.headers});
   }
 
   deleteProducto(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, {headers: this.headers});
   }
 }

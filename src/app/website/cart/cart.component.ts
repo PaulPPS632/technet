@@ -3,11 +3,13 @@ import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, Renderer2, Vi
 import { CurrencyPipe } from '@angular/common';
 import { CartItemComponent } from './ui/cart-item/cart-item.component';
 import { CartStateService } from '../data-access/cart-state.service';
-import { ProductItemCart } from '../interfaces/product.interface';
+import { ProductItemCart } from '../../admin/models/product.interface';
 import { NavigationEnd, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import KRGlue from '@lyracom/embedded-form-glue';
 import { PaymentService } from "../../admin/services/payment.service";
+import { PedidoService } from '../../admin/services/pedido.service';
+import { dateTimestampProvider } from 'rxjs/internal/scheduler/dateTimestampProvider';
 declare const initFlowbite: any;
 
 @Component({
@@ -21,6 +23,7 @@ declare const initFlowbite: any;
 export default class CartComponent implements OnInit{
   @ViewChild('datos') divdatos!: ElementRef;
   @ViewChild('pagar') divpagar!: ElementRef;
+  pedidoService = inject(PedidoService);
   state = inject(CartStateService).state;
   estadopayment = "CARRITO";
   TipoPago = "";
@@ -133,7 +136,8 @@ export default class CartComponent implements OnInit{
           response => {
             if(response.Status){
               this.message = "pagado";
-              KR.removeForms();
+              this.RegistrarPedido();
+              //KR.removeForms();
             }else{
               this.message = "no pagado"
             }
@@ -147,6 +151,17 @@ export default class CartComponent implements OnInit{
         return true;
       })); //show the payment form 
     });
+  }
+  RegistrarPedido(){
+    const pedido = {
+      id:"",
+      fecha: "",
+      productos: JSON.stringify(this.state.products()),
+      datospago: JSON.stringify(this.data),
+      estado: "NUEVO"
+    }
+    console.log(pedido)
+    this.pedidoService.registrar(pedido).subscribe();;
   }
   onRemove(id: string) {
     this.state.remove(id);

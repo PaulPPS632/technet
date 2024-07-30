@@ -1,4 +1,4 @@
-import { ProductoResponse } from "../../admin/models/producto-response";
+import { ProductoResponse } from "./producto-response";
 
 export interface Product {
     category: string;
