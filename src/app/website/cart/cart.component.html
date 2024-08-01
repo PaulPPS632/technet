@@ -86,8 +86,12 @@
                 @if(TipoPago == "TRANSFERENCIA"){
                   <div>truee</div>
                 }@else if(TipoPago == "TARJETA"){
-                  <div class="w-full flex flex-col justify-center items-center">
-                    <div id="myPaymentForm" class="kr-smart-form" kr-payment-method="CARDS" kr-popin ></div>
+
+                  <div class="container">
+                    <div id="myPaymentForm">
+                      <div class="kr-smart-form" kr-popin></div>
+                    </div>
+                    <div data-test="payment-message">{{ message }}</div>
                   </div>
                   
                 }

@@ -83,8 +83,8 @@ export default class CartComponent implements OnInit{
   ProcesoPagoTarjeta(){
     this.TipoPago = "TARJETA";
     const endpoint = "https://api.micuentaweb.pe";
+    //const publicKey = "80203493:publickey_1nPGb868QNn3uq7hs8Q71A2wT0y5WEk9zhm3eKdVczupQ";
     const publicKey = "80203493:testpublickey_2h74LTfgBCifM8NOXKuDkUqYUHMbb7jUegkAJqSUYYLgl";
-
     this.paymentService.postExternalData(this.data).subscribe(data =>{
       this.formToken =data.formToken;
       KRGlue.loadLibrary(endpoint, publicKey) // Load the remote library 
@@ -97,12 +97,7 @@ export default class CartComponent implements OnInit{
           //to update initialization parameter 
         })
       )
-      .then(({ KR }) =>
-        KR.addForm("#myPaymentForm")
-      ) // add a payment form  to myPaymentForm div
-      .then(({ KR, result }) =>
-        KR.showForm(result.formId)
-      ).then(({ KR }) => KR.onSubmit(async paymentData => {
+      .then(({ KR }) => KR.onSubmit(async paymentData => {
         this.paymentService.validatePayment(paymentData).subscribe(
           response => {
             if(response.Status){
@@ -120,7 +115,9 @@ export default class CartComponent implements OnInit{
           }
         );
         return true;
-      })); //show the payment form 
+      })).then(({ KR }) =>
+        KR.renderElements('#myPaymentForm')
+      ); 
     });
   }
   RegistrarPedido(){
