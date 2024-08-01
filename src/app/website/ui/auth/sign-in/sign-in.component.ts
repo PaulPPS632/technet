@@ -18,7 +18,12 @@ export default class SignInComponent {
   login(){
     this.authService.Logged(this.email, this.password).subscribe(
       response => {
-        this.router.navigate(['/dashboard']); // Redirige al usuario al dashboard
+        
+        if(response.rol == "cliente"){
+          this.router.navigate(['/panel']);
+        }else{
+          this.router.navigate(['/dashboard']);
+        }
       },
       error => {
         console.error('Login failed', error);

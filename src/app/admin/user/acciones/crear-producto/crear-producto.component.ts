@@ -31,7 +31,10 @@ export class CrearProductoComponent implements OnInit {
   CategoriaSelect: number = 0;
   Categorias : CategoriaResponse [] = [];
   Subcategoria: SubCategoriaResponse [] = [];
-
+  selectedFiles: File[] = [];
+  selectedFilePrincipal: File | null = null;
+  imagencargadaPrincipal: string = '';
+  imagencarga: string[] = [];
   nuevoProducto: ProductoRequest = {
     id: '', 
     nombre: '' ,
@@ -109,7 +112,9 @@ export class CrearProductoComponent implements OnInit {
     this.selectedFiles.forEach((file) => {
       formData.append('files', file);
     });
-
+    if(this.selectedFilePrincipal){
+      formData.append('fileprincipal', this.selectedFilePrincipal);
+    }
     this.productoService.postNuevoProducto(formData).subscribe({
       next: () => {
         //actualizar productos
@@ -131,13 +136,19 @@ export class CrearProductoComponent implements OnInit {
     });
   }
 
-  selectedFiles: File[] = [];
 
   onFileChange(event: any) {
     if (event.target.files.length > 0) {
       this.selectedFiles = Array.from(event.target.files);
 
-      console.log(this.nuevoProducto.imageurl); // Mostrar el array actualizado en la consola
+      //cargar imagencarga []
+      this.selectedFiles.forEach((file: File) => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.imagencarga.push(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
     }
   }
 
@@ -145,5 +156,17 @@ export class CrearProductoComponent implements OnInit {
     this.nuevoProducto.imageurl.splice(index, 1);
     console.log('Lista imagenes: ',this.nuevoProducto.imageurl);
   }
-
+  onFileChangePrincipal(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedFilePrincipal =  event.target.files[0];
+      //cargar imagencarga []
+      if(this.selectedFilePrincipal){
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.imagencarga.push(e.target.result);
+        };
+        reader.readAsDataURL(this.selectedFilePrincipal);
+      }
+    }
+  }
 }

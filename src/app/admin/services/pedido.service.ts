@@ -5,6 +5,7 @@ import { UserInfo } from '../models/user-info';
 import { PedidoRequest, PedidoResponse } from '../models/pedido';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
+import { Pedido } from '../models/pedido-fomart';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +23,11 @@ export class PedidoService {
   }
   listar(): Observable<any> {
     return this.http.get<any>(this.Url, {headers: this.headers});
+  }
+  getPedidosByUsername(): Observable<any>{
+    return this.http.get<any>(`${this.Url}/${localStorage.getItem("username")}`, {headers: this.headers}); 
+  }
+  aplicarcambio(pedido: Pedido): Observable<void>{
+    return this.http.put<void>(`${this.Url}`, pedido,{headers: this.headers});
   }
 }

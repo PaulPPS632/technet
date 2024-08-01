@@ -34,16 +34,11 @@ export class RegistroCompraService {
     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
   });
   registrar(compraRequest: RegistrarCompraRequest): Observable<void> {
-    const userString = this.cookiesService.get('user');
-    if (userString) {
-      try {
-        this.user = JSON.parse(userString);
-        
-      } catch (e) {
-        console.error('Error parsing user cookie:', e);
-      }
+    const username = localStorage.getItem("username");
+    if(username){
+      compraRequest.usuario_id = username;
     }
-    compraRequest.usuario_id = this.user.id;
+    
     console.log(compraRequest);
     return this.http.post<void>(this.Url, compraRequest, {headers: this.headers});
   }
