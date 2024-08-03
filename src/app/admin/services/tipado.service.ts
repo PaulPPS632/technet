@@ -13,12 +13,12 @@ export class TipadoService {
   private Url = environment.API_URL+'/inventory/tipado'; 
 
   constructor(private http: HttpClient, private cookiesService: CookieService) { }
-
+  headers = new HttpHeaders({
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  });
   getTipadoDocumentos(): Observable<TipadoDocumentos> {
-    const headers = new HttpHeaders({
-      'tenantId': this.cookiesService.get('tenantId') // Reemplaza con el valor adecuado
-    });
-    return this.http.get<TipadoDocumentos>(this.Url, {headers});
+
+    return this.http.get<TipadoDocumentos>(this.Url, {headers: this.headers});
   }
 
   private informacionSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);

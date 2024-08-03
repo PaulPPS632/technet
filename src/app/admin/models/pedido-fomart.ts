@@ -4,4 +4,5 @@ export interface Pedido {
     productos: any;
     datospago: any;
     estado: string;
+    username: string;
   }

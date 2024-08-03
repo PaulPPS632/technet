@@ -12,7 +12,7 @@ import { environment } from '../../../environments/environment.development';
 })
 export class UserService {
 
-  apiUrl: string = environment.API_URL+"user";
+  apiUrl: string = environment.API_URL+"/user";
 
   constructor(private http: HttpClient, private cookiesService: CookieService) {}
   user: UserInfo = {
@@ -32,11 +32,16 @@ export class UserService {
     tiponegocio: '',
     rol: null,
   };
+  headers = new HttpHeaders({
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  });
+  getUsuario(): Observable<UserInfo>{
+    console.log("ejecuta getusuario username: "+ localStorage.getItem("username"));
+    return this.http.get<UserInfo>(`${this.apiUrl}/byusername/${localStorage.getItem("username")}`, {headers: this.headers});
+  }
+  
   getUsuariosTenant(): Observable<UserInfo[]> {
-    const headers = new HttpHeaders({
-      'tenantId': this.cookiesService.get('tenantId') // Reemplaza con el valor adecuado
-    });
-    return this.http.get<UserInfo[]>(this.apiUrl + "/tenant/" + this.cookiesService.get('tenantId'), {headers});
+    return this.http.get<UserInfo[]>(this.apiUrl + "/tenant/" + this.cookiesService.get('tenantId'));
   }
   getRoles(): Observable<RolResponse[]> {
     const headers = new HttpHeaders({

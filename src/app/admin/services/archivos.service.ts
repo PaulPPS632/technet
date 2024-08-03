@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { Observable } from 'rxjs';
@@ -9,12 +9,14 @@ import { Observable } from 'rxjs';
 export class ArchivosService {
 
   constructor(private http: HttpClient) { }
-
+  headers = new HttpHeaders({
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  });
   getImagenesPublicitarias(): Observable<{ [key: string]: string[] }> {
-    return this.http.get<{ [key: string]: string[] }>(environment.API_URL + '/inventory/archivos/publicitaria');
+    return this.http.get<{ [key: string]: string[] }>(environment.API_URL + '/inventory/archivos/publicitaria', {headers: this.headers});
   }
 
   postarchivo(imagenespublicitarias: FormData): Observable<any> {
-    return this.http.post<any>(`${environment.API_URL}`+ '/inventory/archivos', imagenespublicitarias);
+    return this.http.post<any>(`${environment.API_URL}`+ '/inventory/archivos', imagenespublicitarias, {headers: this.headers});
   }
 }

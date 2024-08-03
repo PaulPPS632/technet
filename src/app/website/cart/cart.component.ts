@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, Renderer2, ViewChild  } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnInit,Renderer2,ViewChild  } from '@angular/core';
 
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { CartItemComponent } from './ui/cart-item/cart-item.component';
@@ -9,6 +9,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import KRGlue from '@lyracom/embedded-form-glue';
 import { PaymentService } from "../../admin/services/payment.service";
 import { PedidoService } from '../../admin/services/pedido.service';
+import { AuthService } from '../../admin/services/auth.service';
 declare const initFlowbite: any;
 
 @Component({
@@ -26,10 +27,13 @@ export default class CartComponent implements OnInit{
 
   pedidoService = inject(PedidoService);
   state = inject(CartStateService).state;
+  authService = inject(AuthService);
   estadopayment = "CARRITO";
   TipoPago = "";
   formToken ="";
   message ="";
+  username: string |null=null;
+  RediccionPanelOpen = false;
   data = {
     amount: this.state.price()*100,
     currency: 'PEN',
@@ -76,14 +80,24 @@ export default class CartComponent implements OnInit{
         setTimeout(() => initFlowbite(), 0);
       }
     });
+  }
+  CompletarDatos(){
 
-
-    /*
-    const script = this.renderer.createElement('script');
-    script.src = 'https://sandbox-checkout.izipay.pe/payments/v1/js/index.js';
-    script.async = true;
-    this.renderer.appendChild(document.body, script);
-    */
+    this.authService.isLoggedIn().subscribe(
+      response => {
+        if (response.estado) {
+          this.username = localStorage.getItem("username");
+          this.estadopayment = "DATOS";
+          this.divdatos.nativeElement.classList.add('activate');
+        }
+        else{
+          this.router.navigate(['/sesion/sign-in']);
+        }
+      },
+      error => {
+        console.error("Error en isLoggedIn:", error);
+        this.router.navigate(['/sesion/sign-in']);
+      });
   }
 
   CreateIOpen = false;
@@ -106,7 +120,6 @@ export default class CartComponent implements OnInit{
     }
   }
 
-
   Regresar(){
     this.estadopayment = "CARRITO";
     this.divcarrito.nativeElement.classList.add('activate');
@@ -121,11 +134,13 @@ export default class CartComponent implements OnInit{
     this.divpagar.nativeElement.classList.remove('activate');
   }
 
+
+
   ProcesoPagoTarjeta(){
     this.TipoPago = "TARJETA";
     const endpoint = "https://api.micuentaweb.pe";
+    //const publicKey = "80203493:publickey_1nPGb868QNn3uq7hs8Q71A2wT0y5WEk9zhm3eKdVczupQ";
     const publicKey = "80203493:testpublickey_2h74LTfgBCifM8NOXKuDkUqYUHMbb7jUegkAJqSUYYLgl";
-
     this.paymentService.postExternalData(this.data).subscribe(data =>{
       this.formToken =data.formToken;
       KRGlue.loadLibrary(endpoint, publicKey) // Load the remote library
@@ -138,18 +153,12 @@ export default class CartComponent implements OnInit{
           //to update initialization parameter
         })
       )
-      .then(({ KR }) =>
-        KR.addForm("#myPaymentForm")
-      ) // add a payment form  to myPaymentForm div
-      .then(({ KR, result }) =>
-        KR.showForm(result.formId)
-      ).then(({ KR }) => KR.onSubmit(async paymentData => {
+      .then(({ KR }) => KR.onSubmit(async paymentData => {
         this.paymentService.validatePayment(paymentData).subscribe(
           response => {
             if(response.Status){
               this.message = "pagado";
               this.RegistrarPedido();
-              //KR.removeForms();
             }else{
               this.message = "no pagado"
             }
@@ -161,7 +170,9 @@ export default class CartComponent implements OnInit{
           }
         );
         return true;
-      })); //show the payment form
+      })).then(({ KR }) =>
+        KR.renderElements('#myPaymentForm')
+      );
     });
   }
 
@@ -171,10 +182,14 @@ export default class CartComponent implements OnInit{
       fecha: "",
       productos: JSON.stringify(this.state.products()),
       datospago: JSON.stringify(this.data),
-      estado: "NUEVO"
+      estado: "NUEVO",
+      username: this.username
     }
-    console.log(pedido)
-    this.pedidoService.registrar(pedido).subscribe();;
+    this.pedidoService.registrar(pedido).subscribe();
+    this.RediccionPanelOpen = true;
+  }
+  Panel(){
+    this.router.navigate(['/sesion/sign-in']);
   }
 
   onRemove(id: string) {

@@ -74,7 +74,6 @@ export class FacIngresoComponent implements OnInit {
     private modalService: NgbModal)
   { }
 
-  detalleCompra: DetalleCompraRequest[] = [];
   ventaData : RegistrarCompraRequest = {
     documento: this.documento,
     documento_cliente: this.entidad,
@@ -93,7 +92,7 @@ export class FacIngresoComponent implements OnInit {
     fechapago: '2024-06-01T15:30:00.000',
     formapago: this.formaPago,
 
-    detalles: this.detalleCompra
+    detalles: []
 
   };
 
@@ -111,7 +110,6 @@ export class FacIngresoComponent implements OnInit {
 
     this.ventaData.formapago = this.formaPago;
 
-    this.ventaData.detalles = this.detalleCompra;
 
     // Ajustar las fechas para que estén en el formato correcto
     if (this.fechaEmision) {
@@ -130,12 +128,9 @@ export class FacIngresoComponent implements OnInit {
   guardarProductos() {
 
     this.guardarDatos();
-    console.log(this.ventaData);
     this.registroCompraService.registrar(this.ventaData).subscribe({
       next: () => {
-        console.log("Registro de la Compra realizada correctamente.");
-        this.ventaData.detalles = []
-
+        this.ventaData.detalles = [];
       },
       error: (error) => {
 
@@ -157,10 +152,8 @@ export class FacIngresoComponent implements OnInit {
         this.productoSerie.splice(index, 1);
       }
 
-      console.log("El producto ha sido eliminado de la lista.");
-
       // Eliminar la entrada correspondiente en detalleVenta
-      this.detalleCompra = this.detalleCompra.filter(detalle => detalle.id_producto !== producto.id);
+      this.ventaData.detalles = this.ventaData?.detalles.filter(detalle => detalle.id_producto !== producto.id);
     }
   }
 
@@ -348,7 +341,7 @@ export class FacIngresoComponent implements OnInit {
   }
 
   get totalPagar(): number {
-    return this.detalleCompra.reduce((total, producto) => total + (producto.precio_total), 0);
+    return this.ventaData?.detalles.reduce((total, producto) => total + (producto.precio_total), 0);
   }
 
   EditOpen = false;

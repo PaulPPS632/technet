@@ -12,6 +12,7 @@ import FacSalidaComponent from './admin/user/gestion/fac-salida/fac-salida.compo
 import { CrearEntidadComponent } from './admin/user/acciones/crear-entidad/crear-entidad.component';
 import { ImagenesUblicitariasComponent } from './admin/user/imagenes-ublicitarias/imagenes-ublicitarias.component';
 import { authGuard } from './auth.guard';
+import { panelGuard } from './panel.guard';
 export const routes: Routes = [
 
     { path: '', loadChildren: () => import('./website/productos/features/producto-shell/producto.routes'), },
@@ -19,7 +20,7 @@ export const routes: Routes = [
     { path: 'carrito', loadChildren: () => import('./website/cart/cart.routes') },
 
     { path: 'sesion', loadChildren: () => import('./website/ui/auth/auth.routes') },
-
+    { path: 'panel', canActivate: [panelGuard], loadChildren: () => import('./website/panel-cliente/panelcliente.routes') },
     { path: 'item', component: ProductoItemComponent},
 
     { path: 'dashboard',

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { DetallepedidoComponent } from "./detallepedido/detallepedido.component";
 import { ProductItemCart } from '../../models/product.interface';
+import { Pedido } from '../../models/pedido-fomart';
 interface pedido {
   id:"",
   fecha: "",
@@ -25,11 +26,12 @@ export class PedidosComponent implements OnInit {
   constructor(private pedidosService: PedidoService)
   {}
   DetalleOpen = false;
-  pedidos: pedido[] = [];
-  pedidoSelected: any;
+  pedidos: Pedido[] = [];
+  pedidoSelected?: Pedido | undefined;
+
   ngOnInit(): void {
     this.pedidosService.listar().subscribe(
-      (data: pedido[]) =>{
+      (data: Pedido[]) =>{
         data.forEach(element => {
           this.pedidos.push(
             {
@@ -37,7 +39,8 @@ export class PedidosComponent implements OnInit {
               fecha: element.fecha,
               productos: JSON.parse(element.productos),
               datospago: JSON.parse(element.datospago),
-              estado: element.estado
+              estado: element.estado,
+              username: element.username
             }
           )
         });
@@ -46,7 +49,10 @@ export class PedidosComponent implements OnInit {
   }
 
   Detalles(id: string | any){
-    this.pedidoSelected  = this.pedidos.find(p => p.id == id);
-    if(this.pedidoSelected) this.DetalleOpen = true;
+    this.pedidoSelected = this.pedidos.find(p => p.id == id);
+    this.DetalleOpen = !!this.pedidoSelected;
+  }
+  onRemoveModal(flag : boolean){
+    this.DetalleOpen = flag;
   }
 }
