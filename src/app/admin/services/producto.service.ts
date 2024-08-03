@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ProductoResponse } from '../models/producto-response';
 import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { ProductoRequest } from '../models/producto-request';
 import { environment } from '../../../environments/environment.development';
 import { AuthService } from './auth.service';

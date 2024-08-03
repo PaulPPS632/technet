@@ -10,7 +10,7 @@
               <img [src]="item" class="w-full" alt="imagen">
             }
           </div>
-          
+
         </div>
 
         <div class="mt-6 sm:mt-8 lg:mt-0">
@@ -102,12 +102,13 @@
           </div>
 
           <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-
             <a
               (click)="addToCart()"
+              (keyup.enter)="addToCart()"
               title=""
-              class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               role="button"
+              tabindex="0"
             >
               <svg
                 class="w-5 h-5 -ms-2 me-2"
@@ -131,6 +132,7 @@
             </a>
           </div>
 
+
           <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
 
           <p class="mb-6 text-gray-500 dark:text-gray-400">
@@ -138,7 +140,7 @@
             {{ productDetailState.product()?.descripcion }}
           </p>
 
-          
+
         </div>
       </div>
     </div>

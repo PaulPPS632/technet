@@ -28,7 +28,12 @@
         </button>
       </div>
 
-      <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
+
+      <p class="text-2xl text-center font-extrabold text-gray-800 dark:text-white">PC</p>
+      <br>
+
+
+      <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-4 xl:grid-cols-4">
         @for (product of productsState.state().products; track product) {
           <app-producto-item
             class="block"
@@ -37,15 +42,26 @@
           />
         }
       </div>
+
       <div class="flex flex-row gap-3">
-      @for (url of imagenespublicitarias['flyer barra']; track $index) {
+        @for (url of imagenespublicitarias['flyer barra']; track $index) {
+            <div>
+              <img [src]="url" alt="" class="md:h-80 object-cover">
+            </div>
+        }
+      </div>
 
-          <div>
-            <img [src]="url" alt="" class="md:h-80 object-cover">
-          </div>
+      <p class="text-2xl text-center font-extrabold text-gray-800 dark:text-white">PC</p>
+      <br>
 
-
-      }
-    </div>
+      <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-4 xl:grid-cols-4">
+        @for (product of productsState.state().products; track product) {
+          <app-producto-item
+              class="block"
+              [product]="product"
+              (addToCart)="addToCart($event)"
+            ></app-producto-item>
+        }
+      </div>
     }
   }

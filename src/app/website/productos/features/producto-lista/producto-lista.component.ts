@@ -4,10 +4,10 @@ import ProductoItemComponent from '../../ui/producto-item/producto-item.componen
 import { CartStateService } from '../../../data-access/cart-state.service';
 import { ProductoResponse } from '../../../../admin/models/producto-response';
 import { ArchivosService } from '../../../../admin/services/archivos.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
 import { initFlowbite } from 'flowbite';
+
 
 @Component({
   selector: 'app-producto-lista',
@@ -20,15 +20,18 @@ import { initFlowbite } from 'flowbite';
 export default class ProductoListaComponent implements OnInit{
 
   productsState = inject(ProductsSateService);
+
   cartState = inject(CartStateService).state;
   imagenespublicitarias: { [key: string]: string[] } = {};
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private archivosService: ArchivosService
   ) {}
 
   ngOnInit(): void {
+
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         setTimeout(() => {  initFlowbite();})
@@ -40,7 +43,21 @@ export default class ProductoListaComponent implements OnInit{
       console.log(data);
     });
 
-    this.productsState.loadProducts(0, '', 5, '', '', '', '');
+    this.productsState.loadProducts(0, '', 4, '', '', 'Laptops', '');
+
+    /*
+    const page = this.productsState.state().page + 1;
+
+    this.productsState.changePage$.next({
+      page: page,
+      search: '',
+      size: 4,
+      sort: '',
+      marca: '',
+      categoria: 'PC',
+      subcategoria: ''
+    });
+    */
   }
 
   changePage() {

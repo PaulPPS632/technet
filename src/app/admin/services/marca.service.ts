@@ -21,23 +21,18 @@ export class MarcaService {
     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
   });
   getAll(): Observable<MarcaResponse[]> {
-    return this.http.get<MarcaResponse[]>(this.apiUrl, {headers: this.headers});
+    return this.http.get<MarcaResponse[]>(this.apiUrl);
   }
 
   postMarca(categoria: MarcaRequest): Observable<any> {
-    //const headers = new HttpHeaders().set('tenantId', this.cookiesService.get('tenantId'));
     return this.http.post<any>(`${this.apiUrl}`, categoria, {headers: this.headers});
   }
 
   postCategoriaMarca(categoriaMarca:CategoriaMarcaRequest): Observable<any> {
-    //const headers = new HttpHeaders().set('tenantId', this.cookiesService.get('tenantId'));
     return this.http.post<any>(`${this.Url}`, categoriaMarca, {headers: this.headers});
   }
 
   getSubs(id: number): Observable<CategoriaMarcaResponse[]> {
-    /*const headers = new HttpHeaders({
-      'tenantId': this.cookiesService.get('tenantId') // Reemplaza con el valor adecuado
-    });*/
-    return this.http.get<CategoriaMarcaResponse[]>(`${this.apiUrl}/subs/${id}`, {headers: this.headers});
+    return this.http.get<CategoriaMarcaResponse[]>(`${this.apiUrl}/subs/${id}`);
   }
 }

@@ -26,12 +26,19 @@ export class CrearEntidadComponent implements OnInit {
   entidades : Entidad[] = [];
 
   constructor(
-    private entidadService: EntidadService) 
+    private entidadService: EntidadService)
   {}
 
   ngOnInit(): void {
     this.cargarEntidades();
   }
+
+  CreateOpen = false;
+
+  openCModal() {
+    this.CreateOpen = true;
+  }
+
 
   cargarEntidades() {
     this.entidadService.getEntidades().subscribe(response => {
@@ -43,7 +50,7 @@ export class CrearEntidadComponent implements OnInit {
 
   crearEntidad(){
     this.entidadService.postEntidad(this.nuevoCliente).subscribe({
-      next: () => { 
+      next: () => {
         //actualizar lista clientes
         this.cargarEntidades();
         console.log('Nuevo cliente cargado.');

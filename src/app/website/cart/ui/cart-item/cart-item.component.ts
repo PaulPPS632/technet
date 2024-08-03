@@ -1,4 +1,4 @@
-import { Component, input, OnInit, output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ProductItemCart } from '../../../../admin/models/product.interface';
 import { CurrencyPipe } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
@@ -18,18 +18,33 @@ export class CartItemComponent implements OnInit {
   ngOnInit() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        initFlowbite();
+        //Flowbite se inicia después de que se haya cargado la pagina
+        setTimeout(() => initFlowbite(), 0);
       }
     });
   }
 
   url= environment.API_URL;
 
-  productCartItem = input.required<ProductItemCart>();
-  
-  onRemove = output<string>();
+  @Input() productCartItem!: ProductItemCart;
 
-  onIncrease = output<ProductItemCart>();
+  @Output() Remove = new EventEmitter<string>();
 
-  onDecrease = output<ProductItemCart>();
+  @Output() Increase = new EventEmitter<ProductItemCart>();
+
+  @Output() Decrease = new EventEmitter<ProductItemCart>();
+
+  handleDecrease() {
+    if (this.productCartItem.quantity > 0) {
+      this.Decrease.emit(this.productCartItem);
+    }
+  }
+
+  handleIncrease() {
+    this.Increase.emit(this.productCartItem);
+  }
+
+  handleRemove() {
+    this.Remove.emit(this.productCartItem.product.id);
+  }
 }

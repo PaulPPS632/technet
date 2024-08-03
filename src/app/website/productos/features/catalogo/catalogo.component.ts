@@ -46,24 +46,27 @@ export default class CatalogoComponent implements OnInit {
     this.categoriaservice.getAll().subscribe((categorias) => {
       this.categorias = categorias;
     });
+
     this.marcaservice.getAll().subscribe(
       (marcas) =>{
         this.marcas = marcas;
-      }
-    )
+
+    });
+
     this.route.queryParams.subscribe(params => {
       const page = params['page'] || 0;
       const search = params['search'] || '';
       const size = params['size'] || 10;
       const sort = params['sort'] || '';
       const marca = params['marca'] || '';
-      const categoria = params['categoria'] || '';
+      const categoria = params['categoria'] || 'PC';
       const subcategoria = params['subcategoria'] || '';
       this.search = this.productsState.state().search;
       this.productsState.loadProducts(page, search, size, sort, marca, categoria, subcategoria);
     });
     console.log('ejecuta oninit')
   }
+
   changePage() {
     const page = this.productsState.state().page + 1;
     this.productsState.changePage$.next({
@@ -76,6 +79,7 @@ export default class CatalogoComponent implements OnInit {
       subcategoria: this.selectedSubcategorias.join(',')
     });
   }
+
   private updateProducts(): void {
     const queryParams: any = {
       page: 0

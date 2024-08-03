@@ -23,11 +23,11 @@ export class CategoriaService {
     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
   });
   getAll(): Observable<CategoriaResponse[]> {
-    return this.http.get<CategoriaResponse[]>(this.apiUrl, {headers: this.headers});
+    return this.http.get<CategoriaResponse[]>(this.apiUrl);
   }
-  
+
   postCategoria(categoria: CategoriaRequest): Observable<any> {
-    return this.http.post<CategoriaRequest>(`${this.apiUrl}`, this.postCategoria, {headers: this.headers});
+    return this.http.post<CategoriaRequest>(`${this.apiUrl}`, categoria, {headers: this.headers});
   }
 
   postSubCategoria(subCategoria: SubCategoriaRequest): Observable<any> {
@@ -35,11 +35,11 @@ export class CategoriaService {
   }
 
   getSubs(id: number): Observable<SubCategoriaResponse[]> {
-    return this.http.get<SubCategoriaResponse[]>(`${this.apiUrl}/subs/${id}`, {headers: this.headers});
+    return this.http.get<SubCategoriaResponse[]>(`${this.apiUrl}/subs/${id}`);
   }
 
   actualizarCategoria(id: number, categoria: CategoriaMarcaRequest): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, categoria, {headers: this.headers});
   }
-  
+
 }

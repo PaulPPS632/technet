@@ -1,28 +1,29 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, Renderer2, ViewChild  } from '@angular/core';
 
-import { CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { CartItemComponent } from './ui/cart-item/cart-item.component';
 import { CartStateService } from '../data-access/cart-state.service';
 import { ProductItemCart } from '../../admin/models/product.interface';
 import { NavigationEnd, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import KRGlue from '@lyracom/embedded-form-glue';
 import { PaymentService } from "../../admin/services/payment.service";
 import { PedidoService } from '../../admin/services/pedido.service';
-import { dateTimestampProvider } from 'rxjs/internal/scheduler/dateTimestampProvider';
 declare const initFlowbite: any;
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CartItemComponent, CurrencyPipe, FormsModule],
+  imports: [CommonModule,CartItemComponent, CurrencyPipe, FormsModule],
   templateUrl: './cart.component.html',
   styleUrl:'./cart.component.css',
   styles: ``,
 })
 export default class CartComponent implements OnInit{
+  @ViewChild('carrito') divcarrito!: ElementRef;
   @ViewChild('datos') divdatos!: ElementRef;
   @ViewChild('pagar') divpagar!: ElementRef;
+
   pedidoService = inject(PedidoService);
   state = inject(CartStateService).state;
   estadopayment = "CARRITO";
@@ -46,15 +47,27 @@ export default class CartComponent implements OnInit{
           country: "PE",
           identityCode: "",
           identityType: "DNI"
-          
+
         }
     }
   }
+
+  CreateOpen = false;
+
+  openCModal() {
+    this.CreateOpen = true;
+  }
+
   private renderer: Renderer2;
 
-  constructor(private router: Router,renderer: Renderer2, private paymentService: PaymentService,private chRef: ChangeDetectorRef,) {
+  constructor(
+    private router: Router,
+    renderer: Renderer2,
+    private paymentService: PaymentService,
+    private chRef: ChangeDetectorRef,) {
     this.renderer = renderer;
   }
+
   ngOnInit(): void {
 
     this.router.events.subscribe((event) => {
@@ -63,23 +76,51 @@ export default class CartComponent implements OnInit{
         setTimeout(() => initFlowbite(), 0);
       }
     });
-      /*
+
+
+    /*
     const script = this.renderer.createElement('script');
     script.src = 'https://sandbox-checkout.izipay.pe/payments/v1/js/index.js';
     script.async = true;
     this.renderer.appendChild(document.body, script);
     */
   }
-  CompletarDatos(){
-    this.estadopayment = "DATOS"
+
+  CreateIOpen = false;
+
+  openCIModal() {
+    this.CreateIOpen = true;
+  }
+
+  checkCartItems(): void {
+    const cartItems = this.state.products();
+    if (cartItems.length === 0) {
+      this.openCIModal();
+    }
+    else{
+      //si tiene elementos el carrito
+      this.estadopayment = "DATOS"
+      this.divcarrito.nativeElement.classList.add('activate');
+      this.divdatos.nativeElement.classList.add('activate');
+      this.divpagar.nativeElement.classList.remove('activate');
+    }
+  }
+
+
+  Regresar(){
+    this.estadopayment = "CARRITO";
+    this.divcarrito.nativeElement.classList.add('activate');
+    this.divdatos.nativeElement.classList.remove('activate');
+    this.divpagar.nativeElement.classList.remove('activate');
+  }
+
+  Regresar2(){
+    this.estadopayment = "DATOS";
+    this.divcarrito.nativeElement.classList.add('activate');
     this.divdatos.nativeElement.classList.add('activate');
+    this.divpagar.nativeElement.classList.remove('activate');
   }
 
-  ProcederPago(){
-    this.estadopayment = "PAYMENT"
-    this.divpagar.nativeElement.classList.add('activate');
-
-  }
   ProcesoPagoTarjeta(){
     this.TipoPago = "TARJETA";
     const endpoint = "https://api.micuentaweb.pe";
@@ -87,14 +128,14 @@ export default class CartComponent implements OnInit{
 
     this.paymentService.postExternalData(this.data).subscribe(data =>{
       this.formToken =data.formToken;
-      KRGlue.loadLibrary(endpoint, publicKey) // Load the remote library 
+      KRGlue.loadLibrary(endpoint, publicKey) // Load the remote library
       .then(({ KR }) =>
-        
+
         KR.setFormConfig({
-           //set the minimal configuration 
+           //set the minimal configuration
           formToken: this.formToken,
           "kr-language": "es-ES"
-          //to update initialization parameter 
+          //to update initialization parameter
         })
       )
       .then(({ KR }) =>
@@ -113,16 +154,17 @@ export default class CartComponent implements OnInit{
               this.message = "no pagado"
             }
             this.chRef.detectChanges();
-            
+
           },
-          error => {
+          _error => {
             this.message = 'PIPIPI';
           }
         );
         return true;
-      })); //show the payment form 
+      })); //show the payment form
     });
   }
+
   RegistrarPedido(){
     const pedido = {
       id:"",
@@ -134,6 +176,7 @@ export default class CartComponent implements OnInit{
     console.log(pedido)
     this.pedidoService.registrar(pedido).subscribe();;
   }
+
   onRemove(id: string) {
     this.state.remove(id);
   }
@@ -151,5 +194,26 @@ export default class CartComponent implements OnInit{
       quantity: product.quantity - 1,
     });
   }
+
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+      this.estadopayment = "PAYMENT";
+    } else {
+      this.CreateOpen = true;
+    }
+  }
+
+  onContinue(form: NgForm) {
+    if (form.valid) {
+      this.estadopayment = "PAYMENT";
+      this.divcarrito.nativeElement.classList.add('activate');
+      this.divdatos.nativeElement.classList.add('activate');
+      this.divpagar.nativeElement.classList.add('activate');
+
+    } else {
+      this.CreateOpen = true;
+    }
+  }
+
 }
 

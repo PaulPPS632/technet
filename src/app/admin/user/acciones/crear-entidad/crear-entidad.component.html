@@ -1,58 +1,88 @@
 <p class="text-2xl text-center font-extrabold text-gray-800 dark:text-white">Entidad</p>
 <br>
 
-<form>
-  <div class="grid gap-6 md:grid-cols-3">
-    <div class="mb-6">
-      <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre Entidad</label>
-      <input type="text" id="nombre" name="nombre" [(ngModel)]="nuevoCliente.nombre" placeholder="Ingrese el nombre..."
-      autocomplete="name"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-    </div>
+<button (click)="openCModal()"
+  class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+  type="submit">Crear Nuevo Producto</button>
 
-    <div class="mb-6">
-      <label for="nro" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de Entidad</label>
-      <select id="nro" name="nro" [(ngModel)]="nuevoCliente.id_tipoEntidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          <option value="" disabled selected>Elegir...</option>
-          <option [value]="1">DNI</option>
-          <option [value]="4">CARNET EXTRANJERIA</option>
-          <option [value]="6">RUC</option>
-          <option [value]="7">PASAPORTE</option>
-      </select>  
-    </div>
+  <!-- Crear modal -->
+<div *ngIf="CreateOpen" tabindex="-1" aria-hidden="true" class="fixed inset-0 z-50 overflow-y-auto">
+  <!-- Overlay -->
+  <div class="fixed inset-0 bg-black bg-opacity-50"></div>
 
-    <div class="mb-6">
-      <label for="document" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nro. Documento</label>
-      <input type="text" id="document" name="document" [(ngModel)]="nuevoCliente.documento" placeholder="Ingrese el nro. documento ..."
-        autocomplete="document"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-    </div>
+  <!-- Modal -->
+  <div class="relative flex items-center justify-center min-h-screen p-4">
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-2xl w-full">
+      <!-- Modal header -->
+      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+          Añadir Entidad
+        </h3>
+        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" (click)="CreateOpen = false">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="p-4 md:p-5 space-y-4">
+        <form>
+          <div class="grid gap-6 md:grid-cols-3">
+            <div class="mb-6">
+              <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre Entidad</label>
+              <input type="text" id="nombre" name="nombre" [(ngModel)]="nuevoCliente.nombre" placeholder="Ingrese el nombre..."
+              autocomplete="name"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+            </div>
 
+            <div class="mb-6">
+              <label for="nro" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de Entidad</label>
+              <select id="nro" name="nro" [(ngModel)]="nuevoCliente.id_tipoEntidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="" disabled selected>Elegir...</option>
+                  <option [value]="1">DNI</option>
+                  <option [value]="4">CARNET EXTRANJERIA</option>
+                  <option [value]="6">RUC</option>
+                  <option [value]="7">PASAPORTE</option>
+              </select>
+            </div>
+
+            <div class="mb-6">
+              <label for="document" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nro. Documento</label>
+              <input type="text" id="document" name="document" [(ngModel)]="nuevoCliente.documento" placeholder="Ingrese el nro. documento ..."
+                autocomplete="document"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+            </div>
+
+          </div>
+
+          <div class="mb-6">
+            <label for="direc" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dirección</label>
+            <input type="text" id="direc" name="direc" [(ngModel)]="nuevoCliente.direccion" placeholder="Ingrese la dirección..."
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+          </div>
+
+          <div class="mb-6">
+            <label for="telf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nro. Telefono</label>
+            <input type="number" id="telf" name="telf" [(ngModel)]="nuevoCliente.telefono" placeholder="Ingrese nro. telefono..."
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+          </div>
+
+          <div class="mb-6">
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+            <input type="text" id="email" name="email" [(ngModel)]="nuevoCliente.email" placeholder="Ingrese email..."
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+          </div>
+
+          <button
+            class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="submit" (click)="crearEntidad()" >Ingresar Nueva Entidad
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
-    
-  <div class="mb-6">
-    <label for="direc" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dirección</label>
-    <input type="text" id="direc" name="direc" [(ngModel)]="nuevoCliente.direccion" placeholder="Ingrese la dirección..."
-    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-  </div>
-    
-  <div class="mb-6">
-    <label for="telf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nro. Telefono</label>
-    <input type="number" id="telf" name="telf" [(ngModel)]="nuevoCliente.telefono" placeholder="Ingrese nro. telefono..."
-    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-  </div>
-    
-  <div class="mb-6">
-    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-    <input type="text" id="email" name="email" [(ngModel)]="nuevoCliente.email" placeholder="Ingrese email..."
-    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-  </div>
- 
-  <button
-    class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    type="submit" (click)="crearEntidad()" >Ingresar Nueva Entidad
-  </button>
-</form>
+</div>
 
 <br>
 <hr>
@@ -63,21 +93,21 @@
       <div class="p-2 text-center">
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ e.nombre }}</h5>
       </div>
-  
+
       <div class="py-2.5">
         <p class="font-normal text-gray-700 dark:text-gray-400"><b>EMAIL: </b>{{e.email}}</p>
         <p class="font-normal text-gray-700 dark:text-gray-400"><b>TELEFONO: </b>{{e.telefono}}</p>
       </div>
-  
+
       <div class="flex gap-2">
-        <button type="button" 
+        <button type="button"
           class="flex-1 flex items-center justify-center rounded-lg bg-yellow-400 px-5 py-2.5 text-sm font-medium text-white hover:bg-yellow-500 focus:outline-none focus:ring-4  focus:ring-yellow-300 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800"
         ><svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
           </svg>
         </button>
-          
-        <button type="button" 
+
+        <button type="button"
           class="flex-1 flex items-center justify-center rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4  focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
           ><svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>

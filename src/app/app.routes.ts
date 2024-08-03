@@ -14,9 +14,7 @@ import { ImagenesUblicitariasComponent } from './admin/user/imagenes-ublicitaria
 import { authGuard } from './auth.guard';
 export const routes: Routes = [
 
-    { path: '', loadChildren: () => import('./website/productos/features/producto-shell/producto.routes'),},
-
-    //{ path: '', component: ProductoListaComponent },
+    { path: '', loadChildren: () => import('./website/productos/features/producto-shell/producto.routes'), },
 
     { path: 'carrito', loadChildren: () => import('./website/cart/cart.routes') },
 
@@ -24,8 +22,8 @@ export const routes: Routes = [
 
     { path: 'item', component: ProductoItemComponent},
 
-    { path: 'dashboard', 
-        component: LayoutComponent, 
+    { path: 'dashboard',
+        component: LayoutComponent,
         canActivate: [authGuard],
         children: [
             { path:'', component: DashboardComponent },
@@ -39,6 +37,6 @@ export const routes: Routes = [
             { path: 'publicitarias', component: ImagenesUblicitariasComponent},
             { path: 'entidades', component: CrearEntidadComponent}
         ]
-     },
+    },
     { path: '**', redirectTo: '', },
 ];
