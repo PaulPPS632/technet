@@ -8,7 +8,7 @@ import { ProductoSerieResponse } from '../../../models/producto-serie-response';
 import { ProductoResponse } from '../../../models/producto-response';
 import { ProductoSerieRequest } from '../../../models/producto-serie-request';
 import { TipadoDocumentos, TipoComprobante, TipoCondicion, TipoPago, TipoMoneda } from '../../../models/tipado-documentos';
-import { DetalleCompraRequest, RegistrarCompraRequest } from '../../../models/compra-request';
+import { RegistrarCompraRequest } from '../../../models/compra-request';
 import { Entidad } from '../../../models/entidad-response';
 import { CurrencyPipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
