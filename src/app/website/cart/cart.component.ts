@@ -107,8 +107,10 @@ export default class CartComponent implements OnInit{
   }
 
   checkCartItems(): void {
-    const cartItems = this.state.products();
-    if (cartItems.length === 0) {
+
+    //validacion con respecto al precio
+    const cartItems = this.state.price();
+    if (cartItems <= 0) {
       this.openCIModal();
     }
     else{
