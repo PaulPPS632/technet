@@ -34,4 +34,8 @@ export class ProductoService {
   deleteProducto(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, {headers: this.headers});
   }
+
+  getListadoCategoriaProducto(limit: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/CategoriaProducto?limit=${limit}`);
+  }
 }

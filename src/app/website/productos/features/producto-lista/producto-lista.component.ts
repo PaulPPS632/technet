@@ -7,6 +7,7 @@ import { ArchivosService } from '../../../../admin/services/archivos.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { initFlowbite } from 'flowbite';
+import { ProductoService } from '../../../../admin/services/producto.service';
 
 
 @Component({
@@ -19,14 +20,12 @@ import { initFlowbite } from 'flowbite';
 
 export default class ProductoListaComponent implements OnInit{
 
-  productsState = inject(ProductsSateService);
-
   cartState = inject(CartStateService).state;
   imagenespublicitarias: { [key: string]: string[] } = {};
-
+  productoService = inject(ProductoService);
+  Categoria_Producto : any;
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private archivosService: ArchivosService
   ) {}
 
@@ -43,8 +42,10 @@ export default class ProductoListaComponent implements OnInit{
       console.log(data);
     });
 
-    this.productsState.loadProducts(0, '', 4, '', '', 'Laptops', '');
-
+    this.productoService.getListadoCategoriaProducto(5).subscribe(res => {
+      this.Categoria_Producto = res;
+      console.log(this.ObjectKeys(res));
+    })
     /*
     const page = this.productsState.state().page + 1;
 
@@ -61,16 +62,6 @@ export default class ProductoListaComponent implements OnInit{
   }
 
   changePage() {
-    const page = this.productsState.state().page + 1;
-    this.productsState.changePage$.next({
-      page: page,
-      search: '',
-      size: 10,
-      sort: '',
-      marca: '', // Puedes ajustar esto según tus necesidades
-      categoria: '',
-      subcategoria: ''
-    });
   }
 
   addToCart(product: ProductoResponse) {
