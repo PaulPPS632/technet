@@ -31,27 +31,19 @@ export class RegistroVentaService {
     tiponegocio: '',
     rol: null,
   };
+  headers = new HttpHeaders({
+    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+  });
   registrar(ventaRequest: RegistrarVentaRequest): Observable<void> {
-    const headers = new HttpHeaders({
-      'tenantId': this.cookiesService.get('tenantId') // Reemplaza con el valor adecuado
-    });
-    const userString = this.cookiesService.get('user');
-    if (userString) {
-      try {
-        this.user = JSON.parse(userString);
-        
-      } catch (e) {
-        console.error('Error parsing user cookie:', e);
-      }
+    
+    var username = localStorage.getItem("username")
+    if(username){
+      ventaRequest.usuario_id = username;
     }
-    ventaRequest.usuario_id = this.user.id;
-    console.log(ventaRequest);
-    return this.http.post<void>(this.Url, ventaRequest, {headers});
+    
+    return this.http.post<void>(this.Url, ventaRequest, {headers: this.headers});
   }
   Listar(): Observable<VentaResponse[]> {
-    const headers = new HttpHeaders({
-      'tenantId': this.cookiesService.get('tenantId') // Reemplaza con el valor adecuado
-    });
-    return this.http.get<VentaResponse[]>(this.Url,{headers});
+    return this.http.get<VentaResponse[]>(this.Url,{headers: this.headers});
   }
 }

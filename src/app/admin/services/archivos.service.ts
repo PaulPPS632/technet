@@ -13,7 +13,7 @@ export class ArchivosService {
     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
   });
   getImagenesPublicitarias(): Observable<{ [key: string]: string[] }> {
-    return this.http.get<{ [key: string]: string[] }>(environment.API_URL + '/inventory/archivos/publicitaria', {headers: this.headers});
+    return this.http.get<{ [key: string]: string[] }>(environment.API_URL + '/inventory/archivos/publicitaria');
   }
 
   postarchivo(imagenespublicitarias: FormData): Observable<any> {

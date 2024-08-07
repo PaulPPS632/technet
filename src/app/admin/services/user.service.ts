@@ -64,11 +64,11 @@ export class UserService {
     }
     return this.http.get<Logica>(this.apiUrl + "/logica/" + this.user.id, {headers})
   }
-  putUsuario(usuario: UserInfo): Observable<any>{
-    const headers = new HttpHeaders({
-      'tenantId': this.cookiesService.get('tenantId')
-    });
-    return this.http.put(this.apiUrl + "/asignarrol", usuario, {headers})
+  putUsuario(usuario: any): Observable<any>{
+    return this.http.put(this.apiUrl + "/asignarrol", usuario, {headers: this.headers})
+  }
+  getUsuariosDeshboard(): Observable<any>{
+    return this.http.get(`${this.apiUrl}/dashboard`, {headers: this.headers});
   }
   deleteUser(usuario: UserInfo): Observable<any>{
     const headers = new HttpHeaders({

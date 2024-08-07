@@ -19,23 +19,16 @@ export class AsignarRolComponent implements OnInit {
   ){
   }
 
-  @Input() usuario: UserInfo | null = null;
-  roles: RolResponse[]=[];
-  RolSelect: string = '';
-
+  @Input() usuario: any;
+  selectedRole: string | null=null;
   ngOnInit(): void {
-    this.usuarioService.getRoles().subscribe(
-      (data: RolResponse[]) => {
-        this.roles = data;
-      }
-    )
+    this.selectedRole = this.usuario.rol.nombre;
   }
 
   asignarRol(){
-    const selectedRole = this.roles.find(role => role.id == this.RolSelect);
-    if (this.usuario != null && selectedRole !=null) {
+    if (this.usuario != null && this.selectedRole != null) {
 
-      this.usuario.rol = selectedRole;
+      this.usuario.rol = this.selectedRole;
 
       this.usuarioService.putUsuario(this.usuario).subscribe(
         _response => {

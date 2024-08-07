@@ -21,4 +21,9 @@ export default class LayoutComponent implements OnInit{
       }
     });
   }
+  Logout(){
+    localStorage.removeItem("username");
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("rol");
+  }
 }

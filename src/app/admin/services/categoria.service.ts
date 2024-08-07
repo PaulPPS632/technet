@@ -35,7 +35,7 @@ export class CategoriaService {
   }
 
   getSubs(id: number): Observable<SubCategoriaResponse[]> {
-    return this.http.get<SubCategoriaResponse[]>(`${this.apiUrl}/subs/${id}`);
+    return this.http.get<SubCategoriaResponse[]>(`${this.apiUrl}/subs/${id}`, {headers: this.headers});
   }
 
   actualizarCategoria(id: number, categoria: CategoriaMarcaRequest): Observable<any> {

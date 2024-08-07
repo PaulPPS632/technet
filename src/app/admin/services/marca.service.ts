@@ -33,6 +33,6 @@ export class MarcaService {
   }
 
   getSubs(id: number): Observable<CategoriaMarcaResponse[]> {
-    return this.http.get<CategoriaMarcaResponse[]>(`${this.apiUrl}/subs/${id}`);
+    return this.http.get<CategoriaMarcaResponse[]>(`${this.apiUrl}/subs/${id}`, {headers: this.headers});
   }
 }

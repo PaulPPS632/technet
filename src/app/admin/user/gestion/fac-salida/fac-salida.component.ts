@@ -148,7 +148,8 @@ export default class UsuarioVentaComponent implements OnInit {
     this.guardarDatos();
     this.registroVentaService.registrar(this.ventaData).subscribe({
       next: () => {
-        this.ventaData.detalles = []
+        this.ventaData.detalles = [];
+        this.detalleVenta =[];
       },
       error: (_error) => {
         console.log("error");
