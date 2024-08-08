@@ -8,19 +8,20 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { initFlowbite } from 'flowbite';
 import { ProductoService } from '../../../../admin/services/producto.service';
+import { CarruselImgComponent } from "../carrusel-img/carrusel-img.component";
+import CarruselCartproductComponent from '../carrusel-cartproduct/carrusel-cartproduct.component';
 
 
 @Component({
   selector: 'app-producto-lista',
   standalone: true,
-  imports: [CommonModule ,ProductoItemComponent],
+  imports: [CommonModule, CarruselImgComponent, CarruselCartproductComponent],
   templateUrl: './producto-lista.component.html',
   providers: [ProductsSateService],
 })
 
 export default class ProductoListaComponent implements OnInit{
 
-  cartState = inject(CartStateService).state;
   imagenespublicitarias: { [key: string]: string[] } = {};
   productoService = inject(ProductoService);
   Categoria_Producto : any;
@@ -42,34 +43,12 @@ export default class ProductoListaComponent implements OnInit{
       console.log(data);
     });
 
-    this.productoService.getListadoCategoriaProducto(5).subscribe(res => {
+    this.productoService.getListadoCategoriaProducto(8).subscribe(res => {
       this.Categoria_Producto = res;
       console.log(this.ObjectKeys(res));
     })
-    /*
-    const page = this.productsState.state().page + 1;
-
-    this.productsState.changePage$.next({
-      page: page,
-      search: '',
-      size: 4,
-      sort: '',
-      marca: '',
-      categoria: 'PC',
-      subcategoria: ''
-    });
-    */
   }
 
-  changePage() {
-  }
-
-  addToCart(product: ProductoResponse) {
-    this.cartState.add({
-      product,
-      quantity: 1,
-    });
-  }
 
   ObjectKeys(obj: any): string[] {
     return Object.keys(obj);

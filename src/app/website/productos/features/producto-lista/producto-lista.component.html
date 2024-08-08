@@ -1,22 +1,27 @@
+<!--
 <div class="snap-x snap-mandatory flex overflow-scroll h-96">
   @for (url of imagenespublicitarias["flyer principal"]; track $index) {
     <div class="snap-start w-full flex-shrink-0">
       <img class="" [src]="url" alt="imagen publicitaria">
     </div>
   }
+</div>-->
+<h1>carousel</h1>
+<div class="h-96 mb-36">
+  @if (imagenespublicitarias["flyer principal"]) {
+    <app-carrusel-img [imagenes]="imagenespublicitarias['flyer principal'].length ? imagenespublicitarias['flyer principal'] : []"></app-carrusel-img>
+  }
 </div>
-
-
 @for (categorias of ObjectKeys(Categoria_Producto); track $index) {
   <p class="text-2xl text-center font-extrabold text-gray-800 dark:text-white">{{categorias}}</p>
   <br>
+  <!--
   <div class="flex flex-row gap-10 overflow-scroll scroll-smooth snap-x">
     @for (product of Categoria_Producto[categorias]; track product) {
-      <app-producto-item
-          class="block snap-center"
-          [product]="product"
-          (addToCart)="addToCart($event)"
-        ></app-producto-item>
+      
     }
-  </div>
+  </div>-->
+  <app-carrusel-cartproduct
+      [productos]="Categoria_Producto[categorias]"
+  ></app-carrusel-cartproduct>
 }
