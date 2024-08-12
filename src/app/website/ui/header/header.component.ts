@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit {
   queryParams: any = {
     page: 0,
     size: 10,
+    search: '',
     sort: '',
     marca: '', // Ajusta esto según tus necesidades
     categoria: '',
@@ -37,8 +38,8 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  buscar(){
-    const queryParams: any = {
+  buscar(event: Event){
+    /*const queryParams: any = {
       page: 0,
       search: this.buscado,
       size: 10,
@@ -46,11 +47,12 @@ export class HeaderComponent implements OnInit {
       marca: this.productsState.state().marca, // Puedes ajustar esto según tus necesidades
       categoria: this.productsState.state().categoria,
       subcategoria: this.productsState.state().subcategoria
-    };
-
+    };*/
+    const inputElement = event.target as HTMLInputElement;
+    this.queryParams.search = inputElement.value;
     this.router.navigate(['catalogo'], {
       //relativeTo: this.route,
-      queryParams: queryParams,
+      queryParams: this.queryParams,
       queryParamsHandling: 'merge' // O 'preserve' si quieres mantener los parámetros existentes
     });
   }

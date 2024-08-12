@@ -59,7 +59,7 @@ export default class CatalogoComponent implements OnInit {
       const size = params['size'] || 10;
       const sort = params['sort'] || '';
       const marca = params['marca'] || '';
-      const categoria = params['categoria'] || 'PC';
+      const categoria = params['categoria'] || '';
       const subcategoria = params['subcategoria'] || '';
       this.search = this.productsState.state().search;
       this.productsState.loadProducts(page, search, size, sort, marca, categoria, subcategoria);
