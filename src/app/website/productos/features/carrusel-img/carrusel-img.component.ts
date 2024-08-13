@@ -6,73 +6,63 @@ import { ICarouselItem } from './Icarrousel-item.metadata';
   standalone: true,
   imports: [],
   templateUrl: './carrusel-img.component.html',
-  styleUrl: './carrusel-img.component.css'
 })
-export class CarruselImgComponent implements OnInit, OnDestroy  {
+
+export class CarruselImgComponent implements OnInit, OnDestroy {
 
   @Input() height = 500;
   @Input() isFullScreen = false;
-  items: ICarouselItem[]=[];
-  @Input() imagenes: string[]=[];
+  @Input() imagenes: string[] = [];
+  public items: ICarouselItem[] = [];
   public finalHeight: string | number = 0;
   public currentPosition = 0;
   private intervalId: any;
-  constructor(){
+
+  constructor() { this.finalHeight = this.isFullScreen ? '100vh' : `${this.height}px`; }
+
+  ngOnInit(): void {
     this.finalHeight = this.isFullScreen ? '100vh' : `${this.height}px`;
+    this.generateItems();
+    this.startAutoSlide();
   }
+
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
   }
-  ngOnInit(): void {
-    this.generateItems();
-    this.startAutoSlide(); 
-  }
-  generateItems(): void{
+
+  generateItems(): void {
     this.items = this.imagenes.map((image, index) => ({
       id: index,
       image: image,
       marginLeft: 0
     }));
   }
-  setCurrentPosition(position: number){
+
+  setCurrentPosition(position: number): void {
     this.currentPosition = position;
-    const item =  this.items.find(i => i.id === 0);
-    if(item){
-      item.marginLeft = -100 * position;
-    }
+    this.updateMarginLeft();
   }
-  setNext(){
-    let finalPercentage =0;
-    let nextPosition = this.currentPosition + 1;
-    if(nextPosition<= this.items.length -1){
-      finalPercentage = -100 * nextPosition;
-    }else{
-      nextPosition = 0;
-    }
-    const item =  this.items.find(i => i.id === 0);
-    if(item){
-      item.marginLeft = finalPercentage;
-    }
-    this.currentPosition = nextPosition;
+
+  setNext(): void {
+    this.currentPosition = (this.currentPosition + 1) % this.items.length;
+    this.updateMarginLeft();
   }
-  setBack(){
-    let finalPercentage = 0;
-    let backPosition = this.currentPosition - 1;
-    if(backPosition >= 0){
-      finalPercentage = -100 * backPosition;
-    }else{
-      backPosition = this.items.length - 1;
-      finalPercentage = -100 * backPosition;
-    }
-    const item =  this.items.find(i => i.id === 0);
-    if(item){
-      item.marginLeft = finalPercentage;
-    }
-    this.currentPosition = backPosition;
+
+  setBack(): void {
+    this.currentPosition = (this.currentPosition - 1 + this.items.length) % this.items.length;
+    this.updateMarginLeft();
   }
+
   startAutoSlide(): void {
     this.intervalId = setInterval(() => {
       this.setNext();
     }, 3000); // Cambia la imagen cada 3 segundos
+  }
+
+  private updateMarginLeft(): void {
+    const item = this.items[0];
+    if (item) {
+      item.marginLeft = -100 * this.currentPosition;
+    }
   }
 }

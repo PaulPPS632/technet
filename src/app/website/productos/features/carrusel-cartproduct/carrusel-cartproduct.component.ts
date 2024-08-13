@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CartStateService } from '../../../data-access/cart-state.service';
 import ProductoItemComponent from "../../ui/producto-item/producto-item.component";
 import { ProductoResponse } from '../../../../admin/models/producto-response';
@@ -12,10 +12,9 @@ export interface ICarouselProductItem {
   standalone: true,
   imports: [ProductoItemComponent],
   templateUrl: './carrusel-cartproduct.component.html',
-  styleUrl: './carrusel-cartproduct.component.css'
 })
 export default class CarruselCartproductComponent implements OnInit {
-  
+
   items: ICarouselProductItem[]=[];
   @Input() height = 500;
   @Input() productos: any[]=[];

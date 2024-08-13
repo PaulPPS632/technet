@@ -38,11 +38,9 @@ export class AppComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       const headerFooterExcludedRoutes = ['/dashboard'];
-      const carouselExcludedRoutes = [ '/dashboard', '/sesion', '/carrito', '/product', '/catalogo', '/panel'];
       const currentRoute = event.urlAfterRedirects;
 
       this.showHeaderFooter = !headerFooterExcludedRoutes.some(route => currentRoute.startsWith(route));
-      this.showCarousel = !carouselExcludedRoutes.some(route => currentRoute.startsWith(route));
     });
 
     this.archivosService.getImagenesPublicitarias().subscribe(

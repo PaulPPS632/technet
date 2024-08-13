@@ -1,10 +1,7 @@
 import { Component, inject, OnInit  } from '@angular/core';
 import { ProductsSateService } from '../../data-access/productos-state.service';
-import ProductoItemComponent from '../../ui/producto-item/producto-item.component';
-import { CartStateService } from '../../../data-access/cart-state.service';
-import { ProductoResponse } from '../../../../admin/models/producto-response';
 import { ArchivosService } from '../../../../admin/services/archivos.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { initFlowbite } from 'flowbite';
 import { ProductoService } from '../../../../admin/services/producto.service';

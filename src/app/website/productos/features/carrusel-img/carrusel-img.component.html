@@ -1,25 +1,47 @@
-<div class="w-full flex items-center justify-center relative" [style]="{'min-height': finalHeight}">
-    <div class="absolute w-11/12 m-auto flex justify-between">
-        <i class=" opacity-70 cursor-pointer justify-between" (click)="setBack()">
-            <svg width="40px" height="40px" viewBox="0 0 1024 1024" fill="#000000" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z" fill="" /></svg>
-        </i>
-        <i class="opacity-70 cursor-pointer justify-between" (click)="setNext()">
-            <svg width="40px" height="40px" viewBox="0 0 1024 1024" fill="#000000" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M642.174 504.594c7.99 7.241 7.897 17.58-0.334 24.782L332.62 799.945c-8.867 7.759-9.766 21.236-2.007 30.103 7.758 8.867 21.236 9.766 30.103 2.007l309.221-270.569c27.429-24 27.792-64.127 0.89-88.507L360.992 192.192c-8.73-7.912-22.221-7.248-30.133 1.482-7.912 8.73-7.248 22.222 1.482 30.134l309.833 280.786z" fill="" /></svg>
-        </i>
-    </div>
-    <div class="text-center w-full self-stretch flex overflow-hidden">
-        @for (section of items; track $index) {
-        <ng-container>
-            <div class="flex items-center justify-center min-w-full h-full bg-no-repeat bg- bg-cover transition-all" [style]="{'background-image': 'url(' + section.image +')', 'margin-left': section.marginLeft + '%'}">
-            </div>
-        </ng-container>
-    }
-    </div>
-    <div class="absolute bottom-2 w-full flex justify-center">
-        @for (step of items; track $index) {
-            <div class="h-2 w-5 my-0 mx-1 rounded-md border border-solid bg-gray-400 cursor-pointer transition-all hover:opacity-70 hover:bg-white {{currentPosition === step.id ? 'bg-white': ''}}" (click)="setCurrentPosition(step.id)">
-            </div>
-        }
-        
-    </div>
+<div class="relative w-full" >
+
+  <!-- Botón de navegación anterior -->
+  <button type="button" (click)="setBack()" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
+    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+        <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+        </svg>
+        <span class="sr-only">Previous</span>
+    </span>
+  </button>
+
+  <!-- Botón de navegación siguiente -->
+  <button type="button" (click)="setNext()" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
+    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+        <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+        </svg>
+        <span class="sr-only">Next</span>
+    </span>
+  </button>
+
+  <!-- Contenedor del carrusel -->
+  <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+      <div class="flex transition-transform duration-700 ease-in-out">
+          @for (section of items; track $index) {
+              <ng-container>
+                  <div
+                      class="w-full h-full flex-shrink-0 transition-all"
+                      [style]="{'margin-left': section.marginLeft + '%'}">
+                      <img [src]="section.image" alt="Imagen Carrusel" class="w-full h-full object-cover">
+                  </div>
+              </ng-container>
+          }
+      </div>
+  </div>
+
+  <!-- Contenedor de los indicadores -->
+  <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+      @for (step of items; track $index) {
+          <button
+              class="h-2 w-5 mx-1 rounded-md border bg-gray-400 cursor-pointer transition-all hover:opacity-70 hover:bg-white {{currentPosition === step.id ? 'bg-white': ''}}"
+              (click)="setCurrentPosition(step.id)">
+          </button>
+      }
+  </div>
 </div>
