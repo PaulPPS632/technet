@@ -1,5 +1,4 @@
-import { Component, input, OnInit } from '@angular/core';
-import { UserInfo } from '../../../admin/models/user-info';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../admin/services/user.service';
 
 @Component({
@@ -7,7 +6,6 @@ import { UserService } from '../../../admin/services/user.service';
   standalone: true,
   imports: [],
   templateUrl: './datos-cliente.component.html',
-  styleUrl: './datos-cliente.component.css'
 })
 export default class DatosClienteComponent implements OnInit {
   constructor(private userService: UserService)
@@ -18,6 +16,6 @@ export default class DatosClienteComponent implements OnInit {
       console.log(res);
       this.datos = res;});
   }
-  
+
 
 }

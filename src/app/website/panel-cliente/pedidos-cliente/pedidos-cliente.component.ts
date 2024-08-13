@@ -1,5 +1,4 @@
-import { Component, input, OnInit } from '@angular/core';
-import { Pedido } from '../../../admin/models/pedido-fomart';
+import { Component, OnInit } from '@angular/core';
 import { PedidoService } from '../../../admin/services/pedido.service';
 import { DetallePedidoClienteComponent } from "../detalle-pedido-cliente/detalle-pedido-cliente.component";
 interface pedido {
@@ -13,8 +12,7 @@ interface pedido {
   selector: 'app-pedidos-cliente',
   standalone: true,
   imports: [DetallePedidoClienteComponent],
-  templateUrl: './pedidos-cliente.component.html',
-  styleUrl: './pedidos-cliente.component.css'
+  templateUrl: './pedidos-cliente.component.html'
 })
 export default class PedidosClienteComponent implements OnInit {
   constructor(private pedidosService: PedidoService)

@@ -5,8 +5,7 @@ import { Pedido } from '../../../admin/models/pedido-fomart';
   selector: 'app-detalle-pedido-cliente',
   standalone: true,
   imports: [],
-  templateUrl: './detalle-pedido-cliente.component.html',
-  styleUrl: './detalle-pedido-cliente.component.css'
+  templateUrl: './detalle-pedido-cliente.component.html'
 })
 export class DetallePedidoClienteComponent {
   @Input() pedidoselect: Pedido | undefined;
