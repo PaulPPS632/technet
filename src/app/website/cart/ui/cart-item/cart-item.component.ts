@@ -2,13 +2,13 @@ import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ProductItemCart } from '../../../../admin/models/product.interface';
 import { CurrencyPipe } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { initFlowbite } from 'flowbite'
 
 @Component({
   selector: 'app-cart-item',
   standalone: true,
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, RouterLink],
   templateUrl: './cart-item.component.html',
 })
 export class CartItemComponent implements OnInit {

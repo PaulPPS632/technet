@@ -14,7 +14,6 @@ import { ActivatedRoute, Router } from '@angular/router';
   standalone: true,
   imports: [ProductoItemComponent],
   templateUrl: './catalogo.component.html',
-  styleUrl: './catalogo.component.css',
   providers:[ProductsSateService]
 })
 export default class CatalogoComponent implements OnInit {
