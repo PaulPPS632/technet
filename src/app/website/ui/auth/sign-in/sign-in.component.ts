@@ -43,7 +43,7 @@ export default class SignInComponent implements OnInit {
   register() {
     const registerRequest = {
       username: this.username_r,
-      email: this.email_r,
+      email: this.username_r,
       password: this.password_r,
       rol: 'cliente'
     };

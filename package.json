@@ -23,6 +23,7 @@
     "@popperjs/core": "^2.11.8",
     "flowbite": "^2.4.1",
     "ngx-cookie-service": "^18.0.0",
+    "ngx-image-zoom": "^3.0.0",
     "ngxtension": "^3.5.5",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.6.13",

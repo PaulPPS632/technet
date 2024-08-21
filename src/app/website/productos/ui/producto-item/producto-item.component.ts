@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ProductoResponse } from '../../../../admin/models/producto-response';
 import { environment } from '../../../../../environments/environment.development';
 
@@ -17,6 +17,10 @@ export  default  class ProductoItemComponent {
   product = input.required<ProductoResponse>();
 
   addToCart = output<ProductoResponse>();
+
+  constructor(private router: Router){
+
+  }
 
   add(event: Event) {
     event.stopPropagation();

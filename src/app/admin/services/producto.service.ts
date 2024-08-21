@@ -27,8 +27,8 @@ export class ProductoService {
   putProducto(productoNuevo: FormData): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}`,productoNuevo, {headers: this.headers});
   }
-  getProductoById(id: string): Observable<ProductoRequest> {
-    return this.http.get<ProductoRequest>(`${this.apiUrl}/${id}`, {headers: this.headers});
+  getProductoById(id: string): Observable<ProductoResponse> {
+    return this.http.get<ProductoResponse>(`${this.apiUrl}/${id}`);
   }
 
   deleteProducto(id: string): Observable<void> {

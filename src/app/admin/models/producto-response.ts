@@ -7,6 +7,8 @@ export interface ProductoResponse {
     precio: number;
     marca: string;
     categoriamarca: string;
+    categoria: string;
+    subcategoria: string;
     garantia_cliente: number;
     garantia_total: number;
     cantidad: number;

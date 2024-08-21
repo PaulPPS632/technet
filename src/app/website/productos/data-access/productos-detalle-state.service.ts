@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { signalSlice } from 'ngxtension/signal-slice';
 import { ProductsService } from './productos.service';
-import { Observable, map, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
 import { ProductoResponse } from '../../../admin/models/producto-response';
 
 interface State {
@@ -17,7 +17,8 @@ export class ProductDetailSateService {
     product: null,
     status: 'loading' as const,
   };
-
+  private stateSubject = new BehaviorSubject<State>(this.initialState);
+  state$ = this.stateSubject.asObservable();
   state = signalSlice({
     initialState: this.initialState,
     actionSources: {

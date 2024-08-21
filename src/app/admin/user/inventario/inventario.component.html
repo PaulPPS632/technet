@@ -122,19 +122,50 @@
               <input type="number" id="editPrecio" name="editPrecio" [(ngModel)]="nuevoActua.precio" placeholder="Ingrese el precio del producto..."
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
             </div>
-
+            <!--SELECCIONAMIENTO DE CATEGORIA MARCA-->
             <div class="mb-6">
-              <label for="editCatMarca" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Id Categoria Marca</label>
-              <input type="text" id="editCatMarca" name="editCatMarca" [(ngModel)]="nuevoActua.id_categoriamarca" placeholder="Ingrese la marca del producto..."
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+              <label for="marcaSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Marca</label>
+              <select id="marcaSelect" name="marcaSelect" [(ngModel)]="nuevoActua.marca" (change)="buscarSubM(nuevoActua.marca)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="" disabled selected>Elegir...</option>
+                  @for (marca of marcas; track $index) {
+                    <option [value]="marca.nombre"> {{ marca.nombre }}</option>
+                  }
+                  </select>  
             </div>
-
+          
             <div class="mb-6">
-              <label for="editSubCategoria" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Id Sub Categoria</label>
-              <input type="text" id="editSubCategoria" name="editSubCategoria" [(ngModel)]="nuevoActua.id_subcategoria" placeholder="Ingrese id categoriamarca del producto..."
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+              <label for="categoriaMSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Categoria Marca</label>
+              <select id="categoriaMSelect" name="categoriaMSelect" [(ngModel)]="nuevoActua.categoriamarca"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="" disabled selected>Elegir...</option>
+                  @for (categoriamarca of ListaCategoriaMarcaSeleccionada; track $index) {
+                    <option [value]="categoriamarca.nombre"> {{ categoriamarca.nombre }}</option>
+                  }
+              </select>  
             </div>
-          </div>
+          
+            <div class="mb-6">
+              <label for="categoriaSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Categoria</label>
+              <select id="categoriaSelect" name="categoriaSelect" [(ngModel)]="nuevoActua.categoria" (change)="buscarSubC(nuevoActua.categoria)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="" disabled selected>Elegir...</option>
+                  @for (categoria of categorias; track $index) {
+                    <option [value]="categoria.nombre"> {{ categoria.nombre }}</option>
+                  }
+              </select>  
+            </div>
+          
+            <div class="mb-6">
+              <label for="ScategoriaSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Sub Categoria</label>
+              <select id="ScategoriaSelect" name="ScategoriaSelect" [(ngModel)]="nuevoActua.subcategoria"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="" disabled selected>Elegir...</option>
+                  @for (sub of ListasSubcategoriaSeleccionada; track $index) {
+                    <option [value]="sub.nombre"> {{ sub.nombre }}</option>
+                  }
+                  <!--<option *ngFor="let item of Subcategoria" [value]="item.id"> {{ item.nombre }}</option>-->
+              </select>  
+            </div>
+          </div> 
 
           <div class="mb-6">
             <label for="editDescripcion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción</label>

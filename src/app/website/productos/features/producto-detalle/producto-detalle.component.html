@@ -2,13 +2,20 @@
     <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
       <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
         <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
-          <img class="w-full dark:hidden" [src]="productDetailState.product()?.imagen_principal" alt="" />
-          <img class="w-full hidden dark:block" [src]="productDetailState.product()?.imagen_principal" alt="" />
-          <div class="flex gap-1">
-            <img class="w-full" [src]="productDetailState.product()?.imagen_principal" alt="" />
-            @for (item of productDetailState.product()?.imageurl; track $index) {
-              <img [src]="item" class="w-full" alt="imagen">
-            }
+          <img class="w-full dark:hidden" [src]="imagenprincipal" alt="" />
+          <img class="w-full hidden dark:block" [src]="imagenprincipal" alt="" />
+          <div class="flex gap-3">
+            <div class="w-16 shadow-md">
+              <img [src]="producto?.imagen_principal" class="w-full object-cover cursor-pointer " alt="imagen" (click)="mostrarimg($event)">
+            </div>
+            <div class="flex flex-row gap-2">
+              @for (item of producto?.imageurl; track $index) {
+                <div class="w-16 shadow-md">
+                  <img [src]="item" class="w-full object-cover cursor-pointer" alt="imagen" (click)="mostrarimg($event)">
+                </div>
+              }
+            </div>
+            
           </div>
 
         </div>
@@ -17,13 +24,13 @@
           <h1
             class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
           >
-          {{ productDetailState.product()?.nombre }}
+          {{ producto?.nombre }}
           </h1>
           <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
             <p
               class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
             >
-            {{ productDetailState.product()?.precio| currency }}
+            {{ producto?.precio| currency }}
             </p>
 
             <div class="flex items-center gap-2 mt-2 sm:mt-0">
@@ -95,9 +102,9 @@
                 </svg>
               </div>
               <p class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">
-              {{ productDetailState.product()?.stock }} </p>
+              {{ producto?.stock }} </p>
               <p class="text-sm font-medium leading-none text-gray-900 underline hover:no-underline dark:text-white">
-              {{ productDetailState.product()?.pn }} </p>
+              {{ producto?.pn }} </p>
             </div>
           </div>
 
@@ -137,7 +144,7 @@
 
           <p class="mb-6 text-gray-500 dark:text-gray-400">
             <b>Información:</b> <br/>
-            {{ productDetailState.product()?.descripcion }}
+            {{ producto?.descripcion }}
           </p>
 
 

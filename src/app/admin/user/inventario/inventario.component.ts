@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CrearProductoComponent } from "../acciones/crear-producto/crear-producto.component";
 import { ProductoResponse } from '../../models/producto-response';
 import { PedidoRequest } from '../../models/pedido';
@@ -10,6 +10,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { ProductoRequest } from '../../models/producto-request';
 import { NavigationEnd, Router } from '@angular/router';
+import { CategoriaService } from '../../services/categoria.service';
+import { MarcaService } from '../../services/marca.service';
+import { CategoriaResponse } from '../../models/categoria-response';
+import { MarcaResponse } from '../../models/marca-response';
 
 declare const initFlowbite: any;
 
@@ -25,9 +29,11 @@ export class InventarioComponent implements OnInit {
 
   url = environment.API_URL;
   productos: ProductoResponse[] = [];
-
+  categorias: CategoriaResponse[] = []; // Lista de categorías
+  marcas: MarcaResponse[]=[]; // Lista de marcas
   productoEliminar: ProductoResponse[] = [];
-
+  categoriaservice = inject(CategoriaService);
+  marcaservice = inject(MarcaService);
   ProductoNombrePedidoSelect: string = '';
   ProductoIdPedidoSelect: string = '';
   ProductoCantidadPedidoSelect: number = 0;
@@ -66,10 +72,18 @@ export class InventarioComponent implements OnInit {
 
     this.cargarProductosActualizado();
   }
-
+  ListaCategoriaMarcaSeleccionada: any;
+  ListasSubcategoriaSeleccionada: any;
+  buscarSubM(marca: string){
+    this.ListaCategoriaMarcaSeleccionada = this.marcas.find(m => m.nombre == marca)?.categorias;
+  }
+  buscarSubC(categoria: string){
+    this.ListasSubcategoriaSeleccionada = this.categorias.find(c => c.nombre == categoria)?.subcategorias;
+  }
   cargarProductosActualizado() {
     this.productoService.getListaProductos().subscribe(response => {
       this.productos = response;
+      console.log(response);
     }, error => {
       console.error('Error al obtener los productos:', error);
     });
@@ -148,32 +162,57 @@ export class InventarioComponent implements OnInit {
     });
   }
 
-  nuevoActua: ProductoRequest = {
+  nuevoActua: ProductoResponse = {
     id: '',
     nombre: '' ,
     pn :'',
     descripcion:'',
     stock: 1,
     precio: 1,
-    id_categoriamarca: 1,
-    id_subcategoria: 1,
+    marca:'',
+    categoriamarca: '',
+    categoria: '',
+    subcategoria:'',
     garantia_cliente: 0,
     garantia_total: 0,
+    cantidad: 0,
     imagen_principal: '',
     imageurl: []
   };
 
   imagencargadaPrincipal: string = '';
   imagencarga: string[] = [];
-
+  marca_edit_select:any;
+  categoriamarca_edit_select:any;
+  categoria_edit_select:any;
+  subcategoria_edit_select:any;
+  categoriasdemarcaseleccionada(){
+    return this.marcas.find(m => m.id === this.marca_edit_select)?.categorias
+  }
   editarProducto(id: string) {
 
     //abrir modal
-    this.openEModal();
+    
 
     this.productoService.getProductoById(id).subscribe(producto => {
       this.nuevoActua = producto;
       this.imagencarga = producto.imageurl;
+      
+      if(this.categorias.length == 0){
+        this.categoriaservice.getAll().subscribe((categorias) => {
+          this.categorias = categorias;
+        });
+      }
+      
+      if(this.marcas.length == 0){
+        this.marcaservice.getAll().subscribe(
+          (marcas) =>{
+            this.marcas = marcas;
+        });
+      }
+      this.buscarSubC(producto.categoria);
+      this.buscarSubM(producto.marca);
+      this.openEModal();
     }, error => {
       console.error('Error al obtener el producto:', error);
     });
@@ -183,13 +222,42 @@ export class InventarioComponent implements OnInit {
 
   guardarCambios() {
     const formData = new FormData();
-    formData.append('producto', new Blob([JSON.stringify(this.nuevoActua)], { type: 'application/json' }));
-    this.selectedFiles.forEach((file) => {
-      formData.append('files', file);
-    });
-    if(this.selectedFilePrincipal){
-      formData.append('fileprincipal', this.selectedFilePrincipal);
+    const id_catmarca = this.marcas.find(m => m.nombre == this.nuevoActua.marca)?.categorias.find(c => c.nombre == this.nuevoActua.categoriamarca)?.id;
+    const id_subcat= this.categorias.find(c => c.nombre == this.nuevoActua.categoria)?.subcategorias.find(s => s.nombre == this.nuevoActua.subcategoria)?.id;
+    var Productoactualizado: ProductoRequest;
+    if(id_catmarca && id_subcat){
+      Productoactualizado = {
+        id: this.nuevoActua.id,
+        nombre: this.nuevoActua.nombre,
+        pn :this.nuevoActua.pn,
+        descripcion:this.nuevoActua.descripcion,
+        stock: this.nuevoActua.stock,
+        precio: this.nuevoActua.precio,
+        id_categoriamarca: id_catmarca,
+        id_subcategoria: id_subcat,
+        garantia_cliente: this.nuevoActua.garantia_cliente,
+        garantia_total: this.nuevoActua.garantia_total,
+        imagen_principal: this.nuevoActua.imagen_principal,
+        imageurl: this.nuevoActua.imageurl
+        }
+      formData.append('producto', new Blob([JSON.stringify(Productoactualizado)], { type: 'application/json' }));
     }
+    
+    
+    
+    if(this.selectedFiles.length > 0){
+      this.selectedFiles.forEach((file) => {
+          formData.append('files', file);
+      });
+  } else {
+      formData.append('files', new Blob(),'');
+  }
+
+  if(this.selectedFilePrincipal) {
+      formData.append('fileprincipal', this.selectedFilePrincipal);
+  } else {
+      formData.append('fileprincipal', new Blob(),'');
+  }
     this.productoService.putProducto(formData).subscribe({
       next: () => {
         //actualizar productos
@@ -198,6 +266,7 @@ export class InventarioComponent implements OnInit {
         this.imagencarga =[];
         this.selectedFilePrincipal = null;
         this.selectedFiles =[];
+        this.EditOpen = false;
       }
     });
   }
