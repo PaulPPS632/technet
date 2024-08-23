@@ -7,12 +7,11 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductoService } from '../../../../admin/services/producto.service';
 import { ProductoRequest } from '../../../../admin/models/producto-request';
 import { ProductoResponse } from '../../../../admin/models/producto-response';
-import { NgxImageZoomModule } from 'ngx-image-zoom';
 
 @Component({
   selector: 'app-producto-detalle',
   standalone: true,
-  imports: [CurrencyPipe, NgxImageZoomModule],
+  imports: [CurrencyPipe],
   templateUrl: './producto-detalle.component.html',
   providers: [ProductDetailSateService],
 })

@@ -67,11 +67,18 @@
 </button>
 
 @for (archivo of ObjectKeys(archivosAgrupados); track $index) {
-    <div>{{archivo}}</div>
-
+    <h2 class="text-2xl font-bold uppercase">{{archivo}}</h2>
+    <div class="flex flex-row flex-wrap gap-3 ">
     @for (url of archivosAgrupados[archivo]; track $index) {
-        <div class="relative w-full items-center py-2 px-2 rounded text-gray-900 bg-white border-3 border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-            <img class="h-auto max-w-full rounded-lg" [src]="url" alt="">
+      <div class="min-w-xs max-w-sm">
+        <div class="relative w-full items-center  rounded text-gray-900 bg-white border-3 border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 ">
+          <img class="h-auto max-w-full rounded-t-lg" [src]="url" alt="">
         </div>
+        <button type="button" 
+          class="w-full items-center rounded-b-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+        >Eliminar</button>
+      </div>
+        
     }
+  </div>
 }

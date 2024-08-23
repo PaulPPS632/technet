@@ -10,6 +10,7 @@ import KRGlue from '@lyracom/embedded-form-glue';
 import { PaymentService } from "../../admin/services/payment.service";
 import { PedidoService } from '../../admin/services/pedido.service';
 import { AuthService } from '../../admin/services/auth.service';
+import {v4 as uuidv4} from 'uuid';
 declare const initFlowbite: any;
 
 @Component({
@@ -24,7 +25,6 @@ export default class CartComponent implements OnInit{
   @ViewChild('carrito') divcarrito!: ElementRef;
   @ViewChild('datos') divdatos!: ElementRef;
   @ViewChild('pagar') divpagar!: ElementRef;
-
   pedidoService = inject(PedidoService);
   state = inject(CartStateService).state;
   authService = inject(AuthService);
@@ -37,7 +37,7 @@ export default class CartComponent implements OnInit{
   data = {
     amount: this.state.price()*100,
     currency: 'PEN',
-    orderId:  "myOrderId-999999",
+    orderId:  "ORDER-"+ uuidv4(),
     customer: {
         email: "",
         billingDetails:{
@@ -87,8 +87,6 @@ export default class CartComponent implements OnInit{
       response => {
         if (response.estado) {
           this.username = localStorage.getItem("username");
-          this.estadopayment = "DATOS";
-          this.divdatos.nativeElement.classList.add('activate');
         }
         else{
           this.router.navigate(['/sesion/sign-in']);
@@ -109,6 +107,7 @@ export default class CartComponent implements OnInit{
   checkCartItems(): void {
 
     //validacion con respecto al precio
+    this.CompletarDatos();
     const cartItems = this.state.price();
     if (cartItems <= 0) {
       this.openCIModal();
@@ -233,4 +232,5 @@ export default class CartComponent implements OnInit{
   }
 
 }
+
 
