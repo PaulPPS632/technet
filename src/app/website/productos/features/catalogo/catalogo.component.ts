@@ -1,4 +1,4 @@
-import { Component, inject, OnInit  } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ProductsSateService } from '../../data-access/productos-state.service';
 import ProductoItemComponent from '../../ui/producto-item/producto-item.component';
 import { CartStateService } from '../../../data-access/cart-state.service';
@@ -14,11 +14,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   standalone: true,
   imports: [ProductoItemComponent],
   templateUrl: './catalogo.component.html',
-  providers:[ProductsSateService]
+  providers: [ProductsSateService],
 })
 export default class CatalogoComponent implements OnInit {
-
-
   productsState = inject(ProductsSateService);
 
   cartState = inject(CartStateService).state;
@@ -26,9 +24,9 @@ export default class CatalogoComponent implements OnInit {
   marcaservice = inject(MarcaService);
 
   categorias: CategoriaResponse[] = []; // Lista de categorías
-  marcas: MarcaResponse[]=[]; // Lista de marcas
+  marcas: MarcaResponse[] = []; // Lista de marcas
 
-  search: string ='';
+  search: string = '';
   sort: string = '';
   selectedCategorias: string[] = [];
   selectedSubcategorias: string[] = [];
@@ -36,23 +34,22 @@ export default class CatalogoComponent implements OnInit {
 
   collapsedCategorias: string[] = [];
 
-
-  constructor(private route: ActivatedRoute,private router: Router){
-
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.categoriaservice.getAll().subscribe((categorias) => {
       this.categorias = categorias;
+      console.log(this.categorias);
     });
 
-    this.marcaservice.getAll().subscribe(
-      (marcas) =>{
-        this.marcas = marcas;
-
+    this.marcaservice.getAll().subscribe((marcas) => {
+      this.marcas = marcas;
     });
 
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       const page = params['page'] || 0;
       const search = params['search'] || '';
       const size = params['size'] || 10;
@@ -61,9 +58,17 @@ export default class CatalogoComponent implements OnInit {
       const categoria = params['categoria'] || '';
       const subcategoria = params['subcategoria'] || '';
       this.search = this.productsState.state().search;
-      this.productsState.loadProducts(page, search, size, sort, marca, categoria, subcategoria);
+      this.productsState.loadProducts(
+        page,
+        search,
+        size,
+        sort,
+        marca,
+        categoria,
+        subcategoria,
+      );
     });
-    console.log('ejecuta oninit')
+    console.log('ejecuta oninit');
   }
 
   changePage() {
@@ -75,13 +80,13 @@ export default class CatalogoComponent implements OnInit {
       sort: this.sort,
       marca: this.selectedMarcas.join(','), // Puedes ajustar esto según tus necesidades
       categoria: this.selectedCategorias.join(','),
-      subcategoria: this.selectedSubcategorias.join(',')
+      subcategoria: this.selectedSubcategorias.join(','),
     });
   }
 
   private updateProducts(): void {
     const queryParams: any = {
-      page: 0
+      page: 0,
     };
     queryParams.search = this.productsState.state().search ?? '';
     queryParams.sort = this.sort ?? '';
@@ -92,23 +97,26 @@ export default class CatalogoComponent implements OnInit {
       return this.selectedSubcategorias.filter(sub => this.categorias.find(cate => cate.nombre == cat)?.subcategorias.includes(sub))
     })
      */
-    const filteredSubcategorias = this.selectedSubcategorias.filter(sub => {
+    const filteredSubcategorias = this.selectedSubcategorias.filter((sub) => {
       // Encuentra la categoría que contiene esta subcategoría
-      const parentCategory = this.categorias.find(categoria =>
-        categoria.subcategorias.some(subCategoria => subCategoria.nombre === sub)
+      const parentCategory = this.categorias.find((categoria) =>
+        categoria.subcategorias.some(
+          (subCategoria) => subCategoria.nombre === sub,
+        ),
       );
       // Verifica si la categoría padre no está en la lista de categorías seleccionadas
-      return parentCategory ? !this.selectedCategorias.includes(parentCategory.nombre) : true;
+      return parentCategory
+        ? !this.selectedCategorias.includes(parentCategory.nombre)
+        : true;
     });
     queryParams.subcategoria = filteredSubcategorias.join(',');
     queryParams.marca = this.selectedMarcas.join(',') ?? '';
     // Actualiza la URL con los nuevos parámetros
 
-
     this.router.navigate(['catalogo'], {
       //relativeTo: this.route,
       queryParams,
-      queryParamsHandling: 'merge' // O 'preserve' si quieres mantener los parámetros existentes
+      queryParamsHandling: 'merge', // O 'preserve' si quieres mantener los parámetros existentes
     });
 
     this.productsState.changePage$.next({
@@ -118,7 +126,7 @@ export default class CatalogoComponent implements OnInit {
       sort: this.sort,
       marca: this.selectedMarcas.join(','), // Puedes ajustar esto según tus necesidades
       categoria: this.selectedCategorias.join(','),
-      subcategoria: filteredSubcategorias.join(',')
+      subcategoria: filteredSubcategorias.join(','),
     });
     /*
     this.productsState.loadProducts(
@@ -131,7 +139,6 @@ export default class CatalogoComponent implements OnInit {
       queryParams.subcategoria
     );
     */
-
   }
   addToCart(product: ProductoResponse) {
     this.cartState.add({
@@ -145,27 +152,33 @@ export default class CatalogoComponent implements OnInit {
     if (checkbox.checked) {
       this.selectedCategorias.push(checkbox.value);
       // Add all subcategories of the selected category
-      categoria.subcategorias.forEach(subcategoria => {
+      categoria.subcategorias.forEach((subcategoria) => {
         if (!this.selectedSubcategorias.includes(subcategoria.nombre)) {
           this.selectedSubcategorias.push(subcategoria.nombre);
         }
       });
     } else {
-      this.selectedCategorias = this.selectedCategorias.filter(c => c !== checkbox.value);
+      this.selectedCategorias = this.selectedCategorias.filter(
+        (c) => c !== checkbox.value,
+      );
       // Remove all subcategories of the deselected category
-      categoria.subcategorias.forEach(subcategoria => {
-        this.selectedSubcategorias = this.selectedSubcategorias.filter(s => s !== subcategoria.nombre);
+      categoria.subcategorias.forEach((subcategoria) => {
+        this.selectedSubcategorias = this.selectedSubcategorias.filter(
+          (s) => s !== subcategoria.nombre,
+        );
       });
     }
     this.updateProducts();
-    this.toggleCollapse(categoria.nombre)
+    this.toggleCollapse(categoria.nombre);
   }
   onSubcategoriaChange(event: Event) {
     const checkbox = event.target as HTMLInputElement;
     if (checkbox.checked) {
       this.selectedSubcategorias.push(checkbox.value);
     } else {
-      this.selectedSubcategorias = this.selectedSubcategorias.filter(s => s !== checkbox.value);
+      this.selectedSubcategorias = this.selectedSubcategorias.filter(
+        (s) => s !== checkbox.value,
+      );
     }
     this.updateProducts();
   }
@@ -174,21 +187,25 @@ export default class CatalogoComponent implements OnInit {
     if (checkbox.checked) {
       this.selectedMarcas.push(checkbox.value);
     } else {
-      this.selectedMarcas = this.selectedMarcas.filter(m => m !== checkbox.value);
+      this.selectedMarcas = this.selectedMarcas.filter(
+        (m) => m !== checkbox.value,
+      );
     }
     this.updateProducts();
   }
-  orderminmax(){
+  orderminmax() {
     this.sort = 'precio,asc';
     this.updateProducts();
   }
-  ordermaxmin(){
+  ordermaxmin() {
     this.sort = 'precio,desc';
     this.updateProducts();
   }
   toggleCollapse(categoria: string) {
     if (this.collapsedCategorias.includes(categoria)) {
-      this.collapsedCategorias = this.collapsedCategorias.filter(c => c !== categoria);
+      this.collapsedCategorias = this.collapsedCategorias.filter(
+        (c) => c !== categoria,
+      );
     } else {
       this.collapsedCategorias.push(categoria);
     }
