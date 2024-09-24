@@ -8,26 +8,25 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-crear-entidad',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './crear-entidad.component.html',
-  styles: ``
+  styles: ``,
 })
 export class CrearEntidadComponent implements OnInit {
-
-  nuevoCliente: EntidadRequest = {
+  nuevoCliente: any = {
     nombre: '',
+    apellido: '',
     documento: '',
     direccion: '',
     telefono: '',
     email: '',
-    id_tipoEntidad: 1
-  }
+    id_tipoEntidad: 1,
+    RolId: 2,
+  };
 
-  entidades : Entidad[] = [];
+  entidades: Entidad[] = [];
 
-  constructor(
-    private entidadService: EntidadService)
-  {}
+  constructor(private entidadService: EntidadService) {}
 
   ngOnInit(): void {
     this.cargarEntidades();
@@ -39,25 +38,26 @@ export class CrearEntidadComponent implements OnInit {
     this.CreateOpen = true;
   }
 
-
   cargarEntidades() {
-    this.entidadService.getEntidades().subscribe(response => {
-      this.entidades = response;
-    }, error => {
-      console.error('Error al obtener entidades:', error);
-    });
+    this.entidadService.getEntidades().subscribe(
+      (response) => {
+        this.entidades = response;
+      },
+      (error) => {
+        console.error('Error al obtener entidades:', error);
+      },
+    );
   }
 
-  crearEntidad(){
+  crearEntidad() {
     this.entidadService.postEntidad(this.nuevoCliente).subscribe({
       next: () => {
         //actualizar lista clientes
         this.cargarEntidades();
-        console.log('Nuevo cliente cargado.');
-      }, error: (error) => {
-      console.error('Error al crear nueva entidad:', error);
-      }
+      },
+      error: (error) => {
+        console.error('Error al crear nueva entidad:', error);
+      },
     });
   }
-
 }

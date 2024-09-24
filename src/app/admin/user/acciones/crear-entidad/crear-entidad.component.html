@@ -3,7 +3,7 @@
 
 <button (click)="openCModal()"
   class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-  type="submit">Crear Nuevo Producto</button>
+  type="submit">Crear Nueva Entidad</button>
 
   <!-- Crear modal -->
 <div *ngIf="CreateOpen" tabindex="-1" aria-hidden="true" class="fixed inset-0 z-50 overflow-y-auto">
@@ -28,34 +28,49 @@
       <!-- Modal body -->
       <div class="p-4 md:p-5 space-y-4">
         <form>
-          <div class="grid gap-6 md:grid-cols-3">
+          <div class="grid gap-6 md:grid-cols-2">
             <div class="mb-6">
               <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre Entidad</label>
               <input type="text" id="nombre" name="nombre" [(ngModel)]="nuevoCliente.nombre" placeholder="Ingrese el nombre..."
               autocomplete="name"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
             </div>
-
             <div class="mb-6">
-              <label for="nro" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de Entidad</label>
-              <select id="nro" name="nro" [(ngModel)]="nuevoCliente.id_tipoEntidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                  <option value="" disabled selected>Elegir...</option>
-                  <option [value]="1">DNI</option>
-                  <option [value]="4">CARNET EXTRANJERIA</option>
-                  <option [value]="6">RUC</option>
-                  <option [value]="7">PASAPORTE</option>
-              </select>
+              <label for="apellido" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Apellido Entidad</label>
+              <input type="text" id="apellido" name="apellido" [(ngModel)]="nuevoCliente.apellido" placeholder="Ingrese el apellido..."
+              autocomplete="name"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
             </div>
-
+          </div>
+          <div class="grid gap-6 md:grid-cols-2">
             <div class="mb-6">
               <label for="document" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nro. Documento</label>
               <input type="text" id="document" name="document" [(ngModel)]="nuevoCliente.documento" placeholder="Ingrese el nro. documento ..."
                 autocomplete="document"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
             </div>
-
+            <div class="mb-6">
+              <label for="nro" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de Entidad</label>
+              <select id="nro" name="nro" [(ngModel)]="nuevoCliente.id_tipoEntidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="" disabled selected>Elegir...</option>
+                  <option [value]="1" >DNI</option>
+                  <option [value]="4">CARNET EXTRANJERIA</option>
+                  <option [value]="6">RUC</option>
+                  <option [value]="7">PASAPORTE</option>
+              </select>
+            </div>
           </div>
-
+          
+          <div class="mb-6">
+            <label for="rol" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rol</label>
+            <select id="rol" name="rol" [(ngModel)]="nuevoCliente.RolId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="" disabled selected>Elegir...</option>
+                <option [value]="1">ADMINISTRADOR</option>
+                <option [value]="2">VENDEDOR</option>
+                <option [value]="3">ALMACENERO</option>
+                <option [value]="4">CLIENTE</option>
+            </select>
+          </div>
           <div class="mb-6">
             <label for="direc" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dirección</label>
             <input type="text" id="direc" name="direc" [(ngModel)]="nuevoCliente.direccion" placeholder="Ingrese la dirección..."
@@ -64,7 +79,7 @@
 
           <div class="mb-6">
             <label for="telf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nro. Telefono</label>
-            <input type="number" id="telf" name="telf" [(ngModel)]="nuevoCliente.telefono" placeholder="Ingrese nro. telefono..."
+            <input type="tel" id="telf" name="telf" [(ngModel)]="nuevoCliente.telefono" placeholder="Ingrese nro. telefono..."
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
           </div>
 
@@ -76,7 +91,7 @@
 
           <button
             class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            type="submit" (click)="crearEntidad()" >Ingresar Nueva Entidad
+            type="submit" (click)="crearEntidad()" >Crear Nueva Entidad
           </button>
         </form>
       </div>

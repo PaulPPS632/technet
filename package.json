@@ -18,7 +18,7 @@
     "@angular/platform-browser": "^18.1.0",
     "@angular/platform-browser-dynamic": "^18.1.0",
     "@angular/router": "^18.1.0",
-    "@lyracom/embedded-form-glue": "^1.4.2",
+    "@lyracom/embedded-form-glue": "^1.4.2", 
     "@ng-bootstrap/ng-bootstrap": "^17.0.0",
     "@popperjs/core": "^2.11.8",
     "@types/uuid": "^10.0.0",

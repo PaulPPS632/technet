@@ -8,14 +8,9 @@ import { UserService } from '../../../admin/services/user.service';
   templateUrl: './datos-cliente.component.html',
 })
 export default class DatosClienteComponent implements OnInit {
-  constructor(private userService: UserService)
-  {}
   datos: any;
   ngOnInit(): void {
-    this.userService.getUsuario().subscribe(res => {
-      console.log(res);
-      this.datos = res;});
+    this.datos = JSON.parse(localStorage.getItem('User')!);
+    console.log(this.datos);
   }
-
-
 }

@@ -2,43 +2,45 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
-import { UserInfo } from '../../../models/user-info';
-import { RolResponse } from '../../../models/rol-response';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-asignar-rol',
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './asignar-rol.component.html',
-  styles: ``
+  styles: ``,
 })
 export class AsignarRolComponent implements OnInit {
-
-  constructor (
-    private usuarioService: UserService
-  ){
-  }
+  constructor(private usuarioService: UserService) {}
 
   @Input() usuario: any;
-  selectedRole: string | null=null;
+  selectedRole: string | null = null;
   ngOnInit(): void {
-    this.selectedRole = this.usuario.rol.nombre;
+    this.selectedRole = this.usuario.Rol.id;
   }
 
-  asignarRol(){
+  asignarRol() {
     if (this.usuario != null && this.selectedRole != null) {
-
-      this.usuario.rol = this.selectedRole;
-
-      this.usuarioService.putUsuario(this.usuario).subscribe(
-        _response => {
-          console.log("rol asignado");
+      const req = {
+        id: this.usuario.id,
+        rolId: this.selectedRole ? this.selectedRole : 0,
+      };
+      this.usuarioService.putUsuario(req).subscribe(
+        (_response) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Rol Actualizado Correctamente',
+            text: _response.message,
+          });
         },
-        _error => {
-          console.log("rol no asignado");
-        }
+        (_error) => {
+          Swal.fire({
+            icon: 'error',
+            title: _error.error.message,
+          });
+        },
       );
     }
-
   }
 }

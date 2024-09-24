@@ -7,25 +7,24 @@ import { environment } from '../../../environments/environment.development';
 import { EntidadRequest } from '../models/entidad-request';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class EntidadService {
+  apiUrl: string = environment.API_URL;
 
-  apiUrl: string = environment.API_URL+"/inventory/entidad";
-
-  constructor(private http: HttpClient, private cookiesService: CookieService) { }
+  constructor(private http: HttpClient) {}
   headers = new HttpHeaders({
-    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    Authorization: `Bearer ${localStorage.getItem('authToken')}`,
   });
   getEntidades(): Observable<Entidad[]> {
-    return this.http.get<Entidad[]>(this.apiUrl, {headers: this.headers});
+    return this.http.get<Entidad[]>(this.apiUrl + '/inventory/entidad', {
+      headers: this.headers,
+    });
   }
 
-  postEntidad(entidad: EntidadRequest): Observable<any> {
-    return this.http.post<EntidadRequest>(`${this.apiUrl}`, entidad, {headers: this.headers});
+  postEntidad(entidad: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/inventory/entidad`, entidad, {
+      headers: this.headers,
+    });
   }
-
-  
-
 }

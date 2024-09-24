@@ -10,8 +10,8 @@ export const authGuard: CanActivateFn = (_route, _state) => {
   const router = inject(Router);
 
   return authService.isLoggedIn().pipe(
-    map(response => {
-      if (response.estado && response.rol != "cliente") {
+    map((response) => {
+      if (response.estado && response.rol != 'cliente') {
         return true;
       } else {
         router.navigate(['/sesion/sign-in']);
@@ -21,7 +21,6 @@ export const authGuard: CanActivateFn = (_route, _state) => {
     catchError(() => {
       router.navigate(['/sesion/sign-in']);
       return of(false);
-    })
+    }),
   );
-
 };

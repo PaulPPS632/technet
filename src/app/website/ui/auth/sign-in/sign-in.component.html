@@ -66,14 +66,34 @@
 
               <div class="mb-6">
                 <label for="username_r" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                <input type="text" id="username_r" name="username_r" placeholder="Ingrese nombre del usuario..." [(ngModel)]="username_r" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                <input type="text" id="username_r" name="username_r" placeholder="Ingrese nombre del usuario..." [(ngModel)]="UserNew.email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
               </div>
 
               <div class="mb-6">
                 <label for="password_r" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
-                <input type="password" id="password_r" name="password_r" placeholder="Ingrese contraseña del usuario..." [(ngModel)]="password_r" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                <input type="password" id="password_r" name="password_r" placeholder="Ingrese contraseña del usuario..." [(ngModel)]="UserNew.password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
               </div>
-
+              
+              <div class="mb-6">
+                <label for="nombre_r" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                <input type="text" id="nombre_r" name="nombre_r" placeholder="Ingrese contraseña del usuario..." [(ngModel)]="UserNew.nombre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+              </div>
+              <div class="mb-6">
+                <label for="apellido_r" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Apellido</label>
+                <input type="text" id="apellido_r" name="apellido_r" placeholder="Ingrese contraseña del usuario..." [(ngModel)]="UserNew.apellido" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+              </div>
+              <div class="mb-6">
+                <label for="documento_r" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Documento</label>
+                <input type="text" id="documento_r" name="documento_r" placeholder="Ingrese el Documento..." [(ngModel)]="UserNew.documento" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+              </div>
+              <div class="mb-6">
+                <label for="direccion_r" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Direccion</label>
+                <input type="text" id="direccion_r" name="direccion_r" placeholder="Ingrese direccion del usuario..." [(ngModel)]="UserNew.direccion" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+              </div>
+              <div class="mb-6">
+                <label for="telefono_r" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefono/Celular</label>
+                <input type="text" id="telefono_r" name="telefono_r" placeholder="Ingrese telefono/celular del usuario..." [(ngModel)]="UserNew.telefono" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+              </div>
               <button
               class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               type="submit">Crear</button>

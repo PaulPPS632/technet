@@ -3,18 +3,18 @@ import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../admin/services/auth.service';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 declare const initFlowbite: any;
 
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [CommonModule,RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './sign-in.component.html',
-  styles: ``
+  styles: ``,
 })
 export default class SignInComponent implements OnInit {
-
   //register
   email_r: string = '';
   password_r: string = '';
@@ -26,12 +26,21 @@ export default class SignInComponent implements OnInit {
   router = inject(Router);
 
   CreateOpen = false;
+  UserNew = {
+    email: '',
+    password: '',
+    nombre: '',
+    apellido: '',
+    documento: '',
+    direccion: '',
+    telefono: '',
+    TipoEntidadId: 1,
+  };
   openCModal() {
     this.CreateOpen = true;
   }
 
   ngOnInit() {
-
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         //Flowbite se inicia después de que se haya cargado la pagina
@@ -41,36 +50,39 @@ export default class SignInComponent implements OnInit {
   }
 
   register() {
-    const registerRequest = {
-      username: this.username_r,
-      email: this.username_r,
-      password: this.password_r,
-      rol: 'cliente'
-    };
-
-    this.authService.register(registerRequest).subscribe(response => {
-      console.log('Registro satisfactorio:', response);
-      this.CreateOpen = false;
-    }, error => {
-      console.error('Registro fallido:', error);
-    });
-  }
-
-  login(){
-    this.authService.Logged(this.email, this.password).subscribe(
-      response => {
-
-        if(response.rol == "cliente"){
-          this.router.navigate(['/panel']);
-        }else{
-          this.router.navigate(['/dashboard']);
-        }
+    this.authService.register(this.UserNew).subscribe(
+      (response) => {
+        this.CreateOpen = false;
+        Swal.fire({
+          icon: 'success',
+          title: 'Entidad Registrada',
+          text: 'Se ha registrado documento: ' + response.documento,
+        });
       },
-      error => {
-        console.error('Login failed', error);
-      }
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: error.error.message,
+        });
+      },
     );
   }
 
-
+  login() {
+    this.authService.Logged(this.email, this.password).subscribe(
+      (response) => {
+        if (response.usuario.Rol.nombre == 'cliente') {
+          this.router.navigate(['/panel']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: error.error.message,
+        });
+      },
+    );
+  }
 }

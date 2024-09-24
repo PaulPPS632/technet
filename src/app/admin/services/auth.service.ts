@@ -3,15 +3,15 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { map, Observable, tap } from 'rxjs';
 
-interface authresponse{
-token: string,
-username: string,
-rol: string
+interface authresponse {
+  token: string;
+  username: string;
+  rol: string;
 }
-interface response{
-  estado:boolean,
-  username:string,
-  rol: string
+interface response {
+  estado: boolean;
+  username: string;
+  rol: string;
 }
 
 interface RegisterRequest {
@@ -22,49 +22,47 @@ interface RegisterRequest {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  apiUrl: string = environment.API_URL+"/auth";
-  constructor(private http: HttpClient) { }
+  apiUrl: string = environment.API_URL + '/auth';
+  constructor(private http: HttpClient) {}
 
-  register(registerRequest: RegisterRequest): Observable<authresponse> {
-    return this.http.post<authresponse>(`${this.apiUrl}/register`, registerRequest).pipe(
-      tap(response => {
+  register(registerRequest: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, registerRequest).pipe(
+      tap((response) => {
         localStorage.setItem('authToken', response.token);
         localStorage.setItem('rol', response.rol);
-        localStorage.setItem('username', response.username);
-      })
+        localStorage.setItem('User', response.username);
+      }),
     );
   }
 
-  isLoggedIn(): Observable<response> {
+  isLoggedIn(): Observable<any> {
     const request = {
-      token: localStorage.getItem('authToken')
+      token: localStorage.getItem('authToken'),
     };
-    console.log("ingresa isloggedin");
-    return this.http.post<response>(`${this.apiUrl}/validate`, request).pipe(
-      map(res => ({
+    console.log('ingresa isloggedin');
+    return this.http.post<any>(`${this.apiUrl}/validate`, request).pipe(
+      map((res) => ({
         estado: res.estado,
-        username: res.username,
-        rol: res.rol
-      }))
+        rol: res.rol,
+        user: res.user,
+      })),
     );
   }
 
-
-
-  Logged(username: string, password:string): Observable<authresponse>{
+  Logged(email: string, password: string): Observable<any> {
     const loginRequest = {
-      username,
-      password
+      email,
+      password,
     };
-    return this.http.post<authresponse>(`${this.apiUrl}/login`, loginRequest).pipe(
-      tap(response => {
+    return this.http.post<any>(`${this.apiUrl}/login`, loginRequest).pipe(
+      tap((response) => {
         localStorage.setItem('authToken', response.token);
-        localStorage.setItem('rol', response.rol);
-        localStorage.setItem('username', response.username);
-      })
+        //localStorage.setItem('rol', response.rol);
+        localStorage.setItem('User', JSON.stringify(response.usuario));
+      }),
     );
   }
 

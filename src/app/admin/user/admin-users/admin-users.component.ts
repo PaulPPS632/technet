@@ -10,30 +10,24 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [AsignarRolComponent, FormsModule, CommonModule],
   templateUrl: './admin-users.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
-
 export class AdminUsersComponent implements OnInit {
-
-  constructor(private usuarioService: UserService)
-  { }
-  DetalleOpen= false;
+  constructor(private usuarioService: UserService) {}
+  DetalleOpen = false;
   Usuarios: any[] = [];
   UsuarioSelect: any;
   UsuarioPrincipal: any;
   ngOnInit(): void {
-    this.usuarioService.getUsuariosDeshboard().subscribe(res => {
+    this.usuarioService.getUsuariosDeshboard().subscribe((res) => {
       this.Usuarios = res;
-      this.UsuarioPrincipal = this.Usuarios.find((user) => user.username == localStorage.getItem("username")
-      );
+      this.UsuarioPrincipal = JSON.parse(localStorage.getItem('User')!);
     });
   }
-  EditarRol(id: string){
-    this.UsuarioSelect = this.Usuarios.find((user) => user.id == id)
-    if(this.UsuarioSelect){
+  EditarRol(usuario: any) {
+    this.UsuarioSelect = usuario;
+    if (this.UsuarioSelect) {
       this.DetalleOpen = true;
     }
   }
-
 }

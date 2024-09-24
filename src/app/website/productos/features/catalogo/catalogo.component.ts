@@ -28,6 +28,7 @@ export default class CatalogoComponent implements OnInit {
 
   search: string = '';
   sort: string = '';
+  page: number = 0;
   selectedCategorias: string[] = [];
   selectedSubcategorias: string[] = [];
   selectedMarcas: string[] = [];
@@ -50,7 +51,7 @@ export default class CatalogoComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe((params) => {
-      const page = params['page'] || 0;
+      this.page = params['page'] || 0;
       const search = params['search'] || '';
       const size = params['size'] || 10;
       const sort = params['sort'] || '';
@@ -59,7 +60,7 @@ export default class CatalogoComponent implements OnInit {
       const subcategoria = params['subcategoria'] || '';
       this.search = this.productsState.state().search;
       this.productsState.loadProducts(
-        page,
+        this.page,
         search,
         size,
         sort,
@@ -72,22 +73,18 @@ export default class CatalogoComponent implements OnInit {
   }
 
   changePage() {
-    const page = this.productsState.state().page + 1;
-    this.productsState.changePage$.next({
-      page: page,
-      search: this.search,
-      size: 10,
-      sort: this.sort,
-      marca: this.selectedMarcas.join(','), // Puedes ajustar esto según tus necesidades
-      categoria: this.selectedCategorias.join(','),
-      subcategoria: this.selectedSubcategorias.join(','),
-    });
+    const page1 = ++this.productsState.state().page;
+    this.page = page1;
+    this.updateProducts();
   }
-
+  changePreviusPage() {
+    const page1 = --this.productsState.state().page;
+    this.page = page1;
+    this.updateProducts();
+  }
   private updateProducts(): void {
-    const queryParams: any = {
-      page: 0,
-    };
+    const queryParams: any = {};
+    queryParams.page = this.productsState.state().page ?? 0;
     queryParams.search = this.productsState.state().search ?? '';
     queryParams.sort = this.sort ?? '';
     queryParams.marca = this.selectedMarcas.join(',') ?? '';
@@ -194,11 +191,11 @@ export default class CatalogoComponent implements OnInit {
     this.updateProducts();
   }
   orderminmax() {
-    this.sort = 'precio,asc';
+    this.sort = 'ASC';
     this.updateProducts();
   }
   ordermaxmin() {
-    this.sort = 'precio,desc';
+    this.sort = 'DESC';
     this.updateProducts();
   }
   toggleCollapse(categoria: string) {
