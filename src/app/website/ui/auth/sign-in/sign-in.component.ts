@@ -56,7 +56,7 @@ export default class SignInComponent implements OnInit {
         Swal.fire({
           icon: 'success',
           title: 'Entidad Registrada',
-          text: 'Se ha registrado documento: ' + response.documento,
+          text: response.message,
         });
       },
       (error) => {

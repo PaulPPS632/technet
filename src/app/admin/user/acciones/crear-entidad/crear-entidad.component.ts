@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { EntidadRequest } from '../../../models/entidad-request';
 import { Entidad } from '../../../models/entidad-response';
 import { EntidadService } from '../../../services/entidad.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-entidad',
@@ -20,6 +20,7 @@ export class CrearEntidadComponent implements OnInit {
     direccion: '',
     telefono: '',
     email: '',
+    password: '',
     id_tipoEntidad: 1,
     RolId: 2,
   };
@@ -50,14 +51,23 @@ export class CrearEntidadComponent implements OnInit {
   }
 
   crearEntidad() {
-    this.entidadService.postEntidad(this.nuevoCliente).subscribe({
-      next: () => {
+    this.entidadService.postEntidad(this.nuevoCliente).subscribe(
+      (response) => {
         //actualizar lista clientes
+        Swal.fire({
+          icon: 'success',
+          title: 'Venta Registrada',
+          text: response.message,
+        });
         this.cargarEntidades();
       },
-      error: (error) => {
-        console.error('Error al crear nueva entidad:', error);
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en Compra',
+          text: error.error.message,
+        });
       },
-    });
+    );
   }
 }

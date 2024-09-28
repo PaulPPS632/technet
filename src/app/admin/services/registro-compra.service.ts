@@ -35,9 +35,9 @@ export class RegistroCompraService {
   headers = new HttpHeaders({
     Authorization: `Bearer ${localStorage.getItem('authToken')}`,
   });
-  registrar(compraRequest: RegistrarCompraRequest): Observable<void> {
+  registrar(compraRequest: RegistrarCompraRequest): Observable<any> {
     compraRequest.usuario_id = JSON.parse(localStorage.getItem('User')!).id;
-    return this.http.post<void>(this.Url, compraRequest, {
+    return this.http.post<any>(this.Url, compraRequest, {
       headers: this.headers,
     });
   }

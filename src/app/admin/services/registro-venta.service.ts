@@ -32,9 +32,9 @@ export class RegistroVentaService {
   headers = new HttpHeaders({
     Authorization: `Bearer ${localStorage.getItem('authToken')}`,
   });
-  registrar(ventaRequest: RegistrarVentaRequest): Observable<void> {
+  registrar(ventaRequest: RegistrarVentaRequest): Observable<any> {
     ventaRequest.usuario_id = JSON.parse(localStorage.getItem('User')!).id;
-    return this.http.post<void>(this.Url, ventaRequest, {
+    return this.http.post<any>(this.Url, ventaRequest, {
       headers: this.headers,
     });
   }

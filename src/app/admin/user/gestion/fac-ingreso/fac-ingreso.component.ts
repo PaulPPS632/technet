@@ -19,6 +19,7 @@ import { Entidad } from '../../../models/entidad-response';
 import { CurrencyPipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-fac-ingreso',
@@ -131,15 +132,23 @@ export class FacIngresoComponent implements OnInit {
 
   guardarProductos() {
     this.guardarDatos();
-    this.registroCompraService.registrar(this.ventaData).subscribe({
-      next: () => {
+    this.registroCompraService.registrar(this.ventaData).subscribe(
+      (response) => {
         this.ventaData.detalles = [];
+        Swal.fire({
+          icon: 'success',
+          title: 'Compra Registrada',
+          text: response.message,
+        });
       },
-      error: (error) => {
-        console.log('Error al realizar el registro.');
-        console.error('Error al realizar la venta:', error);
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en Compra',
+          text: error.error.message,
+        });
       },
-    });
+    );
   }
 
   //arreglar
@@ -164,6 +173,8 @@ export class FacIngresoComponent implements OnInit {
     this.productoService.getListaProductosFact().subscribe(
       (response: any[]) => {
         this.listaProductos = response;
+        this.filtrolistaProductos = this.listaProductos;
+        console.log(this.filtrolistaProductos);
       },
       (error) => {
         console.error('Error al obtener los productos:', error);
@@ -211,15 +222,15 @@ export class FacIngresoComponent implements OnInit {
       (p) => p.id_producto == this.idproductoSeleccionado,
     );
 
-    console.log('Index:', index);
-
     if (index !== -1) {
-      this.ventaData.detalles[index].series.push(this.serie);
-      const cant = this.ventaData.detalles[index].cantidad + 1;
-      this.ventaData.detalles[index].cantidad = cant;
-      this.ventaData.detalles[index].precio_total =
-        this.ventaData.detalles[index].precio_unitario * cant;
-      this.SeriesProducto = this.ventaData.detalles[index].series;
+      if (!this.ventaData.detalles[index].series.includes(this.serie)) {
+        this.ventaData.detalles[index].series.push(this.serie);
+        const cant = this.ventaData.detalles[index].cantidad + 1;
+        this.ventaData.detalles[index].cantidad = cant;
+        this.ventaData.detalles[index].precio_total =
+          this.ventaData.detalles[index].precio_unitario * cant;
+        this.SeriesProducto = this.ventaData.detalles[index].series;
+      }
     } else {
       const producto = {
         id_producto: this.selectedProducto,
@@ -240,16 +251,17 @@ export class FacIngresoComponent implements OnInit {
   buscarProducto(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const searchText = inputElement.value.toLowerCase();
+
     this.filtrolistaProductos = this.listaProductos;
     if (searchText) {
-      this.listaProductos = this.listaProductos.filter(
+      this.filtrolistaProductos = this.filtrolistaProductos.filter(
         (pro) =>
           //cambiar busqueda (id/nombre/marca) para buscar
           pro.nombre.toLowerCase().includes(searchText) ||
           pro.nombre.toLowerCase().includes(searchText.toLowerCase()),
       );
     } else {
-      this.listaProductos = this.filtrolistaProductos;
+      this.filtrolistaProductos = this.listaProductos;
     }
   }
 
@@ -271,6 +283,7 @@ export class FacIngresoComponent implements OnInit {
       this.filtroEntidad = this.filtroEntidad.filter(
         (pro) =>
           //cambiar busqueda (id/nombre/marca) para buscar
+          pro.id.toLowerCase().includes(searchText) ||
           pro.documento.toLowerCase().includes(searchText) ||
           pro.nombre.toLowerCase().includes(searchText.toLowerCase()),
       );

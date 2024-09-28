@@ -214,24 +214,53 @@ export class InventarioComponent implements OnInit {
   }
 
   guardarCambios() {
+    const formData = new FormData();
+
+    formData.append('producto', JSON.stringify(this.nuevoActua));
+    if (this.selectedFiles.length > 0) {
+      this.selectedFiles.forEach((file) => {
+        formData.append('files', file);
+      });
+    } else {
+      formData.append('files', new Blob(), '');
+    }
+
+    if (this.selectedFilePrincipal) {
+      formData.append('fileprincipal', this.selectedFilePrincipal);
+    } else {
+      formData.append('fileprincipal', new Blob(), '');
+    }
     if (this.name_modal == 'CREAR') {
-      const formData = new FormData();
-
-      formData.append('producto', JSON.stringify(this.nuevoActua));
-      if (this.selectedFiles.length > 0) {
-        this.selectedFiles.forEach((file) => {
-          formData.append('files', file);
-        });
-      } else {
-        formData.append('files', new Blob(), '');
-      }
-
-      if (this.selectedFilePrincipal) {
-        formData.append('fileprincipal', this.selectedFilePrincipal);
-      } else {
-        formData.append('fileprincipal', new Blob(), '');
-      }
       this.productoService.postNuevoProducto(formData).subscribe({
+        next: () => {
+          //actualizar productos
+          this.cargarProductosActualizado();
+          this.nuevoActua = {
+            id: '',
+            nombre: '',
+            pn: '',
+            descripcion: '',
+            stock: 1,
+            precio: 1,
+            MarcaId: 1,
+            CategoriaMarcaId: 1,
+            CategoriaId: 1,
+            SubCategoriaId: 1,
+            garantia_cliente: 0,
+            garantia_total: 0,
+            cantidad: 0,
+            imagen_principal: '',
+            imageurl: [],
+          };
+          this.imagencargadaPrincipal = '';
+          this.imagencarga = [];
+          this.selectedFilePrincipal = null;
+          this.selectedFiles = [];
+          this.EditOpen = false;
+        },
+      });
+    } else {
+      this.productoService.putProducto(formData).subscribe({
         next: () => {
           //actualizar productos
           this.cargarProductosActualizado();
