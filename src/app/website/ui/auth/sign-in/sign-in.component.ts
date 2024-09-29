@@ -15,6 +15,8 @@ declare const initFlowbite: any;
 })
 export default class SignInComponent implements OnInit {
 
+  
+
   //register
   email_r: string = '';
   password_r: string = '';

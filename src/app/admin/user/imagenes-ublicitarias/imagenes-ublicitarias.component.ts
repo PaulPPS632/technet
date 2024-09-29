@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ArchivosService } from '../../services/archivos.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -16,10 +15,8 @@ export class ImagenesUblicitariasComponent implements OnInit{
 
   constructor(
     private router: Router,
-    private archivosService: ArchivosService,
-    private modalService: NgbModal)
+    private archivosService: ArchivosService)
   {}
-
 
   selectedTipo = "";
   imagenescargadas : string[] = [];

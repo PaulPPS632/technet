@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EntidadService } from '../../../services/entidad.service';
 import { ProductoService } from '../../../services/producto.service';
 import { RegistroCompraService } from '../../../services/registro-compra.service';
@@ -27,6 +27,7 @@ export class FacIngresoComponent implements OnInit {
   fechaPago?: string;
 
   producto: ProductoSerieResponse[] = [];
+
   //nuevos datos PAUL
   filtrolistaProductos: ProductoResponse[] =[];
   listaProductos: ProductoResponse[] =[];
@@ -35,6 +36,7 @@ export class FacIngresoComponent implements OnInit {
   nombreproductoSeleccionado: string ='';
   preciounitproductoSeleccionado: number = 0;
   modalRef: NgbModalRef | null = null;
+
   //fin nuevos paul
   tipadoDocumentos: TipadoDocumentos | undefined;
   tipoComprobante: TipoComprobante[] = [];
@@ -47,7 +49,6 @@ export class FacIngresoComponent implements OnInit {
   productosSeleccionados: ProductoSerieRequest[] = [];
 
   nota: string = '';
-  tipoCambio: number = 3;
   formaPago: string = '1';
   RegistroVentaService: any;
 
@@ -70,8 +71,7 @@ export class FacIngresoComponent implements OnInit {
     private productoService: ProductoService,
     private tipadoService: TipadoService,
     private entidadService: EntidadService,
-    private registroCompraService: RegistroCompraService,
-    private modalService: NgbModal)
+    private registroCompraService: RegistroCompraService)
   { }
 
   ventaData : RegistrarCompraRequest = {
@@ -81,7 +81,7 @@ export class FacIngresoComponent implements OnInit {
     id_tipocondicion: this.tipoCondSelec,
     id_tipopago: this.tipoPagoSelec,
     id_tipomoneda: this.tipoMonedaSelec,
-    tipo_cambio: this.tipoCambio,
+    tipo_cambio: 0,
     fecha_emision: '2024-06-01T15:30:00.000',
     fecha_vencimiento: '2024-06-01T15:30:00.000',
     nota: this.nota,
@@ -96,38 +96,8 @@ export class FacIngresoComponent implements OnInit {
 
   };
 
-  guardarDatos(){
-    this.ventaData.documento = this.documento;
-    this.ventaData.documento_cliente = this.entidad;
-    this.ventaData.id_tipocondicion = this.tipoCondSelec;
-    this.ventaData.id_tipopago = this.tipoPagoSelec;
-    this.ventaData.id_tipomoneda= this.tipoMonedaSelec;
-    this.ventaData.tipo_cambio = this.tipoCambio;
-    this.ventaData.nota = this.nota;
-    this.ventaData.gravada = this.totalGravada;
-    this.ventaData.impuesto=  this.igv;
-    this.ventaData.total= this.totalPagar;
-
-    this.ventaData.formapago = this.formaPago;
-
-
-    // Ajustar las fechas para que estén en el formato correcto
-    if (this.fechaEmision) {
-      this.ventaData.fecha_emision = `${this.fechaEmision}T00:00:00.00`;
-    }
-
-    if (this.fechaVencimiento) {
-      this.ventaData.fecha_vencimiento = `${this.fechaVencimiento}T00:00:00.00`;
-    }
-
-    if (this.fechaPago) {
-      this.ventaData.fechapago = `${this.fechaPago}T00:00:00.00`;
-    }
-  }
-
   guardarProductos() {
 
-    this.guardarDatos();
     this.registroCompraService.registrar(this.ventaData).subscribe({
       next: () => {
         this.ventaData.detalles = [];
@@ -157,7 +127,6 @@ export class FacIngresoComponent implements OnInit {
     }
   }
 
-
   cargarProductos() {
     this.productoService.getListaProductos().subscribe((response: ProductoResponse[] )=> {
       this.listaProductos = response;
@@ -166,6 +135,7 @@ export class FacIngresoComponent implements OnInit {
     });
   }
 
+  //Llamar información documento
   cargarTipado(){
     this.tipadoService.getTipadoDocumentos().subscribe(
       data => {
@@ -195,6 +165,7 @@ export class FacIngresoComponent implements OnInit {
     );
   }
 
+  //Lamar información cliente
   cargarClientes(){
     this.entidadService.getEntidades().subscribe(data => {
       this.entidades = data;
@@ -252,6 +223,7 @@ export class FacIngresoComponent implements OnInit {
   ngOnInit(): void {
     this.setFechaEmision();
     this.cargarProductos();
+    
     this.cargarTipado();
     this.cargarClientes();
   }
