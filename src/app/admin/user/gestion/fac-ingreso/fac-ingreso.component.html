@@ -123,15 +123,14 @@
   </div>
 </div>
 
-<!-- Insertar modal -->
 <div *ngIf="InsertOpen" tabindex="-1" aria-hidden="true" class="fixed inset-0 z-50 overflow-y-auto">
-  <!-- Overlay -->
+
   <div class="fixed inset-0 bg-black bg-opacity-50"></div>
 
-  <!-- Modal -->
+
   <div class="relative flex items-center justify-center min-h-screen p-4">
     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-2xl w-full">
-      <!-- Modal header -->
+
       <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 gap-8">
         <div class="flex flex-row justify-between w-full">
           <div>
@@ -155,7 +154,7 @@
           <span class="sr-only">Close modal</span>
         </button>
       </div>
-      <!-- Modal body -->
+
       <div class="p-4 md:p-5 space-y-4">
         <div class="mb-6">
           <label for="insertseries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Serie del Producto</label>
@@ -186,7 +185,6 @@
     </div>
   </div>
 </div>
-
 
 <form>
     <div class="mb-6">
@@ -219,10 +217,10 @@
         </div>
         <div>
             <label for="n_producto" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">.</label>
-            <select #buscadorproducto id="n_producto" name="n_producto" [(ngModel)]="selectedProducto"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select #buscadorproducto id="n_producto" name="n_producto" [(ngModel)]="selectedProducto"  (change)="onChangeProductoSerie($event)"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="" disabled selected>Elegir...</option>
                 @for (marcaitem of filtrolistaProductos; track $index) {
-                  <option (click)="ElegirSeries(marcaitem.id)" [value]="marcaitem.id"> {{marcaitem.nombre}} </option>
+                  <option [value]="marcaitem.id"> {{marcaitem.nombre}}</option>
                 }
             </select>
         </div>

@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CategoriaService } from '../../../../services/categoria.service';
 import { MarcaService } from '../../../../services/marca.service';
+import { ProductoSerieService } from '../../../../services/producto-serie.service';
 
 @Component({
   selector: 'app-inventario-detalle',
@@ -96,6 +97,24 @@ export class InventarioDetalleComponent implements OnInit {
           console.error('Producto no encontrado');
         }
       });
+    });
+  }
+
+   // Series del producto
+   productoSerieService = inject(ProductoSerieService);
+   seriesProducto: any[] = [];
+   ListOpen = false;
+
+   verSeries(idProducto: string) {
+    this.ListOpen = true;
+    this.productoSerieService.getSeriesByProductoId(idProducto).subscribe({
+      next: (series) => {
+        this.seriesProducto = series; // Almacenar las series obtenidas
+        console.log('Series del producto:', this.seriesProducto);
+      },
+      error: (err) => {
+        console.error('Error al obtener las series del producto:', err);
+      },
     });
   }
 

@@ -304,7 +304,13 @@ export class FacIngresoComponent implements OnInit {
     this.fechaPago = `${year}-${month}-${day}`;
   }
 
+  onChangeProductoSerie(event: any) {
+    const selectedId = event.target.value;
+    this.ElegirSeries(selectedId);
+  }
+
   ElegirSeries(idProducto: string | null) {
+
     if (idProducto) {
       this.idproductoSeleccionado = idProducto;
 
@@ -325,6 +331,9 @@ export class FacIngresoComponent implements OnInit {
         this.preciounitproductoSeleccionado = producto.precio;
         this.openIModal();
       }
+    }
+    else{
+      console.log("No hay: ",idProducto);
     }
   }
 
@@ -387,7 +396,7 @@ export class FacIngresoComponent implements OnInit {
     this.InsertOpen = true;
   }
   router = inject(Router);
-  
+
   CrearNuevaEntidad() {
     this.router.navigate(['/dashboard/entidades']);
   }
