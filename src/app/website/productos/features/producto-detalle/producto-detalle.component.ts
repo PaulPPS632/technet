@@ -1,12 +1,10 @@
-import { Component, effect, inject, input, OnInit  } from '@angular/core';
+import { Component, inject, input, OnInit  } from '@angular/core';
 import { ProductDetailSateService } from '../../data-access/productos-detalle-state.service';
 import { CartStateService } from '../../../data-access/cart-state.service';
 import { CurrencyPipe } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { ProductoService } from '../../../../admin/services/producto.service';
-import { ProductoRequest } from '../../../../admin/models/producto-request';
-import { ProductoResponse } from '../../../../admin/models/producto-response';
 
 @Component({
   selector: 'app-producto-detalle',
@@ -15,6 +13,7 @@ import { ProductoResponse } from '../../../../admin/models/producto-response';
   templateUrl: './producto-detalle.component.html',
   providers: [ProductDetailSateService],
 })
+
 export default class ProductoDetalleComponent implements OnInit{
 
   url = environment.API_URL;
@@ -38,6 +37,7 @@ export default class ProductoDetalleComponent implements OnInit{
       })
     });
   }
+
   addToCart() {
     this.cartState.add({
       product: this.producto,

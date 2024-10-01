@@ -387,6 +387,7 @@ export class FacIngresoComponent implements OnInit {
     this.InsertOpen = true;
   }
   router = inject(Router);
+  
   CrearNuevaEntidad() {
     this.router.navigate(['/dashboard/entidades']);
   }
