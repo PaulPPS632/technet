@@ -10,7 +10,7 @@
 @for (categorias of ObjectKeys(Categoria_Producto); track $index) {
   <p class="text-2xl text-center font-extrabold text-gray-800 dark:text-white mb-8">{{categorias}}</p>
   <app-carrusel-cartproduct
-      [productos]="Categoria_Producto[categorias]"
+      [items]="Categoria_Producto[categorias]"
   ></app-carrusel-cartproduct>
 }
 

@@ -2,16 +2,17 @@
     <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
       <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
         <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
+          <p class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">Imagen Referencial *</p>
           <img class="w-full dark:hidden" [src]="imagenprincipal" alt="" />
           <img class="w-full hidden dark:block" [src]="imagenprincipal" alt="" />
           <div class="flex gap-3">
-            <div class="w-16 shadow-md">
-              <img [src]="producto?.imagen_principal" class="w-full object-cover cursor-pointer " alt="imagen" (click)="mostrarimg($event)">
-            </div>
             <div class="flex flex-row gap-2">
               @for (item of producto?.imageurl; track $index) {
                 <div class="w-16 shadow-md">
-                  <img [src]="item" class="w-full object-cover cursor-pointer" alt="imagen" (click)="mostrarimg($event)">
+                  <img [src]="item" class="w-full object-cover cursor-pointer" alt="imagen" 
+                  (click)="mostrarimg($event)" 
+                  (keyup.enter)="mostrarimg($event)" tabindex="0">
+
                 </div>
               }
             </div>
@@ -27,18 +28,8 @@
           {{ producto?.nombre }}
           </h1>
           <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
-            <p
-              class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
-            >
-            {{ producto?.precio| currency }}
-            </p>
-
-            <div class="flex items-center gap-2 mt-2 sm:mt-0">
-              <p class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">
-              {{ producto?.stock }} </p>
-              <p class="text-sm font-medium leading-none text-gray-900 underline hover:no-underline dark:text-white">
-              {{ producto?.pn }} </p>
-            </div>
+            <p class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400"> Pagando con Efectivo </p>
+            <p class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"> {{ producto?.precio | currency:'S/. ' }} - {{ precioEnDolares | currency:'$ ' }} </p>
           </div>
 
           <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
@@ -73,6 +64,9 @@
 
 
           <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
+
+          <p class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">STOCK: {{ producto?.stock }} </p>
+          <p class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">PN: {{ producto?.pn }} </p>
 
           <p class="mb-6 text-gray-500 dark:text-gray-400">
             <b>Información:</b> <br/>

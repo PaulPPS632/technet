@@ -42,7 +42,7 @@ export default class ProductoListaComponent implements OnInit{
 
     this.productoService.getListadoCategoriaProducto(8).subscribe(res => {
       this.Categoria_Producto = res;
-      console.log(this.ObjectKeys(res));
+      //console.log(this.ObjectKeys(res));
     })
   }
 

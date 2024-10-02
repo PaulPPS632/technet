@@ -1,68 +1,69 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, inject, Input, OnInit, signal } from '@angular/core';
 import { CartStateService } from '../../../data-access/cart-state.service';
 import ProductoItemComponent from '../../ui/producto-item/producto-item.component';
+import { register, SwiperContainer } from 'swiper/element/bundle';
+import { SwiperOptions } from 'swiper/types';
 import { ProductoResponse } from '../../../../admin/models/producto-response';
-export interface ICarouselProductItem {
-  id: number;
-  product: any;
-  marginLeft?: number;
-}
+import { CommonModule } from '@angular/common';
+
+register();
 @Component({
   selector: 'app-carrusel-cartproduct',
   standalone: true,
-  imports: [ProductoItemComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [ProductoItemComponent, CommonModule],
   templateUrl: './carrusel-cartproduct.component.html',
 })
 export default class CarruselCartproductComponent implements OnInit {
-  items: ICarouselProductItem[] = [];
-  @Input() height = 200;
-  @Input() productos: any[] = [];
-  multiplePercentaje: number = 50;
+  
   cartState = inject(CartStateService).state;
-  public finalHeight: string | number = 0;
-  public currentPosition = 0;
-  constructor() {
-    this.finalHeight = `${this.height}px`;
-  }
+  @Input() items: any[] = [];
+  @Input() title: string = '';
+  @Input() id: string = 'swiper-' + Math.random().toString(36).substring(2, 15); // Generar un id único para cada carrusel
+
+  swiperElement = signal<SwiperContainer | null>(null);
+  cdr = inject(ChangeDetectorRef);
+  
   ngOnInit(): void {
-    this.generateProductItems();
+    console.log(this.items);
+    // swiper parameters
+    console.log(this.title, this.items.length);
+    this.cdr.detectChanges();
+    const swiperEl = document.querySelector(`.${this.id}`);
+    const maxSlidesPerView = 5;
+    const swiperOption: SwiperOptions = {
+      autoplay: {
+        delay: 5000,
+      },
+      //scrollbar: true,
+      loop: this.items.length > maxSlidesPerView,
+      navigation: {
+        enabled: true,
+        nextEl: '.swiper-button-next-' + this.id,
+        prevEl: '.swiper-button-prev-' + this.id,
+      },
+      breakpoints: {
+        0: {
+          slidesPerView: 2,
+        },
+        825: {
+          slidesPerView: 3,
+        },
+        1024: {
+          slidesPerView: 4,
+        },
+        1200: {
+          slidesPerView: 5,
+        },
+      },
+    };
+    Object.assign(swiperEl!, swiperOption);
+    this.swiperElement.set(swiperEl as SwiperContainer);
+
+    this.swiperElement()?.initialize();
   }
-  generateProductItems(): void {
-    this.items = this.productos.map((product, index) => ({
-      id: index,
-      product: product,
-      marginLeft: 0,
-    }));
-  }
-  setNext() {
-    let finalPercentage = 0;
-    let nextPosition = this.currentPosition + 1;
-    if (nextPosition <= this.items.length - 1) {
-      finalPercentage = -this.multiplePercentaje * nextPosition;
-    } else {
-      nextPosition = 0;
-    }
-    const item = this.items.find((i) => i.id === 0);
-    if (item) {
-      item.marginLeft = finalPercentage;
-    }
-    this.currentPosition = nextPosition;
-  }
-  setBack() {
-    let finalPercentage = 0;
-    let backPosition = this.currentPosition - 1;
-    if (backPosition >= 0) {
-      finalPercentage = -this.multiplePercentaje * backPosition;
-    } else {
-      backPosition = this.items.length - 1;
-      finalPercentage = -this.multiplePercentaje * backPosition;
-    }
-    const item = this.items.find((i) => i.id === 0);
-    if (item) {
-      item.marginLeft = finalPercentage;
-    }
-    this.currentPosition = backPosition;
-  }
+
+  
   addToCart(product: ProductoResponse) {
     this.cartState.add({
       product,
