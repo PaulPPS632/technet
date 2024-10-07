@@ -1,21 +1,18 @@
-@if (product()) {
-  
-}
 
-<a [routerLink]="['/product', product().id]" class="w-64 h-96 flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+<a [routerLink]="['/product', product.id]" class="w-64 h-96 flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
   <div class="h-56 w-full">
-    <img class="mx-auto w-full object-cover dark:hidden" [src]="product().imagen_principal" alt="" />
-    <img class="mx-auto hidden w-full object-cover dark:block" [src]="product().imagen_principal" alt="img" />
+    <img class="mx-auto w-full object-cover dark:hidden" [src]="product.imagen_principal" alt="" />
+    <img class="mx-auto hidden w-full object-cover dark:block" [src]="product.imagen_principal" alt="img" />
   </div>
   <div class="pt-6 flex-grow">
     <p class="text-lg font-semibold leading-tight text-gray-900 dark:text-white truncate">
-      {{product().nombre}}
+      {{product.nombre}}
     </p>
 
     <div class="mt-2 flex items-center gap-3">
       <div class="flex items-center gap-2">
         <p class="font-medium text-gray-500 dark:text-gray-400">Stock:</p>
-        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{product().stock}}</p>
+        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{product.stock}}</p>
       </div>
     </div>
 
@@ -23,13 +20,13 @@
 
   <div class="mt-4 flex items-center justify-between gap-4">
     <button
-      (click)="add($event)"
+      (click)="Agregar()"
       type="button"
       class="flex-1 flex items-center justify-center py-2 px-3 text-lg font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">
       <svg class="h-6 w-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
       </svg>
-      S/. {{product().precio}}
+      S/. {{product.precio}}
     </button>
   </div>
 

@@ -1,4 +1,12 @@
-import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, inject, Input, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  inject,
+  Input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { CartStateService } from '../../../data-access/cart-state.service';
 import ProductoItemComponent from '../../ui/producto-item/producto-item.component';
 import { register, SwiperContainer } from 'swiper/element/bundle';
@@ -15,17 +23,15 @@ register();
   templateUrl: './carrusel-cartproduct.component.html',
 })
 export default class CarruselCartproductComponent implements OnInit {
-  
-  cartState = inject(CartStateService).state;
   @Input() items: any[] = [];
   @Input() title: string = '';
   @Input() id: string = 'swiper-' + Math.random().toString(36).substring(2, 15); // Generar un id único para cada carrusel
 
   swiperElement = signal<SwiperContainer | null>(null);
   cdr = inject(ChangeDetectorRef);
-  
+
   ngOnInit(): void {
-    console.log(this.items);
+    console.log('CAROUSEL ITEMS: ', this.items);
     // swiper parameters
     console.log(this.title, this.items.length);
     this.cdr.detectChanges();
@@ -61,13 +67,5 @@ export default class CarruselCartproductComponent implements OnInit {
     this.swiperElement.set(swiperEl as SwiperContainer);
 
     this.swiperElement()?.initialize();
-  }
-
-  
-  addToCart(product: ProductoResponse) {
-    this.cartState.add({
-      product,
-      quantity: 1,
-    });
   }
 }
