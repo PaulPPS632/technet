@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EntidadService } from '../../../services/entidad.service';
 import { ProductoService } from '../../../services/producto.service';
 import { RegistroCompraService } from '../../../services/registro-compra.service';
@@ -41,7 +40,6 @@ export class FacIngresoComponent implements OnInit {
   idproductoSeleccionado: string = '';
   nombreproductoSeleccionado: string = '';
   preciounitproductoSeleccionado: number = 0;
-  modalRef: NgbModalRef | null = null;
   //fin nuevos paul
   tipadoDocumentos: TipadoDocumentos | undefined;
   tipoComprobante: TipoComprobante[] = [];
@@ -77,8 +75,7 @@ export class FacIngresoComponent implements OnInit {
     private productoService: ProductoService,
     private tipadoService: TipadoService,
     private entidadService: EntidadService,
-    private registroCompraService: RegistroCompraService,
-    private modalService: NgbModal,
+    private registroCompraService: RegistroCompraService
   ) {}
 
   ventaData: RegistrarCompraRequest = {

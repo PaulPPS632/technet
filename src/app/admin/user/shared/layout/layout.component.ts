@@ -12,6 +12,8 @@ import { initFlowbite } from 'flowbite'
 })
 export default class LayoutComponent implements OnInit{
 
+  isSidebarOpen = true;
+
   constructor(private router : Router){}
 
   ngOnInit() {
@@ -21,6 +23,11 @@ export default class LayoutComponent implements OnInit{
       }
     });
   }
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
   Logout(){
     localStorage.removeItem("username");
     localStorage.removeItem("authToken");

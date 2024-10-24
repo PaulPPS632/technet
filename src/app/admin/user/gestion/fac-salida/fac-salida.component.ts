@@ -23,11 +23,6 @@ import { TipadoService } from '../../../services/tipado.service';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import {
-  ModalDismissReasons,
-  NgbModal,
-  NgbModalRef,
-} from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -48,8 +43,6 @@ export default class UsuarioVentaComponent implements OnInit {
   idproductoSeleccionado: string = '';
   nombreproductoSeleccionado: string = '';
   preciounitproductoSeleccionado: number = 0;
-
-  modalRef: NgbModalRef | null = null;
 
   //fin nuevos paul
   tipadoDocumentos: TipadoDocumentos | undefined;
@@ -92,8 +85,7 @@ export default class UsuarioVentaComponent implements OnInit {
     private tipadoService: TipadoService,
     private entidadService: EntidadService,
     private correlativoService: CorrelativoService,
-    private registroVentaService: RegistroVentaService,
-    private modalService: NgbModal,
+    private registroVentaService: RegistroVentaService
   ) {}
 
   toggleDatePicker(fieldId: string) {
@@ -432,37 +424,6 @@ export default class UsuarioVentaComponent implements OnInit {
     );
   }
 
-  //pop up
-  closeResult = '';
-
-  abrirModal(content: any) {
-    if (this.modalRef) {
-      this.modalRef.close();
-    }
-    this.modalRef = this.modalService.open(content, {
-      ariaLabelledBy: 'modal-header modal-title',
-    });
-    this.modalRef.result.then(
-      (result) => {
-        this.closeResult = `Closed with: ${result}`;
-        this.modalRef = null; // Reset the modalRef when the modal is closed
-      },
-      (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        this.modalRef = null; // Reset the modalRef when the modal is dismissed
-      },
-    );
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 
   EditOpen = false;
   InsertOpen = false;

@@ -14,6 +14,8 @@ import DashboardComponent from './dashboard/dashboard.component';
 import { InventarioDetalleComponent } from '../gestion/inventory/inventario-detalle/inventario-detalle.component';
 import { ListCotizacionComponent } from '../gestion/list-cotizacion/list-cotizacion.component';
 import { CotizacionComponent } from '../gestion/cotizacion/cotizacion.component';
+import { CategoriaComponent } from '../gestion/categoria/categoria.component';
+import { MarcaComponent } from '../gestion/marca/marca.component';
 
 export default [
   {
@@ -31,6 +33,8 @@ export default [
       { path: 'publicitarias', component: ImagenesUblicitariasComponent },
       { path: 'entidades', component: CrearEntidadComponent },
       { path: 'cotizaciones', component: ListCotizacionComponent },
+      { path: 'categoria', component: CategoriaComponent },
+      { path: 'marca', component: MarcaComponent },
       { path: 'cotizaciones/nuevo', component: CotizacionComponent },
     ],
   },

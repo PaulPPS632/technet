@@ -94,6 +94,7 @@ export class CotizacionComponent implements OnInit {
       let detalleProducto = this.ventaData.detalles.find(
         (detalle: DetalleVentaRequest) => detalle.id_producto == idProducto,
       );
+      console.log(detalleProducto);
       if (!detalleProducto) {
         const producto = this.listaProductos.find((p) => p.id == idProducto);
         detalleProducto = {
