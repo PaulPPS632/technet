@@ -19,9 +19,19 @@ export class ProductoService {
     Authorization: `Bearer ${localStorage.getItem('authToken')}`,
   });
   getListaProductos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, {
+    //console.log('auth en SERVICE: ', localStorage.getItem('authToken'));
+    return this.http.get<any[]>(`${this.apiUrl}`, {
       headers: this.headers,
     });
+  }
+  getListaPaged(page: number, pageSize: number): Observable<any> {
+    //console.log('auth en SERVICE: ', localStorage.getItem('authToken'));
+    return this.http.get<any[]>(
+      `${this.apiUrl}/paged2?page=${page}&size=${pageSize}`,
+      {
+        headers: this.headers,
+      },
+    );
   }
   getListaProductosFact(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/fact`, { headers: this.headers });
@@ -39,7 +49,14 @@ export class ProductoService {
   getProductoById(id: string): Observable<ProductoResponse> {
     return this.http.get<ProductoResponse>(`${this.apiUrl}/${id}`);
   }
-
+  getProductoSearch(search: string): Observable<ProductoResponse> {
+    return this.http.get<ProductoResponse>(
+      `${this.apiUrl}/search?search=${search}`,
+      {
+        headers: this.headers,
+      },
+    );
+  }
   deleteProducto(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, {
       headers: this.headers,

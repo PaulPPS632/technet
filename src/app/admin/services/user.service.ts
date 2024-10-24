@@ -38,9 +38,6 @@ export class UserService {
     Authorization: `Bearer ${localStorage.getItem('authToken')}`,
   });
   getUsuario(): Observable<UserInfo> {
-    console.log(
-      'ejecuta getusuario username: ' + localStorage.getItem('username'),
-    );
     return this.http.get<UserInfo>(
       `${this.apiUrl}/byusername/${localStorage.getItem('username')}`,
       { headers: this.headers },

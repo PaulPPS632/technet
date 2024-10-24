@@ -71,6 +71,9 @@ export default class SignInComponent implements OnInit {
   login() {
     this.authService.Logged(this.email, this.password).subscribe(
       (response) => {
+        localStorage.setItem('authToken', response.token);
+        //localStorage.setItem('rol', response.rol);
+        localStorage.setItem('User', JSON.stringify(response.usuario));
         if (response.usuario.Rol.nombre == 'cliente') {
           this.router.navigate(['/panel']);
         } else {

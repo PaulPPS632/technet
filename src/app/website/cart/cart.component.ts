@@ -92,7 +92,6 @@ export default class CartComponent implements OnInit {
   CompletarDatos() {
     this.authService.isLoggedIn().subscribe(
       (response) => {
-        console.log('isLoggedIn: ', response);
         if (response.estado) {
           this.username = localStorage.getItem('username');
           this.data.customer.email = response.user.email;

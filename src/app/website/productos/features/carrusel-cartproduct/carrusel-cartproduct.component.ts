@@ -7,11 +7,9 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { CartStateService } from '../../../data-access/cart-state.service';
 import ProductoItemComponent from '../../ui/producto-item/producto-item.component';
 import { register, SwiperContainer } from 'swiper/element/bundle';
 import { SwiperOptions } from 'swiper/types';
-import { ProductoResponse } from '../../../../admin/models/producto-response';
 import { CommonModule } from '@angular/common';
 
 register();
@@ -21,6 +19,7 @@ register();
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [ProductoItemComponent, CommonModule],
   templateUrl: './carrusel-cartproduct.component.html',
+  styleUrl: './carousel-cartproduct.component.css',
 })
 export default class CarruselCartproductComponent implements OnInit {
   @Input() items: any[] = [];
@@ -31,18 +30,15 @@ export default class CarruselCartproductComponent implements OnInit {
   cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
-    console.log('CAROUSEL ITEMS: ', this.items);
     // swiper parameters
-    console.log(this.title, this.items.length);
     this.cdr.detectChanges();
     const swiperEl = document.querySelector(`.${this.id}`);
-    const maxSlidesPerView = 5;
     const swiperOption: SwiperOptions = {
-      autoplay: {
-        delay: 5000,
-      },
+      // autoplay: {
+      //   delay: 5000,
+      // },
       //scrollbar: true,
-      loop: this.items.length > maxSlidesPerView,
+      loop: true,
       navigation: {
         enabled: true,
         nextEl: '.swiper-button-next-' + this.id,

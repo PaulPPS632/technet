@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import Swal from 'sweetalert2';
 
 declare const initFlowbite: any;
 
@@ -18,16 +19,21 @@ declare const initFlowbite: any;
   templateUrl: './inventario.component.html',
 })
 export class InventarioComponent implements OnInit {
-
   url = environment.API_URL;
   productos: any[] = [];
- 
+
   productoEliminar: ProductoResponse[] = [];
   ProductoNombrePedidoSelect: string = '';
   ProductoIdPedidoSelect: string = '';
   ProductoCantidadPedidoSelect: number = 0;
   ProductoNotaPedidoSelect: string = '';
   Pedido: PedidoRequest | null = null;
+
+  totalProductos: number = 0;
+  page: number = 1;
+  pageSize: number = 30;
+  totalPages: number = 0;
+  searchText: string = '';
 
   constructor(
     private router: Router,
@@ -37,7 +43,7 @@ export class InventarioComponent implements OnInit {
 
   CreateOpen = false;
   name_modal = 'CREAR';
-  
+
   openCModal() {
     this.CreateOpen = true;
     this.name_modal = 'CREAR';
@@ -51,14 +57,16 @@ export class InventarioComponent implements OnInit {
       }
     });
 
-    this.cargarProductosActualizado();
+    this.cargarProductosActualizado(this.page, this.pageSize);
   }
 
-  cargarProductosActualizado() {
-    this.productoService.getListaProductos().subscribe(
-      (response) => {
-        this.productos = response;
-        console.log(response);
+  cargarProductosActualizado(page: number, pageSize: number): void {
+    //console.log('auth en LISTA: ', localStorage.getItem('authToken'));
+    this.productoService.getListaPaged(page, pageSize).subscribe(
+      (res) => {
+        this.productos = res.productos;
+        this.totalProductos = res.total;
+        this.totalPages = res.totalPages;
       },
       (error) => {
         console.error('Error al obtener los productos:', error);
@@ -76,21 +84,43 @@ export class InventarioComponent implements OnInit {
         pro.nombre.toUpperCase().includes(searchText),
       );
     } else {
-      this.cargarProductosActualizado();
+      this.cargarProductosActualizado(this.page, this.pageSize);
     }
   }
-
+  searchProductoById(): void {
+    if (this.searchText) {
+      this.productoService.getProductoSearch(this.searchText).subscribe(
+        (res: any) => {
+          this.productos = res; // Mostrar solo la cotización encontrada
+          this.totalPages = 1; // Solo una página de resultados
+        },
+        (error: any) => {
+          // Manejo de error
+          console.error(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text:
+              error.error?.message ||
+              'Ocurrió un error al buscar la cotización.',
+          });
+        },
+      );
+    } else {
+      // Si no hay búsqueda, cargar todas las cotizaciones con paginación
+      this.cargarProductosActualizado(this.page, this.pageSize);
+    }
+  }
   eliminarProducto(id: string): void {
     this.productoService.deleteProducto(id).subscribe(
       () => {
         this.productoEliminar = this.productoEliminar.filter(
           (p) => p.id !== id,
         );
-        console.log('producto eliminado.');
-        this.cargarProductosActualizado();
+        this.cargarProductosActualizado(this.page, this.pageSize);
       },
       (_error) => {
-        console.log('producto no eliminado.');
+        console.error('producto no eliminado.');
       },
     );
   }
@@ -111,7 +141,7 @@ export class InventarioComponent implements OnInit {
         console.log('El pedido ha sido registrado.');
       },
       error: (_error) => {
-        console.log('El pedido no registrado');
+        console.error('El pedido no registrado');
       },
     });
   }
@@ -136,7 +166,13 @@ export class InventarioComponent implements OnInit {
 
   imagencargadaPrincipal: string = '';
   imagencarga: string[] = [];
-
+  refresh(): void {
+    this.cargarProductosActualizado(this.page, this.pageSize);
+  }
+  onPageChange(newPage: number): void {
+    this.page = newPage;
+    this.cargarProductosActualizado(this.page, this.pageSize);
+  }
   abrirModalPedido(content: any, id: string, nombre: string) {
     this.ProductoIdPedidoSelect = id;
     this.ProductoNombrePedidoSelect = nombre;

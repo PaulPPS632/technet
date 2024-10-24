@@ -1,0 +1,112 @@
+<!-- Buscador por ID -->
+<h2 class="text-2xl text-center font-extrabold text-gray-800 dark:text-white">
+  Cotizaciones
+</h2>
+<br />
+<div class="flex justify-between items-center mb-4">
+  <div>
+    <input
+      [(ngModel)]="searchId"
+      class="px-4 py-2 border border-gray-300 rounded-md"
+      type="text"
+      placeholder="Buscar por ID de cotización"
+      (keydown.enter)="searchCotizacionById()"
+    />
+    <button
+      (click)="searchCotizacionById()"
+      class="px-3 py-2 ml-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+    >
+      Buscar
+    </button>
+    <button
+      (click)="refresh()"
+      class="px-3 py-2 ml-2 text-blue-600 bg-transparent border-[1px] border-blue-600 rounded-md hover:bg-blue-600 hover:text-white"
+    >
+      Refresh
+    </button>
+  </div>
+  <button
+    (click)="CrearNuevaCotizacion()"
+    class="px-3 py-2 text-white bg-green-500 rounded-md hover:bg-green-600"
+  >
+    Crear Nueva Cotización
+  </button>
+</div>
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <table
+    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+  >
+    <thead
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
+      <tr>
+        <th scope="col" class="px-6 py-3">Numeracion</th>
+        <th scope="col" class="px-6 py-3">Fecha</th>
+        <th scope="col" class="px-6 py-3">Emisor</th>
+        <th scope="col" class="px-6 py-3">Total</th>
+        <th scope="col" class="px-6 py-3">Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (v of cotizaciones; track $index) {
+        <tr
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+        >
+          <td
+            class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ v.id.toString().padStart(6, "0") }}
+          </td>
+          <td
+            class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ v.fecha_emision.split("T")[0] }}
+          </td>
+
+          <td
+            class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ v.entidadNegocioCotizacion.nombre }}
+          </td>
+
+          <td
+            class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ v.total }}
+          </td>
+          <td class="px-6 py-3">
+            <a
+              [href]="v.url_pdf"
+              target="_blank"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >Pdf</a
+            >
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<div class="flex justify-center mt-4">
+  <button
+    class="px-3 py-1 mx-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+    [disabled]="page === 1"
+    (click)="onPageChange(page - 1)"
+  >
+    Anterior
+  </button>
+
+  <span class="px-3 py-1 mx-1 text-sm font-medium">
+    Página {{ page }} de {{ totalPages }}
+  </span>
+
+  <button
+    class="px-3 py-1 mx-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+    [disabled]="page === totalPages"
+    (click)="onPageChange(page + 1)"
+  >
+    Siguiente
+  </button>
+</div>

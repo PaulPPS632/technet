@@ -174,7 +174,6 @@ export class FacIngresoComponent implements OnInit {
       (response: any[]) => {
         this.listaProductos = response;
         this.filtrolistaProductos = this.listaProductos;
-        console.log(this.filtrolistaProductos);
       },
       (error) => {
         console.error('Error al obtener los productos:', error);
@@ -221,7 +220,7 @@ export class FacIngresoComponent implements OnInit {
     const index = this.ventaData.detalles.findIndex(
       (p) => p.id_producto == this.idproductoSeleccionado,
     );
-
+    if (this.serie === '') return;
     if (index !== -1) {
       if (!this.ventaData.detalles[index].series.includes(this.serie)) {
         this.ventaData.detalles[index].series.push(this.serie);
@@ -243,8 +242,7 @@ export class FacIngresoComponent implements OnInit {
       this.ventaData.detalles.push(producto);
       this.SeriesProducto = [this.serie];
     }
-
-    console.log('Detalle de venta:', this.ventaData.detalles);
+    this.serie = '';
   }
 
   //buscar producto: serie pertenece
@@ -310,7 +308,6 @@ export class FacIngresoComponent implements OnInit {
   }
 
   ElegirSeries(idProducto: string | null) {
-
     if (idProducto) {
       this.idproductoSeleccionado = idProducto;
 
@@ -331,9 +328,6 @@ export class FacIngresoComponent implements OnInit {
         this.preciounitproductoSeleccionado = producto.precio;
         this.openIModal();
       }
-    }
-    else{
-      console.log("No hay: ",idProducto);
     }
   }
 

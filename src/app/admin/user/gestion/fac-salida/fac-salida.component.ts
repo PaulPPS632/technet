@@ -184,8 +184,6 @@ export default class UsuarioVentaComponent implements OnInit {
         this.productoSerie.splice(index, 1);
       }
 
-      console.log('El producto ha sido eliminado de la lista.');
-
       // Eliminar la entrada correspondiente en detalleVenta
       this.detalleVenta = this.detalleVenta.filter(
         (detalle) => detalle.id_producto !== producto.id,
@@ -281,7 +279,7 @@ export default class UsuarioVentaComponent implements OnInit {
         this.ventaData.total = this.totalPagar;
       },
       (error) => {
-        console.log('Producto no encontrado', error);
+        console.error('Producto no encontrado', error);
       },
     );
   }
@@ -290,7 +288,6 @@ export default class UsuarioVentaComponent implements OnInit {
   filtroEntidad: Entidad[] = [];
 
   ngOnInit(): void {
-    console.log(new Date().toISOString());
     this.setFechaEmision();
     this.cargarProductos();
     this.cargarTipado();

@@ -12,31 +12,32 @@ import { ImagenesUblicitariasComponent } from '../../user/imagenes-ublicitarias/
 import { CrearEntidadComponent } from '../../user/acciones/crear-entidad/crear-entidad.component';
 import DashboardComponent from './dashboard/dashboard.component';
 import { InventarioDetalleComponent } from '../gestion/inventory/inventario-detalle/inventario-detalle.component';
+import { ListCotizacionComponent } from '../gestion/list-cotizacion/list-cotizacion.component';
+import { CotizacionComponent } from '../gestion/cotizacion/cotizacion.component';
 
 export default [
-
   {
-    path: '', component: LayoutComponent,
+    path: '',
+    component: LayoutComponent,
     children: [
-      { path: '', component: DashboardComponent},
-      { path: 'comprobantes', component: ComprobantesComponent},
-      { path: 'admin-user', component: AdminUsersComponent},
-      { path: 'pedidos', component: PedidosComponent},
-      { path: 'inventario', component: InventarioComponent},
+      { path: '', component: DashboardComponent },
+      { path: 'comprobantes', component: ComprobantesComponent },
+      { path: 'admin-user', component: AdminUsersComponent },
+      { path: 'pedidos', component: PedidosComponent },
+      { path: 'inventario', component: InventarioComponent },
       { path: 'inventario/:id', component: InventarioDetalleComponent },
-      { path: 'ingreso', component: FacIngresoComponent},
-      { path: 'salida', component: UsuarioVentaComponent},
-      { path: 'publicitarias', component: ImagenesUblicitariasComponent},
-      { path: 'entidades', component: CrearEntidadComponent}
-    ]
+      { path: 'ingreso', component: FacIngresoComponent },
+      { path: 'salida', component: UsuarioVentaComponent },
+      { path: 'publicitarias', component: ImagenesUblicitariasComponent },
+      { path: 'entidades', component: CrearEntidadComponent },
+      { path: 'cotizaciones', component: ListCotizacionComponent },
+      { path: 'cotizaciones/nuevo', component: CotizacionComponent },
+    ],
   },
-
 ] as Routes;
-
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

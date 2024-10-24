@@ -7,19 +7,18 @@ import { FormsModule } from '@angular/forms';
 import { CategoriaService } from '../../../../services/categoria.service';
 import { MarcaService } from '../../../../services/marca.service';
 import { ProductoSerieService } from '../../../../services/producto-serie.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-inventario-detalle',
   standalone: true,
-  imports: [CommonModule,FormsModule],
-  templateUrl: './inventario-detalle.component.html'
+  imports: [CommonModule, FormsModule],
+  templateUrl: './inventario-detalle.component.html',
 })
-
 export class InventarioDetalleComponent implements OnInit {
-
   //Traer Tipado
   productos: any[] = [];
-  categorias: any[] = []; 
+  categorias: any[] = [];
   marcas: any[] = [];
   categoriaservice = inject(CategoriaService);
   marcaservice = inject(MarcaService);
@@ -48,10 +47,11 @@ export class InventarioDetalleComponent implements OnInit {
     imageurl: [],
   };
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private productoService: ProductoService,
   ) {}
-  
+
   ListaCategoriaMarcaSeleccionada: any;
   ListasSubcategoriaSeleccionada: any;
 
@@ -68,7 +68,6 @@ export class InventarioDetalleComponent implements OnInit {
   }
 
   ngOnInit() {
-
     if (this.categorias.length == 0) {
       this.categoriaservice.getAll().subscribe((categorias) => {
         this.categorias = categorias;
@@ -82,31 +81,24 @@ export class InventarioDetalleComponent implements OnInit {
     }
 
     // Obtener el ID de la URL
-    this.route.paramMap.subscribe(params => {
-      this.id = params.get('id') ?? ''; // Almacenar el ID del producto
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id') ?? ''; // Almacenar el ID del producto
 
-      this.productService.getListaProductos().subscribe(productos => {
-        const producto = productos.find(p => p.id === this.id);
-
-        if (producto) {
-          this.nuevoActua = producto;
-          console.log('Producto encontrado:', this.nuevoActua);
-          this.buscarSubC(this.nuevoActua.CategoriaId);
-          this.buscarSubM(this.nuevoActua.MarcaId); 
-        } else {
-          console.error('Producto no encontrado');
-        }
+      this.productService.getProductoById(id).subscribe((res) => {
+        this.nuevoActua = res;
+        this.buscarSubC(this.nuevoActua.CategoriaId);
+        this.buscarSubM(this.nuevoActua.MarcaId);
       });
     });
   }
 
-   // Series del producto
-   productoSerieService = inject(ProductoSerieService);
-   seriesProducto: any[] = [];
-   ListOpen = false;
+  // Series del producto
+  productoSerieService = inject(ProductoSerieService);
+  seriesProducto: any[] = [];
+  ListOpen = false;
 
-   verSeries(idProducto: string) {
-    this.ListOpen = true;
+  verSeries(idProducto: string) {
+    //this.ListOpen = true;
     this.productoSerieService.getSeriesByProductoId(idProducto).subscribe({
       next: (series) => {
         this.seriesProducto = series; // Almacenar las series obtenidas
@@ -178,21 +170,39 @@ export class InventarioDetalleComponent implements OnInit {
 
     this.productoService.putProducto(formData).subscribe({
       next: () => {
-        window.location.reload();
-
+        //window.location.reload();
         // Resetear solo los archivos seleccionados, pero mantener el estado del producto
         this.imagencargadaPrincipal = '';
         this.imagencarga = [];
         this.selectedFilePrincipal = null;
         this.selectedFiles = [];
 
-        console.log('Producto actualizado con éxito.');
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto Actualizado',
+          showConfirmButton: false,
+          timer: 1000,
+        });
       },
       error: (err) => {
         console.error('Error al actualizar el producto:', err);
-      }
+      },
     });
-
   }
-
+  deleteSerie(id: string) {
+    this.productoSerieService.delete(id).subscribe({
+      next: () => {
+        this.verSeries(this.nuevoActua.id);
+        Swal.fire({
+          icon: 'success',
+          title: 'Serie Eliminada',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      },
+      error: (err) => {
+        console.error('Error al eliminar la serie:', err);
+      },
+    });
+  }
 }

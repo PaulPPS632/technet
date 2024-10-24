@@ -36,4 +36,9 @@ export class ProductoSerieService {
       { headers: this.headers },
     );
   }
+  delete(sn: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${sn}`, {
+      headers: this.headers,
+    });
+  }
 }

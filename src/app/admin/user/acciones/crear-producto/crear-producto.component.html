@@ -1,107 +1,255 @@
 <form>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
     <div class="mb-6">
-      <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre Producto</label>
-      <input type="text" id="nombre" name="nombre" [(ngModel)]="nuevoProducto.nombre" placeholder="Ingrese el nombre..."
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-    </div>
-  
-    <div class="mb-6">
-      <label for="pn" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PN Producto</label>
-      <input type="text" id="pn" name="pn" [(ngModel)]="nuevoProducto.pn" placeholder="Ingrese el PN ..."
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-    </div>
-  
-    <div class="mb-6">
-      <label for="stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock</label>
-      <input type="number" id="stock" name="stock" [(ngModel)]="nuevoProducto.stock" placeholder="Ingrese stock del producto..."
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-    </div>
-  
-    <div class="mb-6">
-      <label for="pre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio</label>
-      <input type="number" id="pre" name="pre" [(ngModel)]="nuevoProducto.precio" placeholder="Ingrese el precio..."
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-    </div>
-  
-    <div class="mb-6">
-      <label for="marcaSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Marca</label>
-      <select id="marcaSelect" name="marcaSelect" [(ngModel)]="MarcaSelect" (change)="buscarSubM()" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          <option value="" disabled selected>Elegir...</option>
-          <option *ngFor="let item of Marcas" [value]="item.id"> {{ item.nombre }}</option>
-      </select>  
-    </div>
-  
-    <div class="mb-6">
-      <label for="categoriaMSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Categoria Marca</label>
-      <select id="categoriaMSelect" name="categoriaMSelect" [(ngModel)]="nuevoProducto.id_categoriamarca"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          <option value="" disabled selected>Elegir...</option>
-          <option *ngFor="let item of CategoriaMarca" [value]="item.id"> {{ item.nombre }}</option>
-      </select>  
-    </div>
-  
-    <div class="mb-6">
-      <label for="categoriaSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Categoria</label>
-      <select id="categoriaSelect" name="categoriaSelect" [(ngModel)]="CategoriaSelect" (change)="buscarSubC()" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          <option value="" disabled selected>Elegir...</option>
-          <option *ngFor="let item of Categorias" [value]="item.id"> {{ item.nombre }}</option>
-      </select>  
-    </div>
-  
-    <div class="mb-6">
-      <label for="ScategoriaSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Sub Categoria</label>
-      <select id="ScategoriaSelect" name="ScategoriaSelect" [(ngModel)]="nuevoProducto.id_subcategoria"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          <option value="" disabled selected>Elegir...</option>
-          <option *ngFor="let item of Subcategoria" [value]="item.id"> {{ item.nombre }}</option>
-      </select>  
+      <label
+        for="nombre"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Nombre Producto</label
+      >
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        [(ngModel)]="nuevoProducto.nombre"
+        placeholder="Ingrese el nombre..."
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
     </div>
 
+    <div class="mb-6">
+      <label
+        for="pn"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >PN Producto</label
+      >
+      <input
+        type="text"
+        id="pn"
+        name="pn"
+        [(ngModel)]="nuevoProducto.pn"
+        placeholder="Ingrese el PN ..."
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
+    </div>
+
+    <div class="mb-6">
+      <label
+        for="stock"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Stock</label
+      >
+      <input
+        type="number"
+        id="stock"
+        name="stock"
+        [(ngModel)]="nuevoProducto.stock"
+        placeholder="Ingrese stock del producto..."
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
+    </div>
+
+    <div class="mb-6">
+      <label
+        for="pre"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Precio</label
+      >
+      <input
+        type="number"
+        id="pre"
+        name="pre"
+        [(ngModel)]="nuevoProducto.precio"
+        placeholder="Ingrese el precio..."
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
+    </div>
+
+    <div class="mb-6">
+      <label
+        for="marcaSelect"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Seleccionar Marca</label
+      >
+      <select
+        id="marcaSelect"
+        name="marcaSelect"
+        [(ngModel)]="MarcaSelect"
+        (change)="buscarSubM()"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      >
+        <option value="" disabled selected>Elegir...</option>
+        <option *ngFor="let item of Marcas" [value]="item.id">
+          {{ item.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-6">
+      <label
+        for="categoriaMSelect"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Seleccionar Categoria Marca</label
+      >
+      <select
+        id="categoriaMSelect"
+        name="categoriaMSelect"
+        [(ngModel)]="nuevoProducto.CategoriaMarcaId"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      >
+        <option value="" disabled selected>Elegir...</option>
+        <option *ngFor="let item of CategoriaMarca" [value]="item.id">
+          {{ item.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-6">
+      <label
+        for="categoriaSelect"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Seleccionar Categoria</label
+      >
+      <select
+        id="categoriaSelect"
+        name="categoriaSelect"
+        [(ngModel)]="CategoriaSelect"
+        (change)="buscarSubC()"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      >
+        <option value="" disabled selected>Elegir...</option>
+        <option *ngFor="let item of Categorias" [value]="item.id">
+          {{ item.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-6">
+      <label
+        for="ScategoriaSelect"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Seleccionar Sub Categoria</label
+      >
+      <select
+        id="ScategoriaSelect"
+        name="ScategoriaSelect"
+        [(ngModel)]="nuevoProducto.SubCategoriaId"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      >
+        <option value="" disabled selected>Elegir...</option>
+        <option *ngFor="let item of Subcategoria" [value]="item.id">
+          {{ item.nombre }}
+        </option>
+      </select>
+    </div>
   </div>
 
-    <div class="mb-6">
-      <label for="des" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción</label>
-      <textarea id="des" name="des" [(ngModel)]="nuevoProducto.descripcion" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-    </div>
-  
+  <div class="mb-6">
+    <label
+      for="des"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Descripción</label
+    >
+    <textarea
+      id="des"
+      name="des"
+      [(ngModel)]="nuevoProducto.descripcion"
+      rows="2"
+      class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    ></textarea>
+  </div>
+
   <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
     <div class="mb-6">
-      <label for="gc" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Garantia Cliente</label>
-      <input type="number" id="gc" name="gc" [(ngModel)]="nuevoProducto.garantia_cliente" placeholder="Ingrese la garantía cliente..."
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-    </div>
-  
-    <div class="mb-6">
-      <label for="gt" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Garantia Total</label>
-      <input type="number" id="gt" name="gt" [(ngModel)]="nuevoProducto.garantia_total" placeholder="Ingrese la garantía total..."
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+      <label
+        for="gc"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Garantia Cliente</label
+      >
+      <input
+        type="number"
+        id="gc"
+        name="gc"
+        [(ngModel)]="nuevoProducto.garantia_cliente"
+        placeholder="Ingrese la garantía cliente..."
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
     </div>
 
+    <div class="mb-6">
+      <label
+        for="gt"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Garantia Total</label
+      >
+      <input
+        type="number"
+        id="gt"
+        name="gt"
+        [(ngModel)]="nuevoProducto.garantia_total"
+        placeholder="Ingrese la garantía total..."
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
+    </div>
   </div>
   <div class="mb-6">
-    <label for="archivo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Archivo Principal</label>
-    <input type="file" id="archivo" name="archivo" (change)="onFileChangePrincipal($event)" multiple required class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+    <label
+      for="archivo"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Seleccionar Archivo Principal</label
+    >
+    <input
+      type="file"
+      id="archivo"
+      name="archivo"
+      (change)="onFileChangePrincipal($event)"
+      multiple
+      required
+      class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+    />
   </div>
-    <div class="mb-6">
-      <label for="archivo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccionar Archivo</label>
-      <input type="file" id="archivo" name="archivo" (change)="onFileChange($event)" multiple required class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
-    </div>
-  
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="relative">
-        @for (imagen of imagencarga; track imagen) {
-          <img class="h-auto max-w-full rounded-lg" [src]="imagen" alt="">
-        <button type="button" 
-          class="w-full items-center rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" 
+  <div class="mb-6">
+    <label
+      for="archivo"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Seleccionar Archivo</label
+    >
+    <input
+      type="file"
+      id="archivo"
+      name="archivo"
+      (change)="onFileChange($event)"
+      multiple
+      required
+      class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+    />
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="relative">
+      @for (imagen of imagencarga; track imagen) {
+        <img class="h-auto max-w-full rounded-lg" [src]="imagen" alt="" />
+        <button
+          type="button"
+          class="w-full items-center rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
           (click)="eliminarImagen(imagencarga.indexOf(imagen))"
-        >Eliminar</button>
-        }
-      </div>
+        >
+          Eliminar
+        </button>
+      }
     </div>
+  </div>
 
-    <button
-    class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    type="submit" (click)="guardarProductos()" >Ingresar Nuevo Producto</button>
-
+  <button
+    class="w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    type="submit"
+    (click)="guardarProductos()"
+  >
+    Ingresar Nuevo Producto
+  </button>
 </form>

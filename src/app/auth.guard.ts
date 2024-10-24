@@ -8,7 +8,7 @@ import { of } from 'rxjs/internal/observable/of';
 export const authGuard: CanActivateFn = (_route, _state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-
+  //console.log('auth en GUARD: ', localStorage.getItem('authToken'));
   return authService.isLoggedIn().pipe(
     map((response) => {
       if (response.estado && response.rol != 'cliente') {

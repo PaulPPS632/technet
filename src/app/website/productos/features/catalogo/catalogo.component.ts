@@ -43,7 +43,6 @@ export default class CatalogoComponent implements OnInit {
   ngOnInit() {
     this.categoriaservice.getAll().subscribe((categorias) => {
       this.categorias = categorias;
-      console.log(this.categorias);
     });
 
     this.marcaservice.getAll().subscribe((marcas) => {
@@ -69,7 +68,6 @@ export default class CatalogoComponent implements OnInit {
         subcategoria,
       );
     });
-    console.log('ejecuta oninit');
   }
 
   changePage() {

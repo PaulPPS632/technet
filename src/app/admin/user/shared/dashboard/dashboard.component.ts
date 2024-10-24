@@ -1,25 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterModule } from '@angular/router';
+import {
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterModule,
+} from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { initFlowbite } from 'flowbite'
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule,RouterModule, RouterLink],
-  templateUrl: './dashboard.component.html'
+  imports: [CommonModule, RouterModule, RouterLink],
+  templateUrl: './dashboard.component.html',
 })
-export default class DashboardComponent implements OnInit{
-
-  constructor(private router : Router){}
+export default class DashboardComponent implements OnInit {
+  constructor(private router: Router) {}
 
   ngOnInit() {
+    //console.log('auth en DASHBOARD: ', localStorage.getItem('authToken'));
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         initFlowbite();
       }
     });
   }
-
 }
-
