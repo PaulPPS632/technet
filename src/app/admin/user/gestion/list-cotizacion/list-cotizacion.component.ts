@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 import { CotizacionService } from '../../../services/cotizacion.service';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-list-cotizacion',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CurrencyPipe, FormsModule],
   templateUrl: './list-cotizacion.component.html',
   styleUrl: './list-cotizacion.component.css',
 })

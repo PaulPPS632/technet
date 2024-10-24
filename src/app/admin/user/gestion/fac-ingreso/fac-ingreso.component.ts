@@ -136,6 +136,7 @@ export class FacIngresoComponent implements OnInit {
           icon: 'success',
           title: 'Compra Registrada',
           text: response.message,
+          timer: 1000,
         });
       },
       (error) => {

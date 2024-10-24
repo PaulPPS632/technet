@@ -24,6 +24,7 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-fac-salida',
@@ -85,7 +86,8 @@ export default class UsuarioVentaComponent implements OnInit {
     private tipadoService: TipadoService,
     private entidadService: EntidadService,
     private correlativoService: CorrelativoService,
-    private registroVentaService: RegistroVentaService
+    private registroVentaService: RegistroVentaService,
+    private router: Router,
   ) {}
 
   toggleDatePicker(fieldId: string) {
@@ -153,6 +155,7 @@ export default class UsuarioVentaComponent implements OnInit {
           icon: 'success',
           title: 'Venta Registrada',
           text: response.message,
+          timer: 1000,
         });
       },
       (error) => {
@@ -424,7 +427,6 @@ export default class UsuarioVentaComponent implements OnInit {
     );
   }
 
-
   EditOpen = false;
   InsertOpen = false;
 
@@ -434,5 +436,9 @@ export default class UsuarioVentaComponent implements OnInit {
 
   openIModal() {
     this.InsertOpen = true;
+  }
+
+  CrearNuevaEntidad() {
+    this.router.navigate(['/dashboard/entidades']);
   }
 }
