@@ -52,7 +52,7 @@
           [(ngModel)]="nuevoActua.stock"
           placeholder="Ingrese stock del producto..."
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          required
+          readonly
         />
       </div>
 
@@ -354,7 +354,7 @@
                     height="24"
                     fill="none"
                     viewBox="0 0 24 24"
-                    (click)="deleteSerie(serie.sn)"
+                    (click)="deleteSerie(serie.sn, serie.EstadoProducto.nombre)"
                   >
                     <path
                       stroke="currentColor"

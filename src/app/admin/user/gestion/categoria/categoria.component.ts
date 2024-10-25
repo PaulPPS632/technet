@@ -15,42 +15,44 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './categoria.component.html',
-  styles: ``
+  styles: ``,
 })
 export class CategoriaComponent implements OnInit {
+  CategoriaSelect: number = 0;
+  Categoria: CategoriaResponse[] = [];
+  Subcategoria: SubCategoriaResponse[] = [];
 
-  CategoriaSelect : number = 0;
-  Categoria : CategoriaResponse [] = [];
-  Subcategoria: SubCategoriaResponse [] = [];
-
-
-  nuevaCategoria: CategoriaRequest = { 
-    nombre: '' ,
-    descripcion:''
+  nuevaCategoria: CategoriaRequest = {
+    nombre: '',
+    descripcion: '',
   };
 
   nuevaSubcategoria: SubCategoriaRequest = {
     nombre: '',
     descripcion: '',
-    id_categoria: 0
+    id_categoria: 0,
   };
 
-  constructor( 
+  constructor(
     private categoriaService: CategoriaService,
-    private subcategoriaService: SubcategoriaService) { }
+    private subcategoriaService: SubcategoriaService,
+  ) {}
 
   ngOnInit() {
     this.cargarCategoria();
   }
 
-  cargarCategoria(){
-    this.categoriaService.getAll().subscribe(response => {
-      this.Categoria = response;
-    }, error => {
-      console.error('Error al obtener las categorias:', error);
-    });
+  cargarCategoria() {
+    this.categoriaService.getAll().subscribe(
+      (response) => {
+        this.Categoria = response;
+        this.seleccionarCategoria(response[0].id);
+      },
+      (error) => {
+        console.error('Error al obtener las categorias:', error);
+      },
+    );
   }
-
 
   guardarCategoria() {
     console.log(this.nuevaCategoria);
@@ -64,13 +66,13 @@ export class CategoriaComponent implements OnInit {
         //actualizar categoria
         this.cargarCategoria();
       },
-      error:(error)  => {
+      error: (error) => {
         Swal.fire({
           icon: 'error',
           title: 'Categoria no agregada',
           text: error,
         });
-      }
+      },
     });
   }
 
@@ -93,13 +95,13 @@ export class CategoriaComponent implements OnInit {
           title: 'Error al agregar subcategoría',
           text: error,
         });
-      }
+      },
     });
 
     this.nuevaSubcategoria = {
       nombre: '',
       descripcion: '',
-      id_categoria: this.CategoriaSelect
+      id_categoria: this.CategoriaSelect,
     };
   }
 
@@ -109,9 +111,9 @@ export class CategoriaComponent implements OnInit {
         this.Subcategoria = data;
         console.log('Subcategoria cargada.');
       },
-      error => {
+      (error) => {
         console.error('Error al obtener subcategorías: ', error);
-      }
+      },
     );
   }
 
@@ -122,22 +124,21 @@ export class CategoriaComponent implements OnInit {
       (data: SubCategoriaResponse[]) => {
         this.Subcategoria = data;
       },
-      error => {
+      (error) => {
         console.error('Error: ', error);
-      }
+      },
     );
   }
-
 
   eliminarSubCategoria(id: number) {
     Swal.fire({
       title: '¿Estás seguro?',
-      text: "No podrás revertir esto.",
+      text: 'No podrás revertir esto.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminarlo'
+      confirmButtonText: 'Sí, eliminarlo',
     }).then((result) => {
       if (result.isConfirmed) {
         this.subcategoriaService.deleteSubCategoria(id).subscribe({
@@ -145,7 +146,7 @@ export class CategoriaComponent implements OnInit {
             Swal.fire(
               'Eliminado',
               'La subcategoría ha sido eliminada.',
-              'success'
+              'success',
             );
             this.cargarSubcategorias();
           },
@@ -155,7 +156,7 @@ export class CategoriaComponent implements OnInit {
               title: 'Error al eliminar subcategoría',
               text: error,
             });
-          }
+          },
         });
       }
     });
@@ -175,5 +176,4 @@ export class CategoriaComponent implements OnInit {
     this.name_modal = 'CREAR';
     this.SCOpen = true;
   }
-  
 }

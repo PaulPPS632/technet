@@ -15,38 +15,41 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './marca.component.html',
-  styles: ``
+  styles: ``,
 })
-export class MarcaComponent implements OnInit{
+export class MarcaComponent implements OnInit {
+  MarcaSelect: number = 0;
+  Marca: MarcaResponse[] = [];
+  CategoriaMarca: CategoriaMarcaResponse[] = [];
 
-  MarcaSelect : number = 0;
-  Marca : MarcaResponse [] = [];
-  CategoriaMarca: CategoriaMarcaResponse [] = [];
-
-  nuevaMarca: MarcaRequest = { 
-    nombre: ''
+  nuevaMarca: MarcaRequest = {
+    nombre: '',
   };
 
   nuevaCategoriaMarca: CategoriaMarcaRequest = {
     nombre: '',
-    id_marca: 0
+    id_marca: 0,
   };
 
-  constructor( 
-    private marcaService: MarcaService, 
-    private categoriMarcarService: CategoriamarcaService) { }
+  constructor(
+    private marcaService: MarcaService,
+    private categoriMarcarService: CategoriamarcaService,
+  ) {}
 
   ngOnInit() {
     this.cargarMarca();
   }
 
-  cargarMarca(){
-    this.marcaService.getAll().subscribe(response => {
-      this.Marca = response;
-      console.log(this.Marca);
-    }, error => {
-      console.error('Error al obtener las marcas:', error);
-    });
+  cargarMarca() {
+    this.marcaService.getAll().subscribe(
+      (response) => {
+        this.Marca = response;
+        console.log(this.Marca);
+      },
+      (error) => {
+        console.error('Error al obtener las marcas:', error);
+      },
+    );
   }
 
   guardarMarca() {
@@ -56,23 +59,23 @@ export class MarcaComponent implements OnInit{
           icon: 'success',
           title: 'Marca agregada',
           text: 'La Marca ha sido agregado al inventario.',
-          
+          timer: 1000,
         });
         //actualizar marca
         this.cargarMarca();
+        this.openMCModal();
       },
-      error:(error)  => {
+      error: (error) => {
         Swal.fire({
           icon: 'error',
           title: 'Marca no agregada',
           text: error,
         });
-      }
+      },
     });
   }
 
   guardarCategoriaMarca() {
-
     this.nuevaCategoriaMarca.id_marca = this.MarcaSelect;
 
     this.marcaService.postCategoriaMarca(this.nuevaCategoriaMarca).subscribe({
@@ -81,9 +84,11 @@ export class MarcaComponent implements OnInit{
           icon: 'success',
           title: 'Categoria Marca agregada',
           text: 'La categoria marca ha sido agregada correctamente.',
+          timer: 1000,
         });
         //actualizar Categoria Marca
         this.cargarCategoriaMarca();
+        this.openSCModal();
       },
       error: (error) => {
         Swal.fire({
@@ -91,12 +96,12 @@ export class MarcaComponent implements OnInit{
           title: 'Error al agregar categoria marca',
           text: error,
         });
-      }
+      },
     });
 
     this.nuevaCategoriaMarca = {
       nombre: '',
-      id_marca: this.MarcaSelect
+      id_marca: this.MarcaSelect,
     };
   }
 
@@ -106,9 +111,9 @@ export class MarcaComponent implements OnInit{
         this.CategoriaMarca = data;
         console.log('Categoria marca cargada.');
       },
-      error => {
+      (error) => {
         console.error('Error al obtener categoria marca: ', error);
-      }
+      },
     );
   }
 
@@ -119,21 +124,21 @@ export class MarcaComponent implements OnInit{
       (data: CategoriaMarcaResponse[]) => {
         this.CategoriaMarca = data;
       },
-      error => {
+      (error) => {
         console.error('Error: ', error);
-      }
+      },
     );
   }
 
   eliminarCategoriaMarca(id: number) {
     Swal.fire({
       title: '¿Estás seguro?',
-      text: "No podrás revertir esto.",
+      text: 'No podrás revertir esto.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminarlo'
+      confirmButtonText: 'Sí, eliminarlo',
     }).then((result) => {
       if (result.isConfirmed) {
         this.categoriMarcarService.deleteCategoriaMarca(id).subscribe({
@@ -141,7 +146,7 @@ export class MarcaComponent implements OnInit{
             Swal.fire(
               'Eliminado',
               'La categoria marca ha sido eliminada.',
-              'success'
+              'success',
             );
             this.cargarCategoriaMarca();
           },
@@ -151,30 +156,25 @@ export class MarcaComponent implements OnInit{
               title: 'Error al eliminar categoria marca',
               text: error,
             });
-          }
+          },
         });
       }
     });
   }
 
-  editarCategoriaMarca(id: number){
+  editarCategoriaMarca(id: number) {
     console.log(id);
   }
 
   MCOpen = false;
   SCOpen = false;
 
-  name_modal = 'CREAR';
   openMCModal() {
-    this.name_modal = 'CREAR';
-    this.MCOpen = true;
+    this.MCOpen = !this.MCOpen;
   }
 
   openSCModal() {
     //this.CreateOpen = true;
-    this.name_modal = 'CREAR';
-    this.SCOpen = true;
+    this.SCOpen = !this.SCOpen;
   }
-  
-
 }

@@ -26,6 +26,7 @@ export class ProductoService {
   }
   getListaPaged(page: number, pageSize: number): Observable<any> {
     //console.log('auth en SERVICE: ', localStorage.getItem('authToken'));
+    console.log(this.headers);
     return this.http.get<any[]>(
       `${this.apiUrl}/paged2?page=${page}&size=${pageSize}`,
       {

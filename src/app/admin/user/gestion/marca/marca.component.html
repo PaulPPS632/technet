@@ -1,25 +1,49 @@
-<h1 class="text-2xl font-bold mb-4 text-center">Inventario Marca / Categoria Marca</h1>
+<h1 class="text-2xl font-bold mb-4 text-center">
+  Inventario Marca / Categoria Marca
+</h1>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
   <!-- MARCA -->
-  <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+  <div
+    class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg"
+  >
     <div class="p-4 text-gray-900 dark:text-gray-100">
       <h2 class="text-xl font-semibold mb-4">Tabla Marca</h2>
-      <button type="button" (click)="openMCModal()" class="w-full sm:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Crear Marca</button>
-      
+      <button
+        type="button"
+        (click)="openMCModal()"
+        class="w-full sm:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+      >
+        Crear Marca
+      </button>
+
       <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table
+          class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+        >
+          <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          >
             <tr>
               <th scope="col" class="px-6 py-3">ID</th>
               <th scope="col" class="px-6 py-3">Nombre</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let m of Marca" (click)="seleccionarMarca(m.id)" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{m.id}}</th>
-              <td class="px-6 py-4">{{m.nombre}}</td>
-            </tr>
+            @for (m of Marca; track $index) {
+              <tr
+                (click)="seleccionarMarca(m.id)"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
+              >
+                <th
+                  scope="row"
+                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  {{ m.id }}
+                </th>
+                <td class="px-6 py-4">{{ m.nombre }}</td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>
@@ -27,29 +51,60 @@
   </div>
 
   <!-- CATEGORIA MARCA -->
-  <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+  <div
+    class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg"
+  >
     <div class="p-4 text-gray-900 dark:text-gray-100">
-      <h2 class="text-xl font-semibold mb-4">Tabla SubCategoría</h2>
-      <button type="button" (click)="openSCModal()" class="w-full sm:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Crear SubCategoría</button>
-      
+      <h2 class="text-xl font-semibold mb-4">Tabla Categoria Marca</h2>
+      <button
+        type="button"
+        (click)="openSCModal()"
+        class="w-full sm:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+      >
+        Crear Categoria Marca
+      </button>
+
       <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table
+          class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+        >
+          <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          >
             <tr>
               <th scope="col" class="px-6 py-3">ID</th>
               <th scope="col" class="px-6 py-3">Nombre</th>
-              <th scope="col" class="px-6 py-3">Acción</th>
+              <!-- <th scope="col" class="px-6 py-3">Acción</th> -->
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let cm of CategoriaMarca" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{cm.id}}</th>
-              <td class="px-6 py-4">{{cm.nombre}}</td>
-              <td class="px-6 py-4">
-                <button class="btn btn-danger espacio" (click)="eliminarCategoriaMarca(cm.id)">Eliminar</button>
-                <button class="btn btn-warning" (click)="editarCategoriaMarca(cm.id)">Editar</button>
-              </td>
-            </tr>
+            @for (cm of CategoriaMarca; track $index) {
+              <tr
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
+              >
+                <th
+                  scope="row"
+                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  {{ cm.id }}
+                </th>
+                <td class="px-6 py-4">{{ cm.nombre }}</td>
+                <!-- <td class="px-6 py-4">
+                  <button
+                    class="btn btn-danger espacio"
+                    (click)="eliminarCategoriaMarca(cm.id)"
+                  >
+                    Eliminar
+                  </button>
+                  <button
+                    class="btn btn-warning"
+                    (click)="editarCategoriaMarca(cm.id)"
+                  >
+                    Editar
+                  </button>
+                </td> -->
+              </tr>
+            }
           </tbody>
         </table>
       </div>
@@ -58,84 +113,170 @@
 </div>
 
 <!-- MC modal -->
-<div *ngIf="MCOpen" tabindex="-1" aria-hidden="true" class="fixed inset-0 z-50 overflow-y-auto">
-    <!-- Overlay -->
-    <div class="fixed inset-0 bg-black bg-opacity-50"></div>
-  
-    <!-- Modal -->
-    <div class="relative flex items-center justify-center min-h-screen p-4">
-      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-2xl w-full">
-        <!-- Modal header -->
-        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-            {{name_modal}}
-          </h3>
-          <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" (click)="MCOpen = false">
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-            </svg>
-            <span class="sr-only">Close modal</span>
+<div
+  *ngIf="MCOpen"
+  tabindex="-1"
+  aria-hidden="true"
+  class="fixed inset-0 z-50 overflow-y-auto"
+>
+  <!-- Overlay -->
+  <div class="fixed inset-0 bg-black bg-opacity-50"></div>
+
+  <!-- Modal -->
+  <div class="relative flex items-center justify-center min-h-screen p-4">
+    <div
+      class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-2xl w-full"
+    >
+      <!-- Modal header -->
+      <div
+        class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+      >
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+          CREAR
+        </h3>
+        <button
+          type="button"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          (click)="MCOpen = false"
+        >
+          <svg
+            class="w-3 h-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="p-4 md:p-5 space-y-4">
+        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+          Añadir Marca
+        </h3>
+        <form class="space-y-6" action="#">
+          <div>
+            <label
+              for="nombreCategoria"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Nombre:</label
+            >
+            <input
+              type="text"
+              id="nombreCategoria"
+              [(ngModel)]="nuevaMarca.nombre"
+              name="nombre"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              required
+            />
+          </div>
+          <button
+            type="button"
+            (click)="guardarMarca()"
+            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Guardar Marca
           </button>
-        </div>
-        <!-- Modal body -->
-        <div class="p-4 md:p-5 space-y-4">
-            <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Añadir Marca</h3>
-            <form class="space-y-6" action="#">
-            <div>
-                <label for="nombreCategoria" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre:</label>
-                <input type="text" id="nombreCategoria" [(ngModel)]="nuevaMarca.nombre" name="nombre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
-            </div>
-            <button type="button" (click)="guardarMarca()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar Marca</button>
-            </form>
-        </div>
-  
+        </form>
       </div>
     </div>
+  </div>
 </div>
 
 <!-- SC modal -->
-<div *ngIf="SCOpen" tabindex="-1" aria-hidden="true" class="fixed inset-0 z-50 overflow-y-auto">
-    <!-- Overlay -->
-    <div class="fixed inset-0 bg-black bg-opacity-50"></div>
-  
-    <!-- Modal -->
-    <div class="relative flex items-center justify-center min-h-screen p-4">
-      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-2xl w-full">
-        <!-- Modal header -->
-        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-            {{name_modal}}
-          </h3>
-          <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" (click)="SCOpen = false">
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-            </svg>
-            <span class="sr-only">Close modal</span>
+<div
+  *ngIf="SCOpen"
+  tabindex="-1"
+  aria-hidden="true"
+  class="fixed inset-0 z-50 overflow-y-auto"
+>
+  <!-- Overlay -->
+  <div class="fixed inset-0 bg-black bg-opacity-50"></div>
+
+  <!-- Modal -->
+  <div class="relative flex items-center justify-center min-h-screen p-4">
+    <div
+      class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-2xl w-full"
+    >
+      <!-- Modal header -->
+      <div
+        class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+      >
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+          CREAR
+        </h3>
+        <button
+          type="button"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          (click)="SCOpen = false"
+        >
+          <svg
+            class="w-3 h-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="p-4 md:p-5 space-y-4">
+        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+          Añadir Categoria Marca
+        </h3>
+        <form class="space-y-6" action="#">
+          <div>
+            <label
+              for="nombre"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Nombre:</label
+            >
+            <input
+              type="text"
+              id="nombre"
+              [(ngModel)]="nuevaCategoriaMarca.nombre"
+              name="nombre"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              required
+            />
+          </div>
+          <button
+            type="button"
+            (click)="guardarCategoriaMarca()"
+            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Guardar Categoria Marca
           </button>
-        </div>
-        <!-- Modal body -->
-        <div class="p-4 md:p-5 space-y-4">
-            <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Añadir SubCategoría</h3>
-            <form class="space-y-6" action="#">
-            <div>
-                <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre:</label>
-                <input type="text" id="nombre" [(ngModel)]="nuevaCategoriaMarca.nombre" name="nombre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
-            </div>
-            <button type="button" (click)="guardarCategoriaMarca()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar Categoria Marca</button>
-            </form>
-        </div>
-  
+        </form>
       </div>
     </div>
+  </div>
 </div>
 
-    <!--editar: categoriamarca-->
-    <ng-template #modalEditarCategoriaMarca let-modal>
-      <div class="modal-header d-flex justify-content-center align-items-center">
-        <h2 class="modal-title">Editar Categoria Marca</h2>
-      </div>
-      <div class="modal-body">
-        <!--
+<!--editar: categoriamarca-->
+<ng-template #modalEditarCategoriaMarca let-modal>
+  <div class="modal-header d-flex justify-content-center align-items-center">
+    <h2 class="modal-title">Editar Categoria Marca</h2>
+  </div>
+  <div class="modal-body">
+    <!--
         <form (ngSubmit)="guardarCambios()">
           <div class="form-group">
             <label for="nombreCategoriaMarca">Nombre:</label>
@@ -144,5 +285,5 @@
           <button type="submit" class="btn btn-primary">Guardar Cambios</button>
         </form>
         -->
-      </div>
-    </ng-template>
+  </div>
+</ng-template>

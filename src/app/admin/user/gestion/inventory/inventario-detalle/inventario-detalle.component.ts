@@ -189,20 +189,29 @@ export class InventarioDetalleComponent implements OnInit {
       },
     });
   }
-  deleteSerie(id: string) {
-    this.productoSerieService.delete(id).subscribe({
-      next: () => {
-        this.verSeries(this.nuevoActua.id);
-        Swal.fire({
-          icon: 'success',
-          title: 'Serie Eliminada',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-      },
-      error: (err) => {
-        console.error('Error al eliminar la serie:', err);
-      },
-    });
+  deleteSerie(id: string, estado: string) {
+    if (estado === 'stock') {
+      this.productoSerieService.delete(id).subscribe({
+        next: () => {
+          this.verSeries(this.nuevoActua.id);
+          Swal.fire({
+            icon: 'success',
+            title: 'Serie Eliminada',
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        },
+        error: (err) => {
+          console.error('Error al eliminar la serie:', err);
+        },
+      });
+    } else {
+      Swal.fire({
+        icon: 'info',
+        title: 'No puede eliminar la serie',
+        text: 'no puedes elimar una serie que esta relacionada con una venta o en rma',
+        timer: 2500,
+      });
+    }
   }
 }
