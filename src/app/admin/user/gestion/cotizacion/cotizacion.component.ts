@@ -89,16 +89,19 @@ export class CotizacionComponent implements OnInit {
     this.fechaEmision = `${year}-${month}-${day}`;
     this.fechaVencimiento = `${year}-${month}-${day}`;
   }
-  ElegirSeries(idProducto: string | null) {
-    if (idProducto) {
+  ElegirSeries(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const searchText = inputElement.value.toLowerCase();
+    console.log(searchText);
+    if (searchText) {
       let detalleProducto = this.ventaData.detalles.find(
-        (detalle: DetalleVentaRequest) => detalle.id_producto == idProducto,
+        (detalle: DetalleVentaRequest) => detalle.id_producto == searchText,
       );
       console.log(detalleProducto);
       if (!detalleProducto) {
-        const producto = this.listaProductos.find((p) => p.id == idProducto);
+        const producto = this.listaProductos.find((p) => p.id == searchText);
         detalleProducto = {
-          id_producto: idProducto,
+          id_producto: searchText,
           nombre: producto?.nombre,
           cantidad: 1, // Puedes ajustar según tus necesidades
           series: [],
