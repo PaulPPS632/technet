@@ -6,6 +6,7 @@ import { environment } from '../../../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { ProductoService } from '../../../../admin/services/producto.service';
 import { MonedaService } from '../../../../admin/services/moneda.service';
+import { initFlowbite } from 'flowbite'
 
 @Component({
   selector: 'app-producto-detalle',
@@ -13,6 +14,7 @@ import { MonedaService } from '../../../../admin/services/moneda.service';
   imports: [CurrencyPipe],
   templateUrl: './producto-detalle.component.html',
   providers: [ProductDetailSateService],
+  styleUrls: ['./producto-detalle.component.css']
 })
 
 export default class ProductoDetalleComponent implements OnInit{
@@ -30,6 +32,7 @@ export default class ProductoDetalleComponent implements OnInit{
   constructor(private route: ActivatedRoute, private mond: MonedaService) { }
   
   ngOnInit() {
+    initFlowbite();
     // Obtener el producto primero
     this.route.paramMap.subscribe(params => {
       const id = params.get('id') ?? '';

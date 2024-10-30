@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import DashboardComponent from "../dashboard/dashboard.component";
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { initFlowbite } from 'flowbite'
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-layout',

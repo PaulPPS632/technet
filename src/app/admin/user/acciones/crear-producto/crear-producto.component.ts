@@ -10,11 +10,14 @@ import { CategoriaResponse } from '../../../models/categoria-response';
 import { CategoriaMarcaResponse } from '../../../models/categoriamarca-response';
 import { MarcaResponse } from '../../../models/marca-response';
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-crear-producto',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, QuillModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './crear-producto.component.html',
   styles: ``,
 })
@@ -107,6 +110,7 @@ export class CrearProductoComponent implements OnInit {
   guardarProductos() {
     const formData = new FormData();
     formData.append('producto', JSON.stringify(this.nuevoProducto));
+    console.log(this.nuevoProducto);
 
     if (this.selectedFilePrincipal) {
       formData.append('fileprincipal', this.selectedFilePrincipal);
