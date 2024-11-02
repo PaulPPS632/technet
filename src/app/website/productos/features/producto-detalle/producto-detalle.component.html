@@ -1,43 +1,65 @@
 <section class="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
-    <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
-      <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
-        <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
-          <p class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">Imagen Referencial *</p>
-          <img class="w-full dark:hidden" [src]="imagenprincipal" alt="" />
-          <img class="w-full hidden dark:block" [src]="imagenprincipal" alt="" />
-          <div class="flex gap-3">
-            <div class="flex flex-row gap-2">
-              @for (item of producto?.imageurl; track $index) {
-                <div class="w-16 shadow-md">
-                  <img [src]="item" class="w-full object-cover cursor-pointer" alt="imagen" 
-                  (click)="mostrarimg($event)" 
-                  (keyup.enter)="mostrarimg($event)" tabindex="0">
-
-                </div>
-              }
-            </div>
-            
+  <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
+    <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
+      <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
+        <p
+          class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400"
+        >
+          Imagen Referencial *
+        </p>
+        <img class="w-full dark:hidden" [src]="imagenprincipal" alt="" />
+        <img class="w-full hidden dark:block" [src]="imagenprincipal" alt="" />
+        <div class="flex gap-3">
+          <div class="flex flex-row gap-2">
+            @for (item of producto?.imageurl; track $index) {
+              <div class="w-16 shadow-md">
+                <img
+                  [src]="item"
+                  class="w-full object-cover cursor-pointer"
+                  alt="imagen"
+                  (click)="mostrarimg($event)"
+                  (keyup.enter)="mostrarimg($event)"
+                  tabindex="0"
+                />
+              </div>
+            }
           </div>
-
         </div>
+      </div>
 
-        <div class="mt-6 sm:mt-8 lg:mt-0">
-          <h1
-            class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
-          >
+      <div class="mt-6 sm:mt-8 lg:mt-0">
+        <h1
+          class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
+        >
           {{ producto?.nombre }}
-          </h1>
-          <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
-            <p class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400"> Pagando con Efectivo </p>
-            <p class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"> {{ producto?.precio | currency:'S/. ' }} - {{ precioEnDolares | currency:'$ ' }} </p>
-          </div>
-
-          <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+        </h1>
+        <div class="flex flex-row flex-nowrap justify-between mt-5">
+          <div class="flex flex-col flex-nowrap justify-between">
+            <p
+              class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400"
+            >
+              STOCK: {{ producto?.stock }}
+            </p>
+            <p
+              class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400"
+            >
+              PN: {{ producto?.pn }}
+            </p>
+            <p
+              class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400"
+            >
+              Marca: {{ producto?.Marca }}
+            </p>
+            <p
+              class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400"
+            >
+              Categoria: {{ producto?.Categoria }}
+            </p>
             <a
               (click)="addToCart()"
               (keyup.enter)="addToCart()"
               title=""
-              class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              class="w-fit inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               role="button"
               tabindex="0"
             >
@@ -58,24 +80,43 @@
                   d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
                 />
               </svg>
-              Añadir al carrito
+              <span>Añadir al carrito</span>
             </a>
           </div>
-
-
-          <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
-
-          <p class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">STOCK: {{ producto?.stock }} </p>
-          <p class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">PN: {{ producto?.pn }} </p>
-
-          <p class="mb-6 text-gray-500 dark:text-gray-400">
-            <b>Información:</b> <br/>
-            {{ producto?.descripcion }}
-          </p>
-
-          <div [innerHTML]="producto?.descripcion"></div>
-
+          <div>
+            <div class="flex flex-col flex-nowrap my-2">
+              <p
+                class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400"
+              >
+                Pagando con Efectivo
+              </p>
+              <p
+                class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
+              >
+                {{ precios.precioOrigSol | currency: "S/. " }} -
+                {{ precios.precioOrigDolar | currency: "$ " }}
+              </p>
+            </div>
+            <div class="flex flex-col flex-nowrap my-2">
+              <p
+                class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400"
+              >
+                Pagando con Tarjeta (+5%)
+              </p>
+              <p
+                class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
+              >
+                {{ precios.precio5Sol | currency: "S/. " }} -
+                {{ precios.precio5Dol | currency: "$ " }}
+              </p>
+            </div>
+          </div>
         </div>
+
+        <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
+
+        <div [innerHTML]="producto?.descripcion"></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
