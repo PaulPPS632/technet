@@ -8,11 +8,11 @@ import { CategoriaService } from '../../../../services/categoria.service';
 import { MarcaService } from '../../../../services/marca.service';
 import { ProductoSerieService } from '../../../../services/producto-serie.service';
 import Swal from 'sweetalert2';
-
+import { QuillModule } from 'ngx-quill';
 @Component({
   selector: 'app-inventario-detalle',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, QuillModule],
   templateUrl: './inventario-detalle.component.html',
 })
 export class InventarioDetalleComponent implements OnInit {
