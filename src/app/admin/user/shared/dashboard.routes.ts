@@ -16,6 +16,7 @@ import { ListCotizacionComponent } from '../gestion/list-cotizacion/list-cotizac
 import { CotizacionComponent } from '../gestion/cotizacion/cotizacion.component';
 import { CategoriaComponent } from '../gestion/categoria/categoria.component';
 import { MarcaComponent } from '../gestion/marca/marca.component';
+import { ReportesComponent } from '../reportes/reportes.component';
 
 export default [
   {
@@ -36,6 +37,7 @@ export default [
       { path: 'categoria', component: CategoriaComponent },
       { path: 'marca', component: MarcaComponent },
       { path: 'cotizaciones/nuevo', component: CotizacionComponent },
+      { path: 'reportes', component: ReportesComponent },
     ],
   },
 ] as Routes;

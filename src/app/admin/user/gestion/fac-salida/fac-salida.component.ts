@@ -317,7 +317,9 @@ export default class UsuarioVentaComponent implements OnInit {
     this.fechaPago = `${year}-${month}-${day}`;
   }
 
-  ElegirSeries(idProducto: string | null) {
+  ElegirSeries(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const idProducto = inputElement.value.toLowerCase();
     if (idProducto) {
       this.productoSerieService.getSeriesByProductoId(idProducto).subscribe(
         (res: ProductoSerieResponse[]) => {

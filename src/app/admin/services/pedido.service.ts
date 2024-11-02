@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { Pedido } from '../models/pedido-fomart';
@@ -11,10 +10,7 @@ import { Pedido } from '../models/pedido-fomart';
 export class PedidoService {
   private readonly Url = environment.API_URL + '/inventory/pedidos';
 
-  constructor(
-    private http: HttpClient,
-    private cookiesService: CookieService,
-  ) {}
+  constructor(private http: HttpClient) {}
   headers = new HttpHeaders({
     Authorization: `Bearer ${localStorage.getItem('authToken')}`,
   });

@@ -2,9 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Entidad } from '../models/entidad-response';
 import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../environments/environment.development';
-import { EntidadRequest } from '../models/entidad-request';
 
 @Injectable({
   providedIn: 'root',

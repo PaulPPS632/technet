@@ -1,23 +1,29 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
-import { VentaReporteDto } from '../models/venta-reporte';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReportesService {
+  apiUrl: string = environment.API_URL;
 
-  apiUrl: string = environment.API_URL+"/inventory";
-
-  constructor(private http: HttpClient, private cookiesService: CookieService) {}
-
-  getVentasReporte(): Observable<VentaReporteDto[]> {
-    const headers = new HttpHeaders({
-      'tenantId': this.cookiesService.get('tenantId') // Reemplaza con el valor adecuado
+  constructor(private http: HttpClient) {}
+  headers = new HttpHeaders({
+    Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+  });
+  getVentasReporte(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '/inventory/reportes', {
+      headers: this.headers,
     });
-    return this.http.get<VentaReporteDto[]>(this.apiUrl + "/reportes", {headers});
+  }
+  getproductosMasVendidos(): Observable<any> {
+    return this.http.get<any>(
+      this.apiUrl + '/inventory/reportes/productos-mas-vendidos',
+      {
+        headers: this.headers,
+      },
+    );
   }
 }

@@ -92,7 +92,7 @@ export class CotizacionComponent implements OnInit {
   ElegirSeries(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const searchText = inputElement.value.toLowerCase();
-    console.log(searchText);
+
     if (searchText) {
       let detalleProducto = this.ventaData.detalles.find(
         (detalle: DetalleVentaRequest) => detalle.id_producto == searchText,
