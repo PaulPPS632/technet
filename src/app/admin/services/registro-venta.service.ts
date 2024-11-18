@@ -41,4 +41,14 @@ export class RegistroVentaService {
   Listar(): Observable<VentaResponse[]> {
     return this.http.get<VentaResponse[]>(this.Url, { headers: this.headers });
   }
+  getVenta(id: string): Observable<RegistrarVentaRequest> {
+    return this.http.get<RegistrarVentaRequest>(`${this.Url}/${id}`, {
+      headers: this.headers,
+    });
+  }
+  getpagedVenta(page: number, pageSize: number): Observable<any> {
+    return this.http.get<any>(`${this.Url}?page=${page}&size=${pageSize}`, {
+      headers: this.headers,
+    });
+  }
 }

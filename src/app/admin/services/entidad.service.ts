@@ -25,4 +25,11 @@ export class EntidadService {
       headers: this.headers,
     });
   }
+
+  search(searchText: string): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/inventory/entidad/search?search=${searchText}`,
+      { headers: this.headers },
+    );
+  }
 }

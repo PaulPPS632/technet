@@ -1,7 +1,14 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ProductDetailSateService } from '../../data-access/productos-detalle-state.service';
 import { CartStateService } from '../../../data-access/cart-state.service';
-import { CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { ProductoService } from '../../../../admin/services/producto.service';
@@ -11,7 +18,7 @@ import { initFlowbite } from 'flowbite';
 @Component({
   selector: 'app-producto-detalle',
   standalone: true,
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, CommonModule],
   templateUrl: './producto-detalle.component.html',
   providers: [ProductDetailSateService],
   styleUrls: ['./producto-detalle.component.css'],
@@ -32,6 +39,16 @@ export default class ProductoDetalleComponent implements OnInit {
     precio5Sol: 0,
     precio5Dol: 0,
   };
+
+  @ViewChild('imageRef') imageRef!: ElementRef<HTMLImageElement>;
+
+  zoomStyle = {
+    backgroundImage: '',
+    backgroundPosition: '0% 0%',
+    backgroundSize: '0%',
+  };
+  isZoomActive = false;
+
   constructor(
     private route: ActivatedRoute,
     private mond: MonedaService,
@@ -74,5 +91,26 @@ export default class ProductoDetalleComponent implements OnInit {
   mostrarimg(event: Event) {
     const imgElement = event.target as HTMLImageElement;
     this.imagenprincipal = imgElement.src;
+  }
+
+  zoomImage(event: MouseEvent) {
+    this.isZoomActive = true;
+
+    const rect = this.imageRef.nativeElement.getBoundingClientRect();
+    const x = event.clientX - rect.left; // Posición X del mouse dentro de la imagen
+    const y = event.clientY - rect.top; // Posición Y del mouse dentro de la imagen
+
+    const xPercent = (x / rect.width) * 100;
+    const yPercent = (y / rect.height) * 100;
+
+    this.zoomStyle = {
+      backgroundImage: `url(${this.imagenprincipal})`,
+      backgroundPosition: `${xPercent}% ${yPercent}%`,
+      backgroundSize: '200%', // Tamaño de zoom
+    };
+  }
+
+  resetZoom() {
+    this.isZoomActive = false;
   }
 }

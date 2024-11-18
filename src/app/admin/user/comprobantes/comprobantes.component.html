@@ -39,30 +39,55 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="let v of Documentos"
-        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-      >
-        <th
-          scope="row"
-          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+      @for (v of Documentos; track $index) {
+        <tr
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
         >
-          {{ v.fecha_emision.split("T")[0] }}
-        </th>
-        <td class="px-6 py-4">{{ v.negocio }}</td>
-        <td class="px-6 py-4">{{ v.documento }}</td>
-        <td class="px-6 py-4">{{ v.cliente_documento }}</td>
-        <td class="px-6 py-4">{{ v.cliente }}</td>
-        <td class="px-6 py-4">{{ v.total | currency: "S/. " }}</td>
-
-        <td class="px-6 py-4 text-right">
-          <a
-            href="#"
-            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >Opciones</a
+          <th
+            scope="row"
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
           >
-        </td>
-      </tr>
+            {{ v.fecha_emision.split("T")[0] }}
+          </th>
+          <td class="px-6 py-4">{{ v.negocio }}</td>
+          <td class="px-6 py-4">{{ v.documento }}</td>
+          <td class="px-6 py-4">{{ v.cliente_documento }}</td>
+          <td class="px-6 py-4">{{ v.cliente }}</td>
+          <td class="px-6 py-4">{{ v.total | currency: "S/. " }}</td>
+
+          <td class="px-6 py-4 text-right">
+            <a
+              (click)="redireccionar($index)"
+              (keydown.enter)="redireccionar($index)"
+              (keydown.space)="redireccionar($index)"
+              tabindex="0"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+              >Ver</a
+            >
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
+  <div class="flex justify-center mt-4">
+    <button
+      class="px-3 py-1 mx-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+      [disabled]="page === 1"
+      (click)="onPageChange(page - 1)"
+    >
+      Anterior
+    </button>
+
+    <span class="px-3 py-1 mx-1 text-sm font-medium">
+      Página {{ page }} de {{ totalPages }}
+    </span>
+
+    <button
+      class="px-3 py-1 mx-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+      [disabled]="page === totalPages"
+      (click)="onPageChange(page + 1)"
+    >
+      Siguiente
+    </button>
+  </div>
 </div>

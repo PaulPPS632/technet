@@ -2,15 +2,39 @@
   <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
     <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
       <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
-        <p
+        <!-- <p
           class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400"
         >
           Imagen Referencial *
-        </p>
-        <img class="w-full dark:hidden" [src]="imagenprincipal" alt="" />
-        <img class="w-full hidden dark:block" [src]="imagenprincipal" alt="" />
+        </p> -->
+        <div
+          class="w-full h-full image-container"
+          (mousemove)="zoomImage($event)"
+          (mouseleave)="resetZoom()"
+        >
+          <img
+            class="w-full product-image"
+            [src]="imagenprincipal"
+            alt="IMAGEN PRODUCTO"
+            #imageRef
+          />
+          @if (isZoomActive) {
+            <div class="zoom-area" [ngStyle]="zoomStyle"></div>
+          }
+        </div>
+
         <div class="flex gap-3">
           <div class="flex flex-row gap-2">
+            <div class="w-16 shadow-md">
+              <img
+                [src]="producto?.imagen_principal"
+                class="w-full object-cover cursor-pointer"
+                alt="imagen"
+                (click)="mostrarimg($event)"
+                (keyup.enter)="mostrarimg($event)"
+                tabindex="0"
+              />
+            </div>
             @for (item of producto?.imageurl; track $index) {
               <div class="w-16 shadow-md">
                 <img

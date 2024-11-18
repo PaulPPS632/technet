@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DetalleVentaRequest } from '../../../models/venta-request';
 import { ProductoResponse } from '../../../models/producto-response';
@@ -7,24 +7,25 @@ import { Entidad } from '../../../models/entidad-response';
 import { ProductoService } from '../../../services/producto.service';
 import { EntidadService } from '../../../services/entidad.service';
 import { CotizacionService } from '../../../services/cotizacion.service';
+import { SelectSearchComponent } from '../../../../components/select-search/select-search.component';
 @Component({
   selector: 'app-cotizacion',
   standalone: true,
-  imports: [CurrencyPipe, FormsModule, CommonModule],
+  imports: [CurrencyPipe, FormsModule, CommonModule, SelectSearchComponent],
   templateUrl: './cotizacion.component.html',
   styleUrl: './cotizacion.component.css',
 })
 export class CotizacionComponent implements OnInit {
+  @ViewChild('busqueda', { static: true }) inputBusqueda!: ElementRef;
+  flagbusqueda: boolean;
   fechaEmision?: string;
   fechaVencimiento?: string;
   EditOpen = false;
   detalleVenta: DetalleVentaRequest[] = [];
-  selectedProducto: string = '';
-  selectedEntidad: string = '';
-  entidad: string = '';
+
   entidades: Entidad[] = [];
-  filtroEntidad: Entidad[] = [];
-  idproductoSeleccionado: string = '';
+  listaProductos: ProductoResponse[] = [];
+
   ventaData: any = {
     cliente: {
       id: '',
@@ -41,12 +42,14 @@ export class CotizacionComponent implements OnInit {
     total: this.totalPagar,
     detalles: this.detalleVenta,
   };
-  listaProductos: ProductoResponse[] = [];
+
   constructor(
     private productoService: ProductoService,
     private entidadService: EntidadService,
     private cotizacionService: CotizacionService,
-  ) {}
+  ) {
+    this.flagbusqueda = false;
+  }
   ngOnInit(): void {
     this.setFechaEmision();
     this.cargarProductos();
@@ -76,8 +79,50 @@ export class CotizacionComponent implements OnInit {
   cargarClientes() {
     this.entidadService.getEntidades().subscribe((data) => {
       this.entidades = data;
-      this.filtroEntidad = data;
     });
+  }
+
+  clienteSearch(searchText: string) {
+    this.entidadService.search(searchText).subscribe((data) => {
+      this.entidades = data;
+    });
+  }
+  clienteSelect(id: string) {
+    const entidad = this.entidades.find((e) => e.id == id);
+    this.ventaData.cliente.id = entidad?.id;
+    this.ventaData.cliente.documento = entidad?.documento;
+    this.ventaData.cliente.nombre = entidad?.nombre;
+    this.ventaData.cliente.direccion = entidad?.direccion;
+  }
+
+  productSearch(searchText: string) {
+    this.productoService.getProductoSearch(searchText).subscribe(
+      (response: ProductoResponse[]) => {
+        this.listaProductos = response;
+      },
+      (error) => {
+        console.error('Error al obtener los productos:', error);
+      },
+    );
+  }
+  seleccionar(id: string) {
+    let detalleProducto = this.ventaData.detalles.find(
+      (detalle: DetalleVentaRequest) => detalle.id_producto === id,
+    );
+    if (!detalleProducto) {
+      const producto = this.listaProductos.find(
+        (p: ProductoResponse) => p.id === id,
+      );
+      detalleProducto = {
+        id_producto: producto?.id,
+        nombre: producto?.nombre,
+        cantidad: 1, // Puedes ajustar según tus necesidades
+        series: [],
+        precio_unitario: producto?.precio, // Puedes ajustar según tus necesidades
+        precio_total: producto?.precio,
+      };
+      this.ventaData.detalles.push(detalleProducto);
+    }
   }
   setFechaEmision(): void {
     const now = new Date();
@@ -88,55 +133,6 @@ export class CotizacionComponent implements OnInit {
     // Formatear las fechas en 'yyyy-mm-dd'
     this.fechaEmision = `${year}-${month}-${day}`;
     this.fechaVencimiento = `${year}-${month}-${day}`;
-  }
-  ElegirSeries(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const searchText = inputElement.value.toLowerCase();
-
-    if (searchText) {
-      let detalleProducto = this.ventaData.detalles.find(
-        (detalle: DetalleVentaRequest) => detalle.id_producto == searchText,
-      );
-      console.log(detalleProducto);
-      if (!detalleProducto) {
-        const producto = this.listaProductos.find((p) => p.id == searchText);
-        detalleProducto = {
-          id_producto: searchText,
-          nombre: producto?.nombre,
-          cantidad: 1, // Puedes ajustar según tus necesidades
-          series: [],
-          precio_unitario: producto?.precio, // Puedes ajustar según tus necesidades
-          precio_total: producto?.precio,
-        };
-        this.ventaData.detalles.push(detalleProducto);
-        //this.ventaData.precio_unitario = this.ventaData.precio_unitario + producto?.precio;
-        //this.ventaData.total = this.ventaData.total ;
-      }
-    }
-  }
-  buscarCliente(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const searchText = inputElement.value.toLowerCase();
-
-    if (searchText) {
-      this.filtroEntidad = this.filtroEntidad.filter(
-        (pro) =>
-          //cambiar busqueda (id/nombre/marca) para buscar
-          pro.documento.toLowerCase().includes(searchText) ||
-          pro.nombre.toLowerCase().includes(searchText.toLowerCase()),
-      );
-    } else {
-      this.filtroEntidad = this.entidades;
-    }
-  }
-  ElegirEntidad() {
-    const encontrada = this.entidades.find(
-      (e) => e.id == this.ventaData.cliente.id,
-    );
-    this.entidad = encontrada?.nombre || '';
-    this.ventaData.cliente.documento = encontrada?.documento;
-    this.ventaData.cliente.nombre = encontrada?.nombre;
-    this.ventaData.cliente.direccion = encontrada?.direccion;
   }
   recalcularPrecio(index: number): void {
     const producto = this.ventaData.detalles[index];

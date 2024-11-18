@@ -1,0 +1,91 @@
+<div class="mb-6 w-full">
+  <label
+    for="entidad"
+    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >{{ title }}</label
+  >
+  <div class="flex flex-row items-center justify-between gap-2 w-full">
+    <div class="relative w-full">
+      <div
+        class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg flex flex-row flex-nowrap items-center justify-between gap-4 text-sm cursor-pointer w-full h-10 p-2"
+        tabindex="0"
+        (click)="tooglebusqueda()"
+        (keydown.enter)="tooglebusqueda()"
+        (keydown.space)="tooglebusqueda()"
+      >
+        <span>{{
+          SelectedText === "" ? "SELECIONA UN PRODUCTO" : SelectedText
+        }}</span>
+        <svg
+          class="w-4 h-4 text-gray-800 transition-all"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 14 8"
+          [ngClass]="flagbusqueda ? 'rotate-0' : 'rotate-180'"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"
+          />
+        </svg>
+      </div>
+
+      <div
+        class="absolute top-full border border-gray-950 rounded-lg p-2 bg-white shadow-lg z-50"
+        [ngClass]="{
+          'inicial-style': inicial,
+          'expand-animation-container': flagbusqueda && !inicial,
+          'supress-container': !flagbusqueda && !inicial,
+        }"
+      >
+        <div>
+          <input
+            id="busqueda"
+            #busqueda
+            type="text"
+            spellcheck="false"
+            aria-expanded="true"
+            autocomplete="off"
+            autocapitalize="none"
+            aria-autocomplete="list"
+            aria-owns="resultado"
+            aria-activedescendant="select-1"
+            class="w-full border border-gray-950 rounded-md shadow-md pl-1"
+            (change)="onBusquedaChange($event)"
+          />
+        </div>
+        <ul
+          id="resultado"
+          role="listbox"
+          class="h-96 w-full overflow-y-scroll expand-animation"
+          [ngClass]="flagbusqueda ? 'expand-animation' : 'supress'"
+        >
+          @for (item of lista; track $index) {
+            <li role="presentation">
+              <div
+                tabindex="0"
+                class="hover:bg-blue-700 hover:text-white rounded-lg p-2 cursor-pointer transition-colors text-sm"
+                (click)="seleccionar($event, item.id)"
+                (keydown.enter)="seleccionar($event, item.id)"
+                (keydown.space)="seleccionar($event, item.id)"
+              >
+                {{ item.nombre }}
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      [routerLink]="rutacreate"
+    >
+      Nuevo
+    </button>
+  </div>
+</div>

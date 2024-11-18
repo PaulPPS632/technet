@@ -69,4 +69,7 @@ export class ListCotizacionComponent implements OnInit {
   CrearNuevaCotizacion() {
     this.router.navigate(['/dashboard/cotizaciones/nuevo']);
   }
+  listaPage() {
+    return [...Array(this.totalPages).keys()];
+  }
 }

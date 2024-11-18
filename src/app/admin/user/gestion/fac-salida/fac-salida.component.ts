@@ -1,19 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoSerieResponse } from '../../../models/producto-serie-response';
 import { ProductoResponse } from '../../../models/producto-response';
-import {
-  TipadoDocumentos,
-  TipoComprobante,
-  TipoCondicion,
-  TipoMoneda,
-  TipoPago,
-} from '../../../models/tipado-documentos';
+import { TipadoDocumentos } from '../../../models/tipado-documentos';
 import { Entidad } from '../../../models/entidad-response';
-import { ProductoSerieRequest } from '../../../models/producto-serie-request';
-import {
-  DetalleVentaRequest,
-  RegistrarVentaRequest,
-} from '../../../models/venta-request';
+import { RegistrarVentaRequest } from '../../../models/venta-request';
 import { CorrelativoService } from '../../../services/correlativo.service';
 import { EntidadService } from '../../../services/entidad.service';
 import { ProductoSerieService } from '../../../services/producto-serie.service';
@@ -24,62 +14,75 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SelectSearchComponent } from '../../../../components/select-search/select-search.component';
 
 @Component({
   selector: 'app-fac-salida',
   standalone: true,
-  imports: [CurrencyPipe, FormsModule, CommonModule],
+  imports: [CurrencyPipe, FormsModule, CommonModule, SelectSearchComponent],
   templateUrl: './fac-salida.component.html',
 })
 export default class UsuarioVentaComponent implements OnInit {
-  fechaEmision?: string;
-  fechaVencimiento?: string;
-  fechaPago?: string;
-
-  producto: ProductoSerieResponse[] = [];
-  //nuevos datos PAUL
   listaProductos: ProductoResponse[] = [];
-  SeriesProducto: ProductoSerieResponse[] = [];
-  idproductoSeleccionado: string = '';
-  nombreproductoSeleccionado: string = '';
-  preciounitproductoSeleccionado: number = 0;
-
-  //fin nuevos paul
+  listaEntidades: Entidad[] = [];
   tipadoDocumentos: TipadoDocumentos | undefined;
-  tipoComprobante: TipoComprobante[] = [];
-  tipoCondicion: TipoCondicion[] = [];
-  tipoPago: TipoPago[] = [];
-  tipoMoneda: TipoMoneda[] = [];
 
-  tipoMonedaSelec: number = 0;
+  SeriesProducto: string[] = [];
 
-  productosSeleccionados: ProductoSerieRequest[] = [];
+  productoselected: ProductoResponse | undefined;
+  clienteselected: Entidad | undefined;
 
-  detalleVenta: DetalleVentaRequest[] = [];
+  flagEDICION: boolean = true;
 
-  nota: string = '';
-  tipoCambio: number = 3;
-  formaPago: string = '1';
-  RegistroVentaService: any;
+  // fechaEmision?: string;
+  // fechaVencimiento?: string;
+  // fechaPago?: string;
 
-  prefijo: string = '';
-  numeracion: number = 0;
-  correlativo: number = 0;
+  // producto: ProductoSerieResponse[] = [];
+  // //nuevos datos PAUL
 
-  tpSeleccionado: string = '';
-  nSeleccionado: number = 1;
+  // idproductoSeleccionado: string = '';
+  // nombreproductoSeleccionado: string = '';
+  // preciounitproductoSeleccionado: number = 0;
 
-  serie: string = '';
-  entidad: string = '';
-  selectedProducto: string = '';
-  selectedEntidad: string = '';
+  // //fin nuevos paul
+  //
+  // tipoComprobante: TipoComprobante[] = [];
+  // tipoCondicion: TipoCondicion[] = [];
+  // tipoPago: TipoPago[] = [];
+  // tipoMoneda: TipoMoneda[] = [];
 
-  tipoCondSelec: number = 0;
-  tipoPagoSelec: number = 0;
+  // tipoMonedaSelec: number = 0;
 
-  productoSerie: ProductoResponse[] = [];
+  // productosSeleccionados: ProductoSerieRequest[] = [];
 
+  // detalleVenta: DetalleVentaRequest[] = [];
+
+  // nota: string = '';
+  // tipoCambio: number = 3;
+  // formaPago: string = '1';
+  // RegistroVentaService: any;
+
+  // prefijo: string = '';
+  // numeracion: number = 0;
+  // correlativo: number = 0;
+
+  // tpSeleccionado: string = '';
+  // nSeleccionado: number = 1;
+
+  // serie: string = '';
+  // entidad: string = '';
+  // selectedProducto: string = '';
+  // selectedEntidad: string = '';
+
+  // tipoCondSelec: number = 0;
+  // tipoPagoSelec: number = 0;
+
+  // productoSerie: ProductoResponse[] = [];
+
+  // entidades: Entidad[] = [];
+  // filtroEntidad: Entidad[] = [];
   constructor(
     private productoService: ProductoService,
     private productoSerieService: ProductoSerieService,
@@ -88,6 +91,7 @@ export default class UsuarioVentaComponent implements OnInit {
     private correlativoService: CorrelativoService,
     private registroVentaService: RegistroVentaService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   toggleDatePicker(fieldId: string) {
@@ -97,60 +101,72 @@ export default class UsuarioVentaComponent implements OnInit {
   }
 
   ventaData: RegistrarVentaRequest = {
-    prefijo: this.tpSeleccionado,
-    numeracion: this.nSeleccionado,
-    documento_cliente: this.entidad,
+    prefijo: '',
+    numeracion: 0,
+    documento_cliente: '',
     usuario_id: '',
-    id_tipocondicion: this.tipoCondSelec,
-    id_tipopago: this.tipoPagoSelec,
-    id_tipomoneda: this.tipoMonedaSelec,
-    tipo_cambio: this.tipoCambio,
+    id_tipocondicion: 1,
+    id_tipopago: 1,
+    id_tipomoneda: 1,
+    tipo_cambio: 1,
     fecha_emision: new Date().toISOString(),
     fecha_vencimiento: new Date().toISOString(),
-    nota: this.nota,
+    nota: '',
     gravada: this.totalGravada,
     impuesto: this.igv,
     total: this.totalPagar,
     fechapago: new Date().toISOString(),
-    formapago: this.formaPago,
-    detalles: this.detalleVenta,
+    formapago: '',
+    detalles: [],
   };
 
-  guardarDatos() {
-    this.ventaData.prefijo = this.tpSeleccionado;
-    this.ventaData.numeracion = this.nSeleccionado;
-    this.ventaData.documento_cliente = this.entidad;
-    this.ventaData.id_tipocondicion = this.tipoCondSelec;
-    this.ventaData.id_tipopago = this.tipoPagoSelec;
-    this.ventaData.id_tipomoneda = this.tipoMonedaSelec;
-    this.ventaData.tipo_cambio = this.tipoCambio;
-    this.ventaData.nota = this.nota;
-    this.ventaData.gravada = this.totalGravada;
-    this.ventaData.impuesto = this.igv;
-    this.ventaData.total = this.totalPagar;
-    this.ventaData.formapago = this.formaPago;
-    this.ventaData.detalles = this.detalleVenta;
-
-    // Ajustar las fechas para que estén en el formato correcto
-    if (this.fechaEmision) {
-      this.ventaData.fecha_emision = `${this.fechaEmision}T00:00:00.00`;
+  ngOnInit(): void {
+    this.setFechaEmision();
+    this.cargarProductos();
+    this.cargarTipado();
+    this.cargarClientes();
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.flagEDICION = false;
+      this.cargarIngreso(id); // Función que carga datos del backend
     }
-
-    if (this.fechaVencimiento) {
-      this.ventaData.fecha_vencimiento = `${this.fechaVencimiento}T00:00:00.00`;
-    }
-
-    if (this.fechaPago) {
-      this.ventaData.fechapago = `${this.fechaPago}T00:00:00.00`;
-    }
+  }
+  cargarIngreso(id: string) {
+    this.registroVentaService
+      .getVenta(id)
+      .subscribe((data: RegistrarVentaRequest) => {
+        this.ventaData = data;
+        this.clienteselected = this.listaEntidades.find(
+          (entidad: Entidad) => entidad.id === this.ventaData.documento_cliente,
+        );
+      });
   }
 
   guardarProductos() {
-    this.guardarDatos();
+    if (!this.flagEDICION) {
+      Swal.fire({
+        icon: 'info',
+        title: 'NO SE PUEDE REGISTRAR',
+        text: 'no se puede modificar una venta ya registrada',
+      });
+      return;
+    }
+    this.ventaData.gravada = this.totalGravada;
+    this.ventaData.impuesto = this.igv;
+    this.ventaData.total = this.totalPagar;
+    if (!this.ventaData.fecha_emision?.includes('T00:00:00.00')) {
+      this.ventaData.fecha_emision = `${this.ventaData.fecha_emision}T00:00:00.00`;
+    }
+    if (!this.ventaData.fecha_vencimiento?.includes('T00:00:00.00')) {
+      this.ventaData.fecha_vencimiento = `${this.ventaData.fecha_vencimiento}T00:00:00.00`;
+    }
+    if (!this.ventaData.fechapago?.includes('T00:00:00.00')) {
+      this.ventaData.fechapago = `${this.ventaData.fechapago}T00:00:00.00`;
+    }
     this.registroVentaService.registrar(this.ventaData).subscribe(
       (response) => {
         this.ventaData.detalles = [];
-        this.detalleVenta = [];
+        this.setFechaEmision();
         Swal.fire({
           icon: 'success',
           title: 'Venta Registrada',
@@ -169,22 +185,22 @@ export default class UsuarioVentaComponent implements OnInit {
   }
 
   //arreglar
-  removerProducto(producto: ProductoResponse): void {
-    const index = this.productoSerie.findIndex((p) => p.id === producto.id);
+  // removerProducto(producto: ProductoResponse): void {
+  //   const index = this.productoSerie.findIndex((p) => p.id === producto.id);
 
-    if (index !== -1) {
-      if (this.productoSerie[index].cantidad > 1) {
-        this.productoSerie[index].cantidad--;
-      } else {
-        this.productoSerie.splice(index, 1);
-      }
+  //   if (index !== -1) {
+  //     if (this.productoSerie[index].cantidad > 1) {
+  //       this.productoSerie[index].cantidad--;
+  //     } else {
+  //       this.productoSerie.splice(index, 1);
+  //     }
 
-      // Eliminar la entrada correspondiente en detalleVenta
-      this.detalleVenta = this.detalleVenta.filter(
-        (detalle) => detalle.id_producto !== producto.id,
-      );
-    }
-  }
+  //     // Eliminar la entrada correspondiente en detalleVenta
+  //     this.detalleVenta = this.detalleVenta.filter(
+  //       (detalle) => detalle.id_producto !== producto.id,
+  //     );
+  //   }
+  // }
 
   cargarProductos() {
     this.productoService.getListaProductos().subscribe(
@@ -201,23 +217,9 @@ export default class UsuarioVentaComponent implements OnInit {
     this.tipadoService.getTipadoDocumentos().subscribe(
       (data) => {
         this.tipadoDocumentos = data;
-        this.tipoComprobante = data.tipocomprobantes;
-        this.tipoCondicion = data.tipocondiciones;
-        this.tipoPago = data.tipopagos;
-        this.tipoMoneda = data.tipomonedas;
-
-        if (this.tipoComprobante.length > 0) {
-          this.tpSeleccionado = this.tipoComprobante[0].prefijo;
-        }
-        if (this.tipoCondicion.length > 0) {
-          this.tipoCondSelec = this.tipoCondicion[0].id;
-        }
-        if (this.tipoPago.length > 0) {
-          this.tipoPagoSelec = this.tipoPago[0].id;
-        }
-        if (this.tipoMoneda.length > 0) {
-          this.tipoMonedaSelec = this.tipoMoneda[0].id;
-        }
+        this.ventaData.id_tipocondicion = data.tipocondiciones[0].id;
+        this.ventaData.id_tipopago = data.tipopagos[0].id;
+        this.ventaData.id_tipomoneda = data.tipomonedas[0].id;
       },
       (error) => {
         console.error('Error al obtener los tipos de documentos:', error);
@@ -227,112 +229,53 @@ export default class UsuarioVentaComponent implements OnInit {
 
   cargarClientes() {
     this.entidadService.getEntidades().subscribe((data) => {
-      this.entidades = data;
-      this.filtroEntidad = data;
+      this.listaEntidades = data;
     });
   }
 
-  //buscar producto: serie pertenece
-  buscarProducto(): void {
-    this.productoSerieService.getProductoSerie(this.serie).subscribe(
-      (data) => {
-        if (data == null) return;
-        this.idproductoSeleccionado = data.id;
-        const productoSeleccionado = this.listaProductos.find(
-          (item) => item.id === data.id,
-        );
-        if (productoSeleccionado) {
-          this.nombreproductoSeleccionado = productoSeleccionado.nombre;
-          this.preciounitproductoSeleccionado = productoSeleccionado.precio;
-        }
-
-        let detalleProducto = this.ventaData.detalles.find(
-          (detalle) => detalle.id_producto == this.idproductoSeleccionado,
-        );
-
-        if (!detalleProducto) {
-          detalleProducto = {
-            id_producto: this.idproductoSeleccionado,
-            nombre: this.nombreproductoSeleccionado,
-            cantidad: 0, // Puedes ajustar según tus necesidades
-            series: [],
-            precio_unitario: this.preciounitproductoSeleccionado, // Puedes ajustar según tus necesidades
-            precio_total: 0,
-          };
-          this.ventaData.detalles.push(detalleProducto);
-        }
-
-        const serieIndex = detalleProducto.series.indexOf(this.serie);
-
-        if (serieIndex < 0) {
-          // Si la serie no está en el array, agrégala
-          detalleProducto.series.push(this.serie);
-          detalleProducto.cantidad += 1;
-          detalleProducto.precio_total =
-            detalleProducto.cantidad * detalleProducto.precio_unitario;
-        }
-        this.ventaData.total = this.totalPagar;
+  productSearch(searchText: string) {
+    this.productoService.getProductoSearch(searchText).subscribe(
+      (response: ProductoResponse[]) => {
+        this.listaProductos = response;
       },
       (error) => {
-        console.error('Producto no encontrado', error);
+        console.error('Error al obtener los productos:', error);
       },
     );
   }
+  // ElegirSeries(event: Event) {
+  //   const inputElement = event.target as HTMLInputElement;
+  //   const idProducto = inputElement.value.toLowerCase();
+  //   if (idProducto) {
+  //     this.productoSerieService.getSeriesByProductoId(idProducto).subscribe(
+  //       (res: ProductoSerieResponse[]) => {
+  //         this.SeriesProducto = res;
+  //         this.idproductoSeleccionado = idProducto;
+  //         const productoSeleccionado = this.listaProductos.find(
+  //           (item) => item.id === idProducto,
+  //         );
+  //         if (productoSeleccionado) {
+  //           this.nombreproductoSeleccionado = productoSeleccionado.nombre;
+  //           this.preciounitproductoSeleccionado = productoSeleccionado.precio;
+  //         }
 
-  entidades: Entidad[] = [];
-  filtroEntidad: Entidad[] = [];
-
-  ngOnInit(): void {
-    this.setFechaEmision();
-    this.cargarProductos();
-    this.cargarTipado();
-    this.cargarClientes();
-  }
-
-  buscarCliente(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const searchText = inputElement.value.toLowerCase();
-
-    if (searchText) {
-      this.filtroEntidad = this.filtroEntidad.filter(
-        (pro) =>
-          //cambiar busqueda (id/nombre/marca) para buscar
-          pro.documento.toLowerCase().includes(searchText) ||
-          pro.nombre.toLowerCase().includes(searchText.toLowerCase()),
-      );
-    } else {
-      this.filtroEntidad = this.entidades;
-    }
-  }
-
-  setFechaEmision(): void {
-    const now = new Date();
-    const day = now.getDate().toString().padStart(2, '0');
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    const year = now.getFullYear();
-
-    // Formatear las fechas en 'yyyy-mm-dd'
-    this.fechaEmision = `${year}-${month}-${day}`;
-    this.fechaVencimiento = `${year}-${month}-${day}`;
-    this.fechaPago = `${year}-${month}-${day}`;
-  }
-
-  ElegirSeries(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const idProducto = inputElement.value.toLowerCase();
-    if (idProducto) {
-      this.productoSerieService.getSeriesByProductoId(idProducto).subscribe(
+  //         this.openIModal();
+  //       },
+  //       (error) => {
+  //         console.error('Error al obtener las series del producto:', error);
+  //         // Manejo de errores según sea necesario
+  //       },
+  //     );
+  //   }
+  // }
+  seleccionarProducto(id: string) {
+    if (id) {
+      this.productoSerieService.getSeriesByProductoId(id).subscribe(
         (res: ProductoSerieResponse[]) => {
-          this.SeriesProducto = res;
-          this.idproductoSeleccionado = idProducto;
-          const productoSeleccionado = this.listaProductos.find(
-            (item) => item.id === idProducto,
+          this.SeriesProducto = res.map((series) => series.sn);
+          this.productoselected = this.listaProductos.find(
+            (item) => item.id === id,
           );
-          if (productoSeleccionado) {
-            this.nombreproductoSeleccionado = productoSeleccionado.nombre;
-            this.preciounitproductoSeleccionado = productoSeleccionado.precio;
-          }
-
           this.openIModal();
         },
         (error) => {
@@ -342,18 +285,94 @@ export default class UsuarioVentaComponent implements OnInit {
       );
     }
   }
+
+  //buscar producto: serie pertenece
+  buscarProducto(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const serie = inputElement.value.trim();
+    inputElement.value = '';
+    this.productoSerieService.getProductoSerie(serie).subscribe(
+      (data) => {
+        if (data == null) return;
+        this.productoselected = data;
+
+        let detalleProducto = this.ventaData.detalles.find(
+          (detalle) => detalle.id_producto == this.productoselected?.id,
+        );
+
+        if (!detalleProducto) {
+          detalleProducto = {
+            id_producto: this.productoselected.id,
+            nombre: this.productoselected.nombre,
+            cantidad: 0, // Puedes ajustar según tus necesidades
+            series: [],
+            precio_unitario: this.productoselected.precio, // Puedes ajustar según tus necesidades
+            precio_total: 0,
+          };
+          this.ventaData.detalles.push(detalleProducto);
+        }
+
+        const serieIndex = detalleProducto.series.includes(serie);
+
+        if (!serieIndex) {
+          // Si la serie no está en el array, agrégala
+          detalleProducto.series.push(serie);
+          detalleProducto.cantidad += 1;
+          detalleProducto.precio_total =
+            detalleProducto.cantidad * detalleProducto.precio_unitario;
+        }
+        //this.ventaData.total = this.totalPagar;
+      },
+      (error) => {
+        console.error('Producto no encontrado', error);
+      },
+    );
+  }
+
+  // buscarCliente(event: Event): void {
+  //   const inputElement = event.target as HTMLInputElement;
+  //   const searchText = inputElement.value.toLowerCase();
+
+  //   if (searchText) {
+  //     this.filtroEntidad = this.filtroEntidad.filter(
+  //       (pro) =>
+  //         //cambiar busqueda (id/nombre/marca) para buscar
+  //         pro.documento.toLowerCase().includes(searchText) ||
+  //         pro.nombre.toLowerCase().includes(searchText.toLowerCase()),
+  //     );
+  //   } else {
+  //     this.filtroEntidad = this.entidades;
+  //   }
+  // }
+  deleteProducto(index: number) {
+    this.ventaData.detalles.splice(index, 1);
+  }
+
+  clienteSearch(searchText: string) {
+    this.entidadService.search(searchText).subscribe((data) => {
+      this.listaEntidades = data;
+    });
+  }
+  clienteSelect(id: string) {
+    if (id) {
+      this.ventaData.documento_cliente = id;
+    }
+  }
+
   SeleccionarSeriesProducto(sn: string) {
+    if (!this.productoselected) return;
+
     let detalleProducto = this.ventaData.detalles.find(
-      (detalle) => detalle.id_producto == this.idproductoSeleccionado,
+      (detalle) => detalle.id_producto === this.productoselected?.id,
     );
 
     if (!detalleProducto) {
       detalleProducto = {
-        id_producto: this.idproductoSeleccionado,
-        nombre: this.nombreproductoSeleccionado,
+        id_producto: this.productoselected?.id,
+        nombre: this.productoselected?.nombre,
         cantidad: 0, // Puedes ajustar según tus necesidades
         series: [],
-        precio_unitario: this.preciounitproductoSeleccionado, // Puedes ajustar según tus necesidades
+        precio_unitario: this.productoselected?.precio, // Puedes ajustar según tus necesidades
         precio_total: 0,
       };
       this.ventaData.detalles.push(detalleProducto);
@@ -380,38 +399,49 @@ export default class UsuarioVentaComponent implements OnInit {
         detalleProducto.cantidad * detalleProducto.precio_unitario;
     }
     this.ventaData.total = this.totalPagar;
-    this.detalleVenta = this.ventaData.detalles;
   }
   isSerieSeleccionada(sn: string): boolean {
     const detalleProducto = this.ventaData.detalles.find(
-      (detalle) => detalle.id_producto == this.idproductoSeleccionado,
+      (detalle) => detalle.id_producto === this.productoselected?.id,
     );
     return detalleProducto ? detalleProducto.series.includes(sn) : false;
   }
-  //clientes
-  ElegirEntidad() {
-    this.entidad = this.selectedEntidad;
-  }
-  ElegirProducto() {
-    this.entidad = this.selectedEntidad;
-  }
-  obtenerCorrelativo(): void {
-    if (this.tpSeleccionado !== null && this.nSeleccionado !== null) {
-      this.prefijo = this.tpSeleccionado;
-      this.numeracion = this.nSeleccionado;
+  setFechaEmision(): void {
+    const now = new Date();
+    const day = now.getDate().toString().padStart(2, '0');
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const year = now.getFullYear();
 
-      this.correlativoService
-        .getCorrelativoSiguiente(this.prefijo, this.numeracion)
-        .subscribe(
-          (data) => {
-            this.correlativo = data;
-          },
-          (error) => {
-            console.error('Error al obtener el correlativo:', error); // Agrega este log para depuración
-          },
-        );
-    }
+    // Formatear las fechas en 'yyyy-mm-dd'
+    this.ventaData.fecha_emision = `${year}-${month}-${day}`;
+    this.ventaData.fecha_vencimiento = `${year}-${month}-${day}`;
+    this.ventaData.fechapago = `${year}-${month}-${day}`;
   }
+  //clientes
+  // ElegirEntidad() {
+  //   this.entidad = this.selectedEntidad;
+  // }
+  // ElegirProducto() {
+  //   this.entidad = this.selectedEntidad;
+  // }
+
+  // obtenerCorrelativo(): void {
+  //   if (this.tpSeleccionado !== null && this.nSeleccionado !== null) {
+  //     this.prefijo = this.tpSeleccionado;
+  //     this.numeracion = this.nSeleccionado;
+
+  //     this.correlativoService
+  //       .getCorrelativoSiguiente(this.prefijo, this.numeracion)
+  //       .subscribe(
+  //         (data) => {
+  //           this.correlativo = data;
+  //         },
+  //         (error) => {
+  //           console.error('Error al obtener el correlativo:', error); // Agrega este log para depuración
+  //         },
+  //       );
+  //   }
+  // }
 
   //total dinero
   get totalGravada(): number {
@@ -423,15 +453,19 @@ export default class UsuarioVentaComponent implements OnInit {
   }
 
   get totalPagar(): number {
-    return this.detalleVenta.reduce(
+    return this.ventaData?.detalles.reduce(
       (total, producto) => total + producto.precio_total,
       0,
     );
   }
-
+  verModalSeries(id: string | undefined) {
+    if (id) {
+      this.seleccionarProducto(id);
+      this.openIModal();
+    }
+  }
   EditOpen = false;
   InsertOpen = false;
-
   openEModal() {
     this.EditOpen = true;
   }

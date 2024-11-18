@@ -4,10 +4,12 @@
   <div
     [routerLink]="['/product', product.id]"
     class="w-full h-32 object-contain"
+    (mouseenter)="changeImage()"
+    (mouseleave)="revertImage()"
   >
     <img
-      class="mx-auto w-full h-32 object-cover hover:scale-110 transition-all dark:hidden rounded-lg"
-      [src]="product.imagen_principal"
+      class="mx-auto w-full h-32 object-contain hover:scale-110 transition-all dark:hidden rounded-lg"
+      [src]="imagen"
       alt="img"
     />
   </div>

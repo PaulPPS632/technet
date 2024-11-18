@@ -41,7 +41,19 @@ export class RegistroCompraService {
       headers: this.headers,
     });
   }
+
+  getCompra(id: string): Observable<RegistrarCompraRequest> {
+    return this.http.get<RegistrarCompraRequest>(`${this.Url}/${id}`, {
+      headers: this.headers,
+    });
+  }
+
   Listar(): Observable<CompraResponse[]> {
     return this.http.get<CompraResponse[]>(this.Url, { headers: this.headers });
+  }
+  getpagedCompra(page: number, pageSize: number): Observable<any> {
+    return this.http.get<any>(`${this.Url}?page=${page}&size=${pageSize}`, {
+      headers: this.headers,
+    });
   }
 }

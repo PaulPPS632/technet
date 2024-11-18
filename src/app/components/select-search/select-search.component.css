@@ -1,7 +1,3 @@
-.inputcotizacion{
-    border: 0;
-}
-
 @keyframes expandHeight {
     0% {
       height: 0;
@@ -31,7 +27,7 @@
   }
   .supress{
     animation: supressHeight 0.3s ease-in-out forwards;
-  }
+}
   
   
   @keyframes expandHeightcontainer {
@@ -58,12 +54,15 @@
       display: none;
     }
   }
-  
+  .inicial-style {
+    display: none;
+  }
   
   .expand-animation-container{
     animation: expandHeightcontainer 0.3s ease-in-out forwards;
   }
   .supress-container{
     animation: supressHeightcontainer 0.3s ease-in-out forwards;
-  }
+  
+}
   

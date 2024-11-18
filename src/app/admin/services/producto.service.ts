@@ -50,8 +50,8 @@ export class ProductoService {
   getProductoById(id: string): Observable<ProductoResponse> {
     return this.http.get<ProductoResponse>(`${this.apiUrl}/${id}`);
   }
-  getProductoSearch(search: string): Observable<ProductoResponse> {
-    return this.http.get<ProductoResponse>(
+  getProductoSearch(search: string): Observable<ProductoResponse[]> {
+    return this.http.get<ProductoResponse[]>(
       `${this.apiUrl}/search?search=${search}`,
       {
         headers: this.headers,

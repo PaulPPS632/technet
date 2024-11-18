@@ -29,203 +29,213 @@
 </div>
 
 <!-- Editar modal -->
-<div
-  *ngIf="EditOpen"
-  tabindex="-1"
-  aria-hidden="true"
-  class="fixed inset-0 z-50 overflow-y-auto"
->
-  <!-- Overlay -->
-  <div class="fixed inset-0 bg-black bg-opacity-50"></div>
+@if (EditOpen) {
+  <div
+    tabindex="-1"
+    aria-hidden="true"
+    class="fixed inset-0 z-50 overflow-y-auto"
+  >
+    <!-- Overlay -->
+    <div class="fixed inset-0 bg-black bg-opacity-50"></div>
 
-  <!-- Modal -->
-  <div class="relative flex items-center justify-center min-h-screen p-4">
-    <div
-      class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-2xl w-full"
-    >
-      <!-- Modal header -->
+    <!-- Modal -->
+    <div class="relative flex items-center justify-center min-h-screen p-4">
       <div
-        class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+        class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-w-2xl w-full"
       >
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-          Editar Tipado
-        </h3>
-        <button
-          type="button"
-          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-          (click)="EditOpen = false"
+        <!-- Modal header -->
+        <div
+          class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
         >
-          <svg
-            class="w-3 h-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 14"
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            Editar Tipado
+          </h3>
+          <button
+            type="button"
+            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            (click)="EditOpen = false"
           >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-            />
-          </svg>
-          <span class="sr-only">Close modal</span>
-        </button>
-      </div>
-      <!-- Modal body -->
-      <div class="p-4 md:p-5 space-y-4">
-        <div class="mb-6">
-          <label
-            for="tipoPagoSelec"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Tipo Pago:</label
-          >
-          <select
-            id="tipoPagoSelec"
-            name="tipoPagoSelec"
-            [(ngModel)]="tipoPagoSelec"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
-            <option value="" disabled selected>Elegir...</option>
-            <option *ngFor="let item of tipoPago" [value]="item.id">
-              {{ item.id }} | {{ item.descripcion }}
-            </option>
-          </select>
+            <svg
+              class="w-3 h-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
         </div>
-
-        <div class="mb-6">
-          <label
-            for="tipoCondSelec"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Tipo de Condición</label
-          >
-          <div class="flex items-center space-x-2">
+        <!-- Modal body -->
+        <div class="p-4 md:p-5 space-y-4">
+          <div class="mb-6">
+            <label
+              for="tipoPagoSelec"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Tipo Pago:</label
+            >
             <select
-              id="tipoCondSelec"
-              name="tipoCondSelec"
-              [(ngModel)]="tipoCondSelec"
-              class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              id="tipoPagoSelec"
+              name="tipoPagoSelec"
+              [(ngModel)]="ventaData.id_tipopago"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               <option value="" disabled selected>Elegir...</option>
-              <option *ngFor="let item of tipoCondicion" [value]="item.id">
+              <option
+                *ngFor="let item of tipadoDocumentos?.tipopagos"
+                [value]="item.id"
+              >
                 {{ item.id }} | {{ item.descripcion }}
               </option>
             </select>
-            <button
-              type="submit"
-              class="h-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Agregar
-            </button>
           </div>
-        </div>
 
-        <div class="mb-6">
-          <label
-            for="fecha-emision"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Fecha de Emisión</label
-          >
-          <input
-            type="date"
-            id="fecha-emision"
-            [(ngModel)]="fechaEmision"
-            name="fechaEmision"
-            class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="yyyy-mm-dd"
-          />
-        </div>
+          <div class="mb-6">
+            <label
+              for="tipoCondSelec"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Tipo de Condición</label
+            >
+            <div class="flex items-center space-x-2">
+              <select
+                id="tipoCondSelec"
+                name="tipoCondSelec"
+                [(ngModel)]="ventaData.id_tipocondicion"
+                class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option value="" disabled selected>Elegir...</option>
+                <option
+                  *ngFor="let item of tipadoDocumentos?.tipocondiciones"
+                  [value]="item.id"
+                >
+                  {{ item.id }} | {{ item.descripcion }}
+                </option>
+              </select>
+              <button
+                type="submit"
+                class="h-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Agregar
+              </button>
+            </div>
+          </div>
 
-        <div class="mb-6">
-          <label
-            for="fecha-venci"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Fecha de Vencimiento</label
-          >
-          <input
-            type="date"
-            id="fecha-venci"
-            [(ngModel)]="fechaVencimiento"
-            name="fechaVencimiento"
-            class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="yyyy-mm-dd"
-          />
-        </div>
+          <div class="mb-6">
+            <label
+              for="fecha-emision"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Fecha de Emisión</label
+            >
+            <input
+              type="date"
+              id="fecha-emision"
+              [(ngModel)]="ventaData.fecha_emision"
+              name="fechaEmision"
+              class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="yyyy-mm-dd"
+            />
+          </div>
 
-        <div class="mb-6">
-          <label
-            for="fecha-pago"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Fecha de Pago</label
-          >
-          <input
-            type="date"
-            id="fecha-pago"
-            [(ngModel)]="fechaPago"
-            name="fechaPago"
-            class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="yyyy-mm-dd"
-          />
-        </div>
+          <div class="mb-6">
+            <label
+              for="fecha-venci"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Fecha de Vencimiento</label
+            >
+            <input
+              type="date"
+              id="fecha-venci"
+              [(ngModel)]="ventaData.fecha_vencimiento"
+              name="fechaVencimiento"
+              class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="yyyy-mm-dd"
+            />
+          </div>
 
-        <div class="mb-6">
-          <label
-            for="formaPago"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Forma de Pago</label
-          >
-          <select
-            id="formaPago"
-            name="formaPago"
-            [(ngModel)]="formaPago"
-            class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
-            <option value="" disabled selected>Elegir...</option>
-            <option value="1">Forma 1</option>
-            <option value="2">Forma 2</option>
-            <option value="3">Forma 3</option>
-          </select>
-        </div>
+          <div class="mb-6">
+            <label
+              for="fecha-pago"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Fecha de Pago</label
+            >
+            <input
+              type="date"
+              id="fecha-pago"
+              [(ngModel)]="ventaData.fechapago"
+              name="fechaPago"
+              class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="yyyy-mm-dd"
+            />
+          </div>
 
-        <div class="mb-6">
-          <label
-            for="tipoMoneda"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Tipo Moneda</label
-          >
-          <select
-            id="tipoMoneda"
-            name="tipoMoneda"
-            [(ngModel)]="tipoMonedaSelec"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
-            <option value="" disabled selected>Elegir...</option>
-            <option *ngFor="let item of tipoMoneda" [value]="item.id">
-              {{ item.id }} | {{ item.nombre }}
-            </option>
-          </select>
-        </div>
+          <div class="mb-6">
+            <label
+              for="formaPago"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Forma de Pago</label
+            >
+            <select
+              id="formaPago"
+              name="formaPago"
+              [(ngModel)]="ventaData.formapago"
+              class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="" disabled selected>Elegir...</option>
+              <option value="1">Forma 1</option>
+              <option value="2">Forma 2</option>
+              <option value="3">Forma 3</option>
+            </select>
+          </div>
 
-        <div class="mb-6">
-          <label
-            for="tipoCambio"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Tipo de Cambio</label
-          >
-          <input
-            type="text"
-            id="tipoCambio"
-            name="tipoCambio"
-            placeholder="Tipo de Cambio..."
-            [(ngModel)]="tipoCambio"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
+          <div class="mb-6">
+            <label
+              for="tipoMoneda"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Tipo Moneda</label
+            >
+            <select
+              id="tipoMoneda"
+              name="tipoMoneda"
+              [(ngModel)]="ventaData.id_tipomoneda"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="" disabled selected>Elegir...</option>
+              <option
+                *ngFor="let item of tipadoDocumentos?.tipomonedas"
+                [value]="item.id"
+              >
+                {{ item.id }} | {{ item.nombre }}
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-6">
+            <label
+              for="tipoCambio"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Tipo de Cambio</label
+            >
+            <input
+              type="text"
+              id="tipoCambio"
+              name="tipoCambio"
+              placeholder="Tipo de Cambio..."
+              [(ngModel)]="ventaData.tipo_cambio"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+}
 
 <!-- Insertar modal -->
 <div
@@ -246,9 +256,20 @@
       <div
         class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
       >
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-          Producto: {{ nombreproductoSeleccionado }}
-        </h3>
+        <div class="flex flex-row justify-between w-full">
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              Producto: {{ productoselected?.nombre }}
+            </h3>
+          </div>
+
+          <div>
+            <h4 class="text-xl font-semibold text-gray-900 dark:text-white">
+              Cant Selected: {{ SeriesProducto.length }}
+            </h4>
+          </div>
+        </div>
+
         <button
           type="button"
           class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -289,23 +310,23 @@
             <tbody
               class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
             >
-              @for (series of SeriesProducto; track $index) {
+              @for (serie of SeriesProducto; track $index) {
                 <tr>
-                  <td class="px-6 py-4">{{ series.sn }}</td>
+                  <td class="px-6 py-4">{{ serie }}</td>
                   <td class="px-6 py-4">
                     <button
                       type="button"
-                      class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                      class="focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 cursor-pointer"
                       [ngClass]="{
                         'bg-red-800 hover:bg-red-700 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900':
-                          isSerieSeleccionada(series.sn),
+                          isSerieSeleccionada(serie),
                         'bg-green-700 hover:bg-green-800 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900':
-                          !isSerieSeleccionada(series.sn),
+                          !isSerieSeleccionada(serie),
                       }"
-                      (click)="SeleccionarSeriesProducto(series.sn)"
+                      (click)="SeleccionarSeriesProducto(serie)"
                     >
                       {{
-                        isSerieSeleccionada(series.sn)
+                        isSerieSeleccionada(serie)
                           ? "Deseleccionar"
                           : "Seleccionar"
                       }}
@@ -332,17 +353,15 @@
       <select
         id="tipoComprobante"
         name="tipoComprobante"
-        [(ngModel)]="tpSeleccionado"
-        (change)="obtenerCorrelativo()"
+        [(ngModel)]="ventaData.prefijo"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       >
-        <option value="" disabled selected>Elegir...</option>
-        <option *ngFor="let item of tipoComprobante" [value]="item.prefijo">
-          {{ item.prefijo }} | {{ item.descripcion }}
-        </option>
+        <option value="F" selected>FACTURA</option>
+        <option value="B">BOLETA</option>
       </select>
     </div>
-    <div>
+
+    <!-- <div>
       <label
         for="nro"
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -377,48 +396,21 @@
         placeholder="0"
         required
       />
-    </div>
+    </div> -->
   </div>
 
-  <div class="mb-6">
-    <label
-      for="entidad"
-      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-      >Cliente (Id/Nombre)</label
-    >
-    <div class="flex items-center space-x-3">
-      <input
-        type="text"
-        id="entidad"
-        name="entidad"
-        (input)="buscarCliente($event)"
-        [(ngModel)]="entidad"
-        placeholder="Buscar por cliente..."
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        required
-      />
-      <select
-        id="selectedEntidad"
-        name="selectedEntidad"
-        required
-        (change)="ElegirEntidad()"
-        [(ngModel)]="selectedEntidad"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      >
-        <option value="" disabled selected>Elegir...</option>
-        <option *ngFor="let item of filtroEntidad" [value]="item.id">
-          {{ item.documento }} | {{ item.nombre }}
-        </option>
-      </select>
-      <button
-        (click)="CrearNuevaEntidad()"
-        type="button"
-        class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        Nuevo
-      </button>
-    </div>
-  </div>
+  <app-select-search
+    [lista]="listaEntidades"
+    [title]="'Cliente'"
+    [rutacreate]="'/dashboard/entidades'"
+    [Tipo]="'cliente'"
+    (emitterSearchText)="clienteSearch($event)"
+    (emitterSelectedValue)="clienteSelect($event)"
+    [SelectedText]="
+      clienteselected?.documento + ' | ' + clienteselected?.nombre
+    "
+    class="w-full"
+  />
 
   <div class="mb-6">
     <label
@@ -431,13 +423,13 @@
       id="nota"
       name="nota"
       placeholder="Nota venta"
-      [(ngModel)]="nota"
+      [(ngModel)]="ventaData.nota"
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     />
   </div>
 
-  <div class="grid gap-6 mb-6 md:grid-cols-2">
-    <div>
+  <div class="grid gap-6 mb-6 md:grid-cols-3">
+    <div class="col-span-1">
       <label
         for="serie"
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -447,14 +439,14 @@
         type="text"
         id="serie"
         name="serie"
-        [(ngModel)]="serie"
-        (keyup.enter)="buscarProducto()"
+        (keyup.enter)="buscarProducto($event)"
         placeholder="Ingrese serie..."
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         required
       />
     </div>
-    <div>
+
+    <!-- <div>
       <label
         for="n_producto"
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -474,7 +466,15 @@
           </option>
         }
       </select>
-    </div>
+    </div> -->
+    <app-select-search
+      class="col-span-2"
+      [lista]="listaProductos"
+      [title]="'Producto'"
+      [rutacreate]="'/dashboard/inventario'"
+      (emitterSearchText)="productSearch($event)"
+      (emitterSelectedValue)="seleccionarProducto($event)"
+    />
   </div>
 </form>
 
@@ -492,23 +492,89 @@
         <th scope="col" class="px-6 py-3">Nombre</th>
         <th scope="col" class="px-6 py-3">P. Unit</th>
         <th scope="col" class="px-6 py-3">P. Total</th>
+        <th scope="col" class="px-6 py-3 max-w-16">Accion</th>
       </tr>
     </thead>
-    <tbody *ngIf="ventaData.detalles && ventaData.detalles.length > 0">
-      <tr
-        *ngFor="let producto of ventaData.detalles"
-        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-      >
-        <td class="px-6 py-4">{{ producto.cantidad }}</td>
-        <td class="px-6 py-4">{{ producto.nombre }}</td>
-        <td class="px-6 py-4">
-          {{ producto.precio_unitario | currency: "S/. " }}
-        </td>
-        <td class="px-6 py-4">
-          {{ producto.precio_total | currency: "S/. " }}
-        </td>
-      </tr>
-    </tbody>
+    @if (ventaData.detalles && ventaData.detalles.length > 0) {
+      <tbody>
+        @for (producto of ventaData.detalles; track $index) {
+          <tr
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+          >
+            <td class="px-6 py-4">{{ producto.cantidad }}</td>
+            <td class="px-6 py-4">{{ producto.nombre }}</td>
+            <td class="px-6 py-4">
+              {{ producto.precio_unitario | currency: "S/. " }}
+            </td>
+            <td class="px-6 py-4">
+              {{ producto.precio_total | currency: "S/. " }}
+            </td>
+            <td
+              class="px-6 py-4 w-fit flex flex-row flex-nowrap items-center justify-start gap-2"
+            >
+              <svg
+                class="w-6 h-6 text-red-600 dark:text-red-600 hover:scale-110 hover:cursor-pointer"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+                (click)="deleteProducto($index)"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                />
+              </svg>
+              <svg
+                class="w-6 h-6 hover:scale-110 hover:cursor-pointer"
+                fill="#1a56db"
+                version="1.1"
+                id="Capa_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                width="24"
+                height="24"
+                viewBox="0 0 442.04 442.04"
+                xml:space="preserve"
+                (click)="verModalSeries(producto?.id_producto)"
+              >
+                <g>
+                  <g>
+                    <path
+                      d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+			c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+			c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+			c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+			c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+			c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+			c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z"
+                    />
+                  </g>
+                  <g>
+                    <path
+                      d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+			c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+			c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+			s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z"
+                    />
+                  </g>
+                  <g>
+                    <path
+                      d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z"
+                    />
+                  </g>
+                </g>
+              </svg>
+            </td>
+          </tr>
+        }
+      </tbody>
+    }
   </table>
 </div>
 
