@@ -154,7 +154,8 @@ export default class CartComponent implements OnInit {
     const endpoint = 'https://api.micuentaweb.pe';
     const publicKey =
       '80203493:publickey_1nPGb868QNn3uq7hs8Q71A2wT0y5WEk9zhm3eKdVczupQ';
-    //const publicKey = '80203493:testpublickey_2h74LTfgBCifM8NOXKuDkUqYUHMbb7jUegkAJqSUYYLgl';
+    // const publicKey =
+    //   '80203493:testpublickey_2h74LTfgBCifM8NOXKuDkUqYUHMbb7jUegkAJqSUYYLgl';
     this.paymentService.postExternalData(this.data).subscribe((data) => {
       this.formToken = data.formToken;
       KRGlue.loadLibrary(endpoint, publicKey) // Load the remote library

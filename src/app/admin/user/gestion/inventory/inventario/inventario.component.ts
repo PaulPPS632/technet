@@ -9,6 +9,7 @@ import { environment } from '../../../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { ReportesService } from '../../../../services/reportes.service';
 
 declare const initFlowbite: any;
 
@@ -39,6 +40,7 @@ export class InventarioComponent implements OnInit {
     private router: Router,
     private productoService: ProductoService,
     private pedidoService: PedidoService,
+    private reportesService: ReportesService,
   ) {}
 
   CreateOpen = false;
@@ -180,5 +182,22 @@ export class InventarioComponent implements OnInit {
 
   getCurrentDateTime(): string {
     return new Date().toISOString();
+  }
+  Reporte() {
+    this.reportesService.ProductosStock().subscribe(
+      (response) => {
+        // Crear un enlace para descargar el PDF
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'REPORTE-STOCK.pdf'; // Nombre del archivo
+        a.click();
+        window.URL.revokeObjectURL(url); // Liberar memoria
+      },
+      (error) => {
+        console.error('Error al descargar el reporte:', error);
+      },
+    );
   }
 }

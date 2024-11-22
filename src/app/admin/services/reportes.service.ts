@@ -26,4 +26,9 @@ export class ReportesService {
       },
     );
   }
+  ProductosStock(): Observable<Blob> {
+    return this.http.get(this.apiUrl + '/inventory/reportes/StockProductos', {
+      responseType: 'blob', // Indicamos que la respuesta será un blob
+    });
+  }
 }
